@@ -1,16 +1,99 @@
 ---
+import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
+
+const tracks = (await getCollection("tracks")).sort((a, b) => a.data.order - b.data.order);
+const stages = [...new Set(tracks.map((t) => t.data.stage))];
+const docCount = new Set(tracks.flatMap((t) => t.data.docs.map((d) => d.url))).size;
+const outsideCount = new Set(tracks.flatMap((t) => t.data.outside.map((d) => d.url))).size;
+const kindLabel = { lab: "Lab", workbench: "Workbench", project: "Project", guide: "Guide" } as const;
 ---
 
-<Base title="Zero to HYPE" description="A free, open-source roadmap for building on Hyperliquid.">
+<Base title="Zero to HYPE" description="A free, open-source roadmap for building on Hyperliquid: every topic mapped to the official docs and the best tutorials, with labs that run in your browser.">
   <section class="intro">
     <p class="eyebrow">Free and open source</p>
     <h1>Zero to HYPE</h1>
-    <p class="lede">A roadmap for building on Hyperliquid, from your first API call to running a perp DEX or settling outcome markets.</p>
+    <p class="lede">
+      A roadmap for building on Hyperliquid, from your first API call to running a perp DEX or
+      settling outcome markets. Each track tells you which official pages to read, which
+      tutorials are worth your time, and what to build.
+    </p>
+    <ul class="facts" aria-label="What the roadmap covers">
+      <li><b>{tracks.length}</b> tracks</li>
+      <li><b>{docCount}</b> official pages mapped</li>
+      <li><b>{outsideCount}</b> outside guides picked</li>
+      <li><b>Testnet</b> labs, no funds needed</li>
+    </ul>
+  </section>
+
+  <section class="roadmap" aria-labelledby="roadmap-title">
+    <h2 id="roadmap-title" class="visually-hidden">The roadmap</h2>
+    {stages.map((stage) => (
+      <div class="stage">
+        <p class="eyebrow">{stage}</p>
+        <ol class="tracks">
+          {tracks
+            .filter((t) => t.data.stage === stage)
+            .map((t) => (
+              <li>
+                <a class="track" href={`/tracks/${t.id}/`}>
+                  <span class="code">{t.data.code}</span>
+                  <span class="body">
+                    <span class="title">{t.data.title}</span>
+                    <span class="summary">{t.data.summary}</span>
+                    <span class="meta">
+                      {t.data.depth === "lesson" ? (
+                        <span class="tag ok">Lesson</span>
+                      ) : (
+                        <span class="tag">Reading list</span>
+                      )}
+                      <span class="count">{t.data.docs.length} official pages</span>
+                      {t.data.build.map((b) => (
+                        <span class="count">{kindLabel[b.kind]}: {b.label}</span>
+                      ))}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+        </ol>
+      </div>
+    ))}
+  </section>
+
+  <section class="next">
+    <h2>Stay current</h2>
+    <p>
+      Hyperliquid ships API changes before it documents them. The <a href="/changelog/">changelog</a>
+      records what changed each day, straight from the live API.
+    </p>
   </section>
 </Base>
 
 <style>
-  .intro { display: grid; gap: 14px; }
-  .lede { font-size: 1.15rem; max-width: 62ch; }
+  .intro { display: grid; gap: 16px; }
+  .lede { font-size: 1.15rem; line-height: 1.55; max-width: 64ch; }
+  .facts { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .facts li { font: 500 12.5px/1 var(--data); padding: 8px 11px; border: 1px solid var(--rule); border-radius: 999px; background: var(--surface); color: var(--muted); }
+  .facts b { color: var(--ink); font-weight: 500; }
+
+  .roadmap { display: grid; gap: 32px; }
+  .stage { display: grid; gap: 12px; }
+  .tracks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .track {
+    display: grid; grid-template-columns: 3.4rem minmax(0, 1fr); gap: 14px;
+    padding: 16px 18px; border: 1px solid var(--rule); border-radius: 12px;
+    background: var(--surface); color: var(--ink); text-decoration: none;
+  }
+  .track:hover { border-color: var(--accent); }
+  .code { font: 500 14px/1.4 var(--data); color: var(--accent); padding-top: 2px; }
+  .body { display: grid; gap: 6px; min-width: 0; }
+  .title { font: 700 1.12rem/1.25 var(--display); }
+  .summary { color: var(--muted); font-size: 15px; max-width: 72ch; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 2px; }
+  .count { font: 400 12.5px/1.4 var(--data); color: var(--muted); }
+  .next { display: grid; gap: 10px; }
+  .next p { max-width: 64ch; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 560px) { .track { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
 </style>

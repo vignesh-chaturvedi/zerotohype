@@ -1,0 +1,91 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  const tracks = (await getCollection("tracks")).sort((a, b) => a.data.order - b.data.order);
+  return tracks.map((track, i) => ({
+    params: { id: track.id },
+    props: { track, prev: tracks[i - 1], next: tracks[i + 1] },
+  }));
+}
+
+const { track, prev, next } = Astro.props;
+const { Content } = await render(track);
+const t = track.data;
+const kindLabel = { lab: "Lab", workbench: "Workbench", project: "Project", guide: "Guide" } as const;
+const verified = t.verified?.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+---
+
+<Base title={`${t.code} ${t.title}`} description={t.summary}>
+  <header class="head">
+    <p class="eyebrow">{t.code} · {t.stage}</p>
+    <h1>{t.title}</h1>
+    <p class="summary">{t.summary}</p>
+    <p class="status">
+      {t.depth === "lesson" ? <span class="tag ok">Lesson</span> : <span class="tag">Reading list</span>}
+      {verified ? <span class="mono">Checked against the live API on {verified}</span> : null}
+    </p>
+  </header>
+
+  <div class="reading">
+    <section>
+      <h2>Read first</h2>
+      <p class="muted">The official docs for this track.</p>
+      <ul>
+        {t.docs.map((d) => <li><a href={d.url}>{d.title}</a></li>)}
+      </ul>
+    </section>
+    {t.outside.length > 0 && (
+      <section>
+        <h2>Then</h2>
+        <p class="muted">Tutorials and write-ups worth your time.</p>
+        <ul>
+          {t.outside.map((d) => (
+            <li><a href={d.url}>{d.title}</a>{d.by && <span class="by"> · {d.by}</span>}</li>
+          ))}
+        </ul>
+      </section>
+    )}
+    {t.build.length > 0 && (
+      <section>
+        <h2>Build</h2>
+        <p class="muted">Hands-on work for this track.</p>
+        <ul>
+          {t.build.map((b) => (
+            <li>
+              {kindLabel[b.kind]}: {b.label}
+              {b.status === "planned" ? <span class="tag">Coming</span> : <span class="tag ok">Live</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </div>
+
+  <article class="prose">
+    <Content />
+  </article>
+
+  <nav class="pager" aria-label="Tracks">
+    {prev ? <a href={`/tracks/${prev.id}/`}><span class="eyebrow">Previous</span>{prev.data.code} {prev.data.title}</a> : <span />}
+    {next ? <a class="end" href={`/tracks/${next.id}/`}><span class="eyebrow">Next</span>{next.data.code} {next.data.title}</a> : <span />}
+  </nav>
+</Base>
+
+<style>
+  .head { display: grid; gap: 12px; }
+  .summary { font-size: 1.12rem; line-height: 1.55; max-width: 64ch; }
+  .status { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 12.5px; color: var(--muted); }
+  .reading { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  @media (max-width: 900px) { .reading { grid-template-columns: minmax(0, 1fr); } }
+  .reading section { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+  .reading h2 { font-size: 1.05rem; }
+  .reading p { font-size: 14px; }
+  .reading ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; font-size: 14.5px; }
+  .reading li { overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
+  .by { color: var(--muted); font-size: 13px; }
+  .pager { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--rule); padding-top: 20px; }
+  .pager a { display: grid; gap: 4px; text-decoration: none; font-weight: 600; }
+  .pager a.end { text-align: right; }
+</style>
