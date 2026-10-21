@@ -1,0 +1,110 @@
+---
+import Base from "../../layouts/Base.astro";
+import "../../styles/lab.css";
+
+const bugs = [
+  { id: "none", label: "Sign it correctly", hint: "The recipe the SDKs use. The exchange should name your throwaway key." },
+  { id: "fieldOrder", label: "Hash the fields in a different order", hint: "Same values, different key order. msgpack keeps order, so the hash changes." },
+  { id: "mainnetSource", label: "Sign for mainnet instead of testnet", hint: "The signed message says \"a\" (mainnet) rather than \"b\" (testnet)." },
+  { id: "noNonce", label: "Leave the nonce out of the hash", hint: "The request still carries the nonce, but the hash doesn't include it." },
+  { id: "nullField", label: "Hash an extra field set to null", hint: "A null is encoded; a missing field isn't." },
+];
+---
+
+<Base title="Sign without money" description="Sign a Hyperliquid action with a throwaway key and let the exchange tell you whether your encoding is right. Testnet only, no funds.">
+  <div class="lab">
+    <header class="lab-head">
+      <p class="eyebrow">Lab · T3 Signing and sending</p>
+      <h1>Sign without money</h1>
+      <p class="lede">
+        Sign an action with a brand-new key and send it to testnet. The key has no account, so the
+        exchange always rejects it, but its error names the address it recovered from your
+        signature. If that's your new key, your encoding matches the exchange's byte for byte.
+      </p>
+      <p class="safety">
+        The key is generated in your browser for this one request and then thrown away. The lab
+        only talks to <code>api.hyperliquid-testnet.xyz</code>, and the action is a cancel of an
+        order that doesn't exist, so nothing can take effect. Never paste a real private key into
+        any website, this one included.
+      </p>
+    </header>
+
+    <section class="panel" aria-labelledby="setup-title">
+      <h2 id="setup-title">Choose what to send</h2>
+      <fieldset class="choices">
+        <legend>Introduce a mistake, or sign it correctly</legend>
+        {bugs.map((b, i) => (
+          <label class="choice">
+            <input type="radio" name="bug" id={`bug-${b.id}`} value={b.id} checked={i === 0} />
+            <span>{b.label}<small>{b.hint}</small></span>
+          </label>
+        ))}
+      </fieldset>
+      <button class="run" id="run" type="button">Sign and send to testnet</button>
+    </section>
+
+    <section class="panel" aria-labelledby="out-title" aria-live="polite">
+      <h2 id="out-title">What happened</h2>
+      <ol class="steps-out">
+        <li><span class="label">A throwaway key</span><output class="value" id="out-key">Generated when you press the button.</output></li>
+        <li><span class="label">The action</span><output class="value" id="out-action">{JSON.stringify({ type: "cancel", cancels: [{ a: 0, o: 1 }] })}</output></li>
+        <li><span class="label">Bytes hashed: msgpack of the action, the nonce, then 00 for "no vault"</span><output class="value" id="out-packed">–</output></li>
+        <li><span class="label">keccak-256 of those bytes, signed as an EIP-712 Agent message</span><output class="value" id="out-sig">–</output></li>
+        <li><span class="label">The exchange's reply</span><output class="value" id="out-reply">–</output></li>
+      </ol>
+      <div class="verdict" id="verdict"><strong>Not run yet</strong>Press the button to sign and send.</div>
+    </section>
+
+    <section class="panel">
+      <h2>What to take from this</h2>
+      <ul class="small">
+        <li>The error names a different address every time anything about the payload changes. That's why a wrong signature never says what's wrong.</li>
+        <li>Turn this into a test for your own code: sign one action with a fresh key and check the address in the reply. <a href="https://github.com/vignesh-chaturvedi/hyperkeeper">hyperkeeper</a> does this every time it starts.</li>
+        <li>The full list of signing traps is in <a href="/tracks/t03-signing-and-sending/">T3 Signing and sending</a>.</li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<script>
+  import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
+  import { signL1Action, sendToTestnet, type Bug } from "../../lib/signing";
+
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  const run = $("run") as HTMLButtonElement;
+  const action = { type: "cancel", cancels: [{ a: 0, o: 1 }] };
+
+  run.addEventListener("click", async () => {
+    const bug = (document.querySelector('input[name="bug"]:checked') as HTMLInputElement).value as Bug;
+    run.disabled = true;
+    run.textContent = "Signing and sending…";
+    const verdict = $("verdict");
+    try {
+      const account = privateKeyToAccount(generatePrivateKey());
+      $("out-key").textContent = `Address ${account.address}`;
+      const req = await signL1Action(account, action, Date.now(), bug);
+      $("out-action").textContent = JSON.stringify(req.action);
+      $("out-packed").textContent = req.packed;
+      $("out-sig").textContent = `hash ${req.hash}\nr ${req.signature.r}\ns ${req.signature.s}\nv ${req.signature.v}`;
+      const reply = await sendToTestnet(req);
+      $("out-reply").textContent = reply;
+      const recovered = reply.match(/0x[0-9a-fA-F]{40}/)?.[0];
+      if (!recovered) {
+        verdict.className = "verdict bad";
+        verdict.innerHTML = "<strong>Unexpected reply</strong>The exchange didn't name an address. Its reply is above.";
+      } else if (recovered.toLowerCase() === account.address.toLowerCase()) {
+        verdict.className = "verdict good";
+        verdict.innerHTML = `<strong>Match</strong>The exchange recovered your throwaway key, ${account.address}. The encoding and signature are exactly what it expects.`;
+      } else {
+        verdict.className = "verdict bad";
+        verdict.innerHTML = `<strong>Mismatch</strong>The exchange recovered ${recovered}, not your key ${account.address}. That's what this mistake looks like in real code.`;
+      }
+    } catch (error) {
+      verdict.className = "verdict bad";
+      verdict.innerHTML = `<strong>Couldn't reach testnet</strong>${String(error).replace(/</g, "&lt;")}`;
+    } finally {
+      run.disabled = false;
+      run.textContent = "Sign and send to testnet";
+    }
+  });
+</script>

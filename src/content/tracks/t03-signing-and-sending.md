@@ -16,7 +16,7 @@ docs:
 outside:
   - { title: Agent wallets and the nonce state machine, url: "https://chainstack.com/hyperliquid-agent-wallets-nonce-state-machine/", by: Chainstack }
 build:
-  - { label: Sign without money, kind: lab }
+  - { label: Sign without money, kind: lab, status: live, href: "/labs/sign-without-money/" }
   - { label: Signed action from scratch, kind: project }
 ---
 

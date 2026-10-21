@@ -1,0 +1,57 @@
+---
+import Base from "../../layouts/Base.astro";
+
+const labs = [
+  {
+    href: "/labs/sign-without-money/",
+    title: "Sign without money",
+    track: "T3 Signing and sending",
+    what: "Sign an action with a throwaway key and let the exchange tell you whether your encoding is right. Then break it on purpose.",
+    live: true,
+  },
+  {
+    href: "/labs/funding/",
+    title: "Funding and mark price",
+    track: "T4 Trading mechanics",
+    what: "Live oracle, mark and impact prices for any perp, with the premium and funding rate worked out in front of you.",
+    live: false,
+  },
+  {
+    href: "/labs/settlement/",
+    title: "Settlement explorer",
+    track: "T8 Outcome markets",
+    what: "Recompute real HIP-4 settlements from recorded prices, and see which kind of average each venue uses.",
+    live: false,
+  },
+];
+---
+
+<Base title="Labs" description="Hands-on Hyperliquid labs that run in your browser against the live API. No funds, no real keys.">
+  <header class="head">
+    <p class="eyebrow">Labs</p>
+    <h1>Labs</h1>
+    <p class="lede">
+      Each lab runs in your browser and talks to Hyperliquid's API directly. None needs funds or a
+      real key, and none can change anything on the exchange.
+    </p>
+  </header>
+  <ul class="labs">
+    {labs.map((lab) => (
+      <li>
+        {lab.live ? <a class="card" href={lab.href}><span class="eyebrow">{lab.track}</span><span class="title">{lab.title}</span><span class="what">{lab.what}</span><span class="tag ok">Live</span></a>
+          : <div class="card off"><span class="eyebrow">{lab.track}</span><span class="title">{lab.title}</span><span class="what">{lab.what}</span><span class="tag">Coming</span></div>}
+      </li>
+    ))}
+  </ul>
+</Base>
+
+<style>
+  .head { display: grid; gap: 12px; }
+  .lede { font-size: 1.1rem; line-height: 1.55; max-width: 64ch; }
+  .labs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .card { height: 100%; display: grid; gap: 8px; align-content: start; justify-items: start; padding: 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); color: var(--ink); text-decoration: none; }
+  a.card:hover { border-color: var(--accent); }
+  .card.off { color: var(--muted); }
+  .title { font: 700 1.15rem/1.25 var(--display); }
+  .what { font-size: 14.5px; color: var(--muted); }
+</style>

@@ -30,6 +30,8 @@ const tracks = defineCollection({
           label: z.string(),
           kind: z.enum(["lab", "workbench", "project", "guide"]),
           status: z.enum(["planned", "live"]).default("planned"),
+          /** Where the live lab or workbench is, on this site. */
+          href: z.string().startsWith("/").optional(),
         }),
       )
       .default([]),

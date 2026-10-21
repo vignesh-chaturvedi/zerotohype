@@ -7,6 +7,7 @@
   --muted: #5a6477;
   --rule: #d9dfe8;
   --accent: #2646c4;
+  --on-accent: #ffffff;
   --mvp: #9a5a00;
   --ok: #1c7449;
   --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
@@ -17,12 +18,12 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0e1219; --surface: #151b26; --sunk: #111722; --ink: #e4e8ef; --muted: #98a2b4;
-    --rule: #283142; --accent: #8fa6ff; --mvp: #e3a24e; --ok: #56c08c; color-scheme: dark;
+    --rule: #283142; --accent: #8fa6ff; --on-accent: #0e1219; --mvp: #e3a24e; --ok: #56c08c; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0e1219; --surface: #151b26; --sunk: #111722; --ink: #e4e8ef; --muted: #98a2b4;
-  --rule: #283142; --accent: #8fa6ff; --mvp: #e3a24e; --ok: #56c08c; color-scheme: dark;
+  --rule: #283142; --accent: #8fa6ff; --on-accent: #0e1219; --mvp: #e3a24e; --ok: #56c08c; color-scheme: dark;
 }
 
 * { box-sizing: border-box; }

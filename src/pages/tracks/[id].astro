@@ -54,7 +54,7 @@ const verified = t.verified?.toLocaleDateString("en-GB", { day: "numeric", month
         <ul>
           {t.build.map((b) => (
             <li>
-              {kindLabel[b.kind]}: {b.label}
+              {b.href && b.status === "live" ? <a href={b.href}>{kindLabel[b.kind]}: {b.label}</a> : <span>{kindLabel[b.kind]}: {b.label}</span>}
               {b.status === "planned" ? <span class="tag">Coming</span> : <span class="tag ok">Live</span>}
             </li>
           ))}
