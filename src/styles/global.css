@@ -1,0 +1,69 @@
+/* Zero to HYPE: one reading column for lessons, wider grids for the roadmap; numbers and API names in mono. */
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --sunk: #eaeef4;
+  --ink: #131a26;
+  --muted: #5a6477;
+  --rule: #d9dfe8;
+  --accent: #2646c4;
+  --mvp: #9a5a00;
+  --ok: #1c7449;
+  --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --data: "Martian Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1219; --surface: #151b26; --sunk: #111722; --ink: #e4e8ef; --muted: #98a2b4;
+    --rule: #283142; --accent: #8fa6ff; --mvp: #e3a24e; --ok: #56c08c; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1219; --surface: #151b26; --sunk: #111722; --ink: #e4e8ef; --muted: #98a2b4;
+  --rule: #283142; --accent: #8fa6ff; --mvp: #e3a24e; --ok: #56c08c; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 400 16px/1.65 var(--body); -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.1rem, 5.5vw, 3.2rem); letter-spacing: -0.025em; }
+h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); letter-spacing: -0.015em; }
+h3 { font-size: 1.12rem; }
+p { margin: 0; }
+code, kbd, pre, .mono { font-family: var(--data); }
+code { font-size: 0.82em; background: var(--sunk); padding: 0.06em 0.34em; border-radius: 4px; overflow-wrap: anywhere; }
+pre { font-size: 13px; line-height: 1.6; background: var(--sunk); border-radius: 10px; padding: 14px 16px; overflow-x: auto; margin: 0; }
+pre code { background: none; padding: 0; font-size: inherit; }
+img { max-width: 100%; }
+
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.eyebrow { font: 500 11.5px/1.4 var(--data); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+.tag { font: 500 10.5px/1 var(--data); letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 7px; border-radius: 5px; background: var(--sunk); color: var(--muted); white-space: nowrap; }
+.tag.mvp { color: var(--mvp); background: color-mix(in srgb, var(--mvp) 12%, var(--surface)); }
+.tag.ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, var(--surface)); }
+
+/* Lesson prose: Markdown rendered from the content collections. */
+.prose { display: grid; gap: 16px; max-width: 70ch; }
+.prose > * { margin: 0; }
+.prose h2 { margin-top: 18px; }
+.prose h3 { margin-top: 8px; }
+.prose ul, .prose ol { padding-left: 1.25em; display: grid; gap: 6px; }
+.prose table { border-collapse: collapse; width: 100%; font-size: 14.5px; display: block; overflow-x: auto; }
+.prose th, .prose td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.prose th { font-weight: 600; color: var(--muted); background: var(--sunk); }
+.prose blockquote { margin: 0; padding: 10px 16px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 8px 8px 0; color: var(--ink); }

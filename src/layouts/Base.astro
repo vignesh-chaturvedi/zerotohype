@@ -1,0 +1,72 @@
+---
+import "@fontsource/schibsted-grotesk/600.css";
+import "@fontsource/schibsted-grotesk/700.css";
+import "@fontsource/public-sans/400.css";
+import "@fontsource/public-sans/400-italic.css";
+import "@fontsource/public-sans/600.css";
+import "@fontsource/martian-mono/400.css";
+import "@fontsource/martian-mono/500.css";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const fullTitle = title === "Zero to HYPE" ? title : `${title} · Zero to HYPE`;
+const path = Astro.url.pathname;
+const nav = [
+  { href: "/", label: "Roadmap" },
+  { href: "/changelog/", label: "Changelog" },
+  { href: "/about/", label: "About" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+  </head>
+  <body>
+    <header class="site">
+      <div class="wrap bar">
+        <a class="mark" href="/">Zero to <span>HYPE</span></a>
+        <nav aria-label="Site">
+          {nav.map((item) => (
+            <a href={item.href} aria-current={path === item.href ? "page" : undefined}>{item.label}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <main class="wrap page">
+      <slot />
+    </main>
+    <footer class="wrap site-footer">
+      <p>
+        Zero to HYPE is an independent, open-source project and is not affiliated with Hyperliquid.
+        Code under MIT, content under CC BY 4.0. Facts are checked against the live API; each page
+        shows when.
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  header.site { border-bottom: 1px solid var(--rule); background: var(--surface); }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-block: 14px; }
+  .mark { font: 700 1.15rem/1 var(--display); color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+  .mark span { color: var(--accent); }
+  nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  nav a { font-size: 14.5px; color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 6px; }
+  nav a:hover { background: var(--sunk); color: var(--ink); }
+  nav a[aria-current="page"] { color: var(--ink); background: var(--sunk); }
+  .page { padding-block: 40px 72px; display: grid; gap: 48px; }
+  .site-footer { padding-block: 24px 40px; border-top: 1px solid var(--rule); font-size: 13.5px; color: var(--muted); }
+  .site-footer p { max-width: 80ch; }
+</style>
