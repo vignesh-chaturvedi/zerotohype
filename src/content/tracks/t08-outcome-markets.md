@@ -81,16 +81,16 @@ The template says "TWAP of {priceDescription}" and stops there. It doesn't say w
 
 | Venue | Settles on | Window | Venue settled after (median) | Match, Oct 8–17 |
 |---|---|---|---|---|
-| `out` | Mark price, sampled live | 60 s | 29 s | 2,784 of 2,788 |
-| `skew` | BTC trades, sampled live | 90 s | 48 s | 440 of 444 |
-| `txyz` | 1-minute candle closes | 300 s | 47 min (14 to 94) | 180 of 180 |
+| `out` | Mark price, sampled live | 60 s | 28 s | 2,784 of 2,788 |
+| `skew` | BTC trades, sampled live | 90 s | 51 s | 440 of 444 |
+| `txyz` | 1-minute candle closes | 300 s | 23 min (14 to 113) | 180 of 180 |
 
 What that taught us:
 
 - **Mark and trade prices have no public history.** To recompute those markets you have to record the WebSocket feed from before each window opens. Candles are public, but only the most recent 5,000.
 - **Skew's trade average is volume-weighted.** A time-weighted average of BTC trades missed 2 of Skew's markets after Oct 13. A volume-weighted one matched all 197.
 - **Some misses can't be helped.** All four of `out`'s misses were within 0.25 bp of the threshold. Sampling the mark about once a second can't separate cases that close.
-- **Settling fast is a real job.** `txyz` took 14 to 94 minutes. One of Outcome's `priceTouch` markets, oil reaching 100, touched at 00:16 UTC on Oct 17 and settled at 06:42 UTC. Both results were knowable within seconds.
+- **Settling fast is a real job.** `txyz` took 14 to 113 minutes. One of Outcome's `priceTouch` markets, oil reaching 100, touched at 00:16 UTC on Oct 17 and settled at 06:42 UTC. Both results were knowable within seconds.
 
 ## Running a venue
 
