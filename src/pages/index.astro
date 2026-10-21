@@ -61,6 +61,16 @@ const kindLabel = { lab: "Lab", workbench: "Workbench", project: "Project", guid
     ))}
   </section>
 
+  <section class="labs-teaser" aria-labelledby="labs-title">
+    <h2 id="labs-title">Try it in your browser</h2>
+    <p>Three labs run against Hyperliquid's API with no funds and no real keys.</p>
+    <ul>
+      <li><a href="/labs/sign-without-money/">Sign without money</a>: sign an action with a throwaway key and let the exchange check your encoding.</li>
+      <li><a href="/labs/funding/">Funding and mark price</a>: live prices for any perp, with the funding formula worked out.</li>
+      <li><a href="/labs/settlement/">Settlement explorer</a>: replay real HIP-4 settlements and see which average each venue uses.</li>
+    </ul>
+  </section>
+
   <section class="next">
     <h2>Stay current</h2>
     <p>
@@ -92,7 +102,8 @@ const kindLabel = { lab: "Lab", workbench: "Workbench", project: "Project", guid
   .summary { color: var(--muted); font-size: 15px; max-width: 72ch; }
   .meta { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 2px; }
   .count { font: 400 12.5px/1.4 var(--data); color: var(--muted); }
-  .next { display: grid; gap: 10px; }
+  .next, .labs-teaser { display: grid; gap: 10px; }
+  .labs-teaser ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; max-width: 72ch; }
   .next p { max-width: 64ch; }
   .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   @media (max-width: 560px) { .track { grid-template-columns: minmax(0, 1fr); gap: 6px; } }

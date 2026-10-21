@@ -20,3 +20,19 @@ The changelog job runs every 6 hours on GitHub Actions (`.github/workflows/chang
 ## Licences
 
 Code: MIT (`LICENSE`). Content in `src/content/`: CC BY 4.0 (`CONTENT-LICENSE.md`).
+
+## Deploy
+
+The site is static. On Cloudflare Pages, connect the repository and use:
+
+| Setting | Value |
+|---|---|
+| Build command | `pnpm build` |
+| Output directory | `dist` |
+| Environment variable | `NODE_VERSION=24` |
+
+`public/_headers` sets basic security headers. Turn on Cloudflare Web Analytics in the Pages project settings; it needs no code and sets no cookies.
+
+## Labs and data
+
+The labs in `src/pages/labs/` run in the browser and call Hyperliquid's API directly; they never ask for a real key. The settlement explorer reads `public/data/hip4-settlements.json`, built from [hyperkeeper](https://github.com/vignesh-chaturvedi/hyperkeeper)'s logs by `scripts/build-hip4-dataset.ts`. `scripts/probe-signing.ts` and `scripts/probe-bugs.ts` check the signing recipe against testnet.
