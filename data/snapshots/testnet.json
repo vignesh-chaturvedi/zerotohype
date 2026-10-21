@@ -1,0 +1,3955 @@
+{
+  "perps": {
+    "SOL": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "APT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ATOM": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "BTC": {
+      "maxLeverage": 40,
+      "delisted": false
+    },
+    "ETH": {
+      "maxLeverage": 25,
+      "delisted": false
+    },
+    "MATIC": {
+      "maxLeverage": 50,
+      "delisted": true
+    },
+    "BNB": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "AVAX": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "GMT": {
+      "maxLeverage": 2,
+      "delisted": false
+    },
+    "DYDX": {
+      "maxLeverage": 20,
+      "delisted": false
+    },
+    "APE": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "OP": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "kPEPE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ARB": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "RLB": {
+      "maxLeverage": 50,
+      "delisted": true
+    },
+    "WLD": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "HPOS": {
+      "maxLeverage": 50,
+      "delisted": true
+    },
+    "UNIBOT": {
+      "maxLeverage": 2,
+      "delisted": true
+    },
+    "COMP": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "FXS": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "MKR": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "AAVE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "SNX": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "RNDR": {
+      "maxLeverage": 20,
+      "delisted": true
+    },
+    "LDO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "SUI": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "INJ": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "STX": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "FTM": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "kSHIB": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "OX": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "FRIEND": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "ZRO": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "BLZ": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "BANANA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "FTT": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "TRB": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "CANTO": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "BIGTIME": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "NTRN": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "KAS": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "BLUR": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "TIA": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "BSV": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "TON": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "ADA": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "MINA": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "POLYX": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "GAS": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "AXL": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "PENDLE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "STG": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "FET": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "STRAX": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "NEAR": {
+      "maxLeverage": 20,
+      "delisted": false
+    },
+    "MEME": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ORDI": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "BADGER": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "NEO": {
+      "maxLeverage": 20,
+      "delisted": false
+    },
+    "ZEN": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "FIL": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "PYTH": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "RUNE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "SUSHI": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ILV": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "MAV": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "IMX": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "kBONK": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "NFTI": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "SUPER": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "USTC": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "JUP": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "JOE": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "GALA": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "RSR": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "kLUNC": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "JTO": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ACE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "WIF": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "CAKE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "PEOPLE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ENS": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ETC": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "XAI": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "MANTA": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "UMA": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "REQ": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "ONDO": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ALT": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ZETA": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "DYM": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "MAVIA": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "W": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PANDORA": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "AI": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "TAO": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "PIXEL": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "AR": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "TNSR": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "SAGA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MERL": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "HBAR": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "POPCAT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "OMNI": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "EIGEN": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "REZ": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "NOT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "TURBO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "IO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "BRETT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "ZK": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "BLAST": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "LISTA": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "MEW": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "RENDER": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "kDOGS": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "POL": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "CATI": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "CELO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "HMSTR": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "SCR": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "NEIROETH": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "kNEIRO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "GOAT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "MOODENG": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PURR": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "GRASS": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PNUT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "XLM": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "CHILLGUY": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "SAND": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "ALGO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "ICP": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "IOTA": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "VET": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "HYPE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ME": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MOVE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "VIRTUAL": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "PENGU": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "USUAL": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "FARTCOIN": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "AIXBT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "AI16Z": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "ZEREBRO": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "BIO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "SPX": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "GRIFFAIN": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "S": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "MORPHO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "TRUMP": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ANIME": {
+      "maxLeverage": 12,
+      "delisted": false
+    },
+    "MELANIA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "VINE": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "VVV": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "JELLYJELLY": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "JELLY": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "BERA": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "TST": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "LAYER": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "IP": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "OM": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "KAITO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "CHZ": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "NIL": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "PAXG": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "PROMPT": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "BABY": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "WCT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "HYPER": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ZORA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "INIT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "DOOD": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "DOGE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "LAUNCHCOIN": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "NXPC": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SOPH": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "RESOLV": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SYRUP": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PUMP": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "PROVE": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "YZY": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "XPL": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "WLFI": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "LINEA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SKY": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ASTER": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "AVNT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "STBL": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "0G": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "HEMI": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "APEX": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "2Z": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ZEC": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "MON": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "MET": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MEGA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "CC": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "AERO": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "STABLE": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "FOGO": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "LIT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "XMR": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "AXS": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "DASH": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "SKR": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "AZTEC": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "CHIP": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "GRAM": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "CASHCAT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PONS": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "USELESS": {
+      "maxLeverage": 5,
+      "delisted": false
+    }
+  },
+  "dexs": {
+    "test": {
+      "fullName": "test dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "unit": {
+      "fullName": "unit dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x2d2bce037fc7b1b8a94af488d01ec20bec8117db"
+        ]
+      }
+    },
+    "scam": {
+      "fullName": "Scam DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x6e86e8bee85cf425fd210e8c7e10dea882b77594"
+        ]
+      }
+    },
+    "felix": {
+      "fullName": "felix",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "volmex": {
+      "fullName": "volmex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "angry": {
+      "fullName": "angry",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "TOON": {
+      "fullName": "Platoon",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xa48fa7d5931e9974577096f68d627ed6b39259fc"
+        ]
+      }
+    },
+    "VOLMEX": {
+      "fullName": "Volmex Dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xcd46291b3965037c3a41d448ae692c3d46451b1d"
+        ]
+      }
+    },
+    "test21": {
+      "fullName": "test21",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x0d20d44fbd48752241a2b18979df2424e8a5f022"
+        ]
+      }
+    },
+    "pluto": {
+      "fullName": "pluto dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xaba2e511828df235e6df4cee48377b1d1e3a33ca"
+        ]
+      }
+    },
+    "zigg": {
+      "fullName": "zigg",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x86ee66fced16f3f078fea4d5994e51a9f803b1cd"
+        ]
+      }
+    },
+    "i<3fl": {
+      "fullName": "i love @frank_liquid",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xbf5f347f2e579dd6d32d827936144d9c0a16e3b3"
+        ]
+      }
+    },
+    "KNETIQ": {
+      "fullName": "Kinetiq Exchange",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x2c31fa13447014cda45c848c7c799af0fae91909"
+        ]
+      }
+    },
+    "knetiq": {
+      "fullName": "Kinetiq Exchange - KNTQ",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x2c31fa13447014cda45c848c7c799af0fae91909"
+        ]
+      }
+    },
+    "ddot": {
+      "fullName": "ddot link",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xdeccf6c523a98f70d98d99a83bb26f3c918ef96a"
+        ]
+      }
+    },
+    "venone": {
+      "fullName": "VentualsOne",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0xb26126e39214f9594802b59515f409479e202f3a"
+        ],
+        "setOracle": [
+          "0x89b9675a1dc24a7260a60b5c3ff1f81d501c6dce",
+          "0xcb4e2674a5db9a19dba5b2e782874d31d4b472fd"
+        ],
+        "setMarginTableIds": [
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ],
+        "setOpenInterestCaps": [
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ],
+        "setFundingMultipliers": [
+          "0x57ab9c9013979534f5634193b1d705519eefb51e",
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ]
+      }
+    },
+    "tstdex": {
+      "fullName": "New Coin",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xa9fc75f34c338f658bc0beaa57f14d675301185f"
+        ]
+      }
+    },
+    "vntls": {
+      "fullName": "Ventuals",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x89b9675a1dc24a7260a60b5c3ff1f81d501c6dce"
+        ],
+        "setMarginTableIds": [
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ],
+        "setOpenInterestCaps": [
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ],
+        "setFundingMultipliers": [
+          "0x57ab9c9013979534f5634193b1d705519eefb51e",
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ],
+        "setPerpAnnotation": [
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ]
+      }
+    },
+    "oracle": {
+      "fullName": "oracle test",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x6cd2ac4d673061f19d2a2d03bcc627a421ba33d5"
+        ]
+      }
+    },
+    "hb": {
+      "fullName": "hb test",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x6cd2ac4d673061f19d2a2d03bcc627a421ba33d5"
+        ]
+      }
+    },
+    "sports": {
+      "fullName": "Sports Player Perpetuals",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x0377c1e8d5135b6bebbfe58360bd24ffa6b2b41b"
+        ]
+      }
+    },
+    "aura": {
+      "fullName": "aura.money",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x58ace6f90b23268a276377b11ab5694b43a0aa82",
+          "0x951f016ca7d5ee00ff97321272fb01b823f69f7b"
+        ]
+      }
+    },
+    "hybet": {
+      "fullName": "hyperbet",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "orange": {
+      "fullName": "ORANGE",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x408bbad68a9287f6ee7458a63740df1e842fea5e"
+        ]
+      }
+    },
+    "sekai": {
+      "fullName": "Sekai Perp DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x6c12e9c4e9ce77bdd655e48c9572a72c8b235741"
+        ]
+      }
+    },
+    "flow": {
+      "fullName": "Flow DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xa99342e38375daea493f17a88c0677e4619cb503"
+        ]
+      }
+    },
+    "x": {
+      "fullName": "XYZ",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x87c55afc347af046e4642430b04dba90d9815783"
+        ],
+        "setOracle": [
+          "0x154dacd587c197c7a44892bd7015853b42dfea08",
+          "0x87c55afc347af046e4642430b04dba90d9815783"
+        ],
+        "haltTrading": [
+          "0x87c55afc347af046e4642430b04dba90d9815783"
+        ],
+        "setMarginTableIds": [
+          "0x87c55afc347af046e4642430b04dba90d9815783"
+        ],
+        "setOpenInterestCaps": [
+          "0x87c55afc347af046e4642430b04dba90d9815783"
+        ],
+        "setFundingMultipliers": [
+          "0x87c55afc347af046e4642430b04dba90d9815783"
+        ],
+        "setMarginModes": [
+          "0x87c55afc347af046e4642430b04dba90d9815783"
+        ]
+      }
+    },
+    "t": {
+      "fullName": "XYZ",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xe6777f219ccf1ad932f4c038621c120384a37d71"
+        ]
+      }
+    },
+    "sekaw": {
+      "fullName": "red dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x697b69b2b4242b9e59538cd95ac01698fce65b8d"
+        ]
+      }
+    },
+    "gpu": {
+      "fullName": "Global Compute Exchange",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x0fbd992d4523b04418873c13920f70428cc611b3"
+        ]
+      }
+    },
+    "qwerty": {
+      "fullName": "qwerty dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xe92d5afedaf9eab98a70b7b0118b7187c1292c5c"
+        ]
+      }
+    },
+    "merrli": {
+      "fullName": "merrli dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x03512489f464d8331c7aca2314415514c60d7f24"
+        ]
+      }
+    },
+    "dex": {
+      "fullName": "dex-full-name",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x187a265dc357c2e8d4681c300959893f9723a9d2"
+        ]
+      }
+    },
+    "olvb": {
+      "fullName": "onlyvibes",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x3fbcdb10bfaf61013a0704e078b2622ad502e11e"
+        ]
+      }
+    },
+    "nq": {
+      "fullName": "nq",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "fx": {
+      "fullName": "hyperfx",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x3c5db515cb0e118ec762eb46ec3bd6bfcfaab5c3"
+        ]
+      }
+    },
+    "nqz": {
+      "fullName": "nqz",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "btcx": {
+      "fullName": "BTC Perp Markets",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x649204c695edb98cad13de027f2c73dd8e8f4ba8"
+        ]
+      }
+    },
+    "woof": {
+      "fullName": "woof perpetuals",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x1445becd8e6973ab9b13bb4358f2b7662615475e"
+        ]
+      }
+    },
+    "shiok": {
+      "fullName": "Shiok Lah",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "z": {
+      "fullName": "XYZ",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x154dacd587c197c7a44892bd7015853b42dfea08"
+        ]
+      }
+    },
+    "hbtwo": {
+      "fullName": "Hyperbolic Finance 2",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xb89ca54070dd6e31cace090ae01dd2e3081cf974"
+        ]
+      }
+    },
+    "tndex": {
+      "fullName": "test new dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xa56bbb3ff66aab2741a5270175c7688b5366c571"
+        ]
+      }
+    },
+    "rrrrr": {
+      "fullName": "rrrrr",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x03512489f464d8331c7aca2314415514c60d7f24",
+          "0x671385775d65f645ef0fd7979b0de3bebf2da251",
+          "0x697b69b2b4242b9e59538cd95ac01698fce65b8d"
+        ]
+      }
+    },
+    "hbhb": {
+      "fullName": "Hyperbolic Finance 3",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x8d400a493585ab8bf5bbfac8ab5cfae370c8c3a1"
+        ]
+      }
+    },
+    "stocks": {
+      "fullName": "redstocks",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x697b69b2b4242b9e59538cd95ac01698fce65b8d"
+        ]
+      }
+    },
+    "nunchi": {
+      "fullName": "nunchi",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0xc50c4fe9f0a330507687c75fcf5ed16d6310a1c3"
+        ],
+        "setOracle": [
+          "0x2a1285253678490b28e81988c41147651fb420c3",
+          "0x897ee1987787a2cd302ea9d729e5c46ccd302afe"
+        ]
+      }
+    },
+    "sqtwr": {
+      "fullName": "Squaretower",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xe9988361331483c0788960e2773c4275581e4ae8"
+        ]
+      }
+    },
+    "y": {
+      "fullName": "XYZ",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xd5580680d1691471e9bec60af14010b81b6186ca"
+        ]
+      }
+    },
+    "hypodd": {
+      "fullName": "HyperOdd PEX",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x00bd4b173c01ae09b454c7f5f3c84d8fb4519113"
+        ]
+      }
+    },
+    "strat": {
+      "fullName": "Stratium Crypto DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xd77c6ad94901f67cd0c4c17be7253e373e1aeff5"
+        ]
+      }
+    },
+    "zdex": {
+      "fullName": "zdex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "crayon": {
+      "fullName": "crayon dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "walao": {
+      "fullName": "walao dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "slpy": {
+      "fullName": "sleepy dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "tsts": {
+      "fullName": "test dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x0e7a5e9e957312aa160b23c757e71bb9b94b1bb4"
+        ]
+      }
+    },
+    "mbx": {
+      "fullName": "A good dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "food": {
+      "fullName": "A food dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "meng": {
+      "fullName": "Meong meong meong",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "rawr": {
+      "fullName": "Rawr >w<",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "mmmg": {
+      "fullName": "Meong2",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "msdx": {
+      "fullName": "BTC Perp Markets",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x3aa7750c828479e3437bd03fc6ac0a452e35b910"
+        ]
+      }
+    },
+    "wrld": {
+      "fullName": "Hyperworld",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xd5369da9173cae9d8ac8edeecd4bd24c8fd2e790"
+        ]
+      }
+    },
+    "hodd": {
+      "fullName": "HyperOdd Leveraged Prediction Markets",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x278ece28d584e2b29b23b2c50b47e07874dd32da"
+        ]
+      }
+    },
+    "xyz": {
+      "fullName": "XYZ",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x9193f17e31212ffc03e1fc13cbdaa6d3555aafd3",
+          "0xa98b0314e17c436ffc3a27df28b85dae333ac792"
+        ],
+        "setOracle": [
+          "0x0000000000c7153b8c085618fb91cb1214092201"
+        ],
+        "haltTrading": [
+          "0xa98b0314e17c436ffc3a27df28b85dae333ac792"
+        ],
+        "setMarginTableIds": [
+          "0xa98b0314e17c436ffc3a27df28b85dae333ac792"
+        ],
+        "setOpenInterestCaps": [
+          "0x9193f17e31212ffc03e1fc13cbdaa6d3555aafd3",
+          "0xa98b0314e17c436ffc3a27df28b85dae333ac792"
+        ],
+        "setFundingMultipliers": [
+          "0x9193f17e31212ffc03e1fc13cbdaa6d3555aafd3",
+          "0xa98b0314e17c436ffc3a27df28b85dae333ac792"
+        ],
+        "setMarginModes": [
+          "0xa98b0314e17c436ffc3a27df28b85dae333ac792"
+        ],
+        "setFundingInterestRates": [
+          "0xa98b0314e17c436ffc3a27df28b85dae333ac792"
+        ],
+        "setPerpAnnotation": [
+          "0xa98b0314e17c436ffc3a27df28b85dae333ac792"
+        ]
+      }
+    },
+    "flx": {
+      "fullName": "flx",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setOracle": [
+          "0xb17ed4a35a2a90b3c9d56240bf7b04f85773f2b1",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "insertMarginTable": [
+          "0xb53aee3fd6c6fe0e885772afcac45098ecb2fc10",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setFeeRecipient": [
+          "0xb53aee3fd6c6fe0e885772afcac45098ecb2fc10",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "haltTrading": [
+          "0xb53aee3fd6c6fe0e885772afcac45098ecb2fc10",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setMarginTableIds": [
+          "0xb53aee3fd6c6fe0e885772afcac45098ecb2fc10",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setOpenInterestCaps": [
+          "0x7f71e5e31670a650c010399c7389b2593a9102cb",
+          "0xb53aee3fd6c6fe0e885772afcac45098ecb2fc10",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setFundingMultipliers": [
+          "0x7f71e5e31670a650c010399c7389b2593a9102cb",
+          "0xb53aee3fd6c6fe0e885772afcac45098ecb2fc10",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setMarginModes": [
+          "0x0634e614b30e6a711aa00893f80796879accc66c",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setDeployerFees": [
+          "0x0634e614b30e6a711aa00893f80796879accc66c",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setPerpAnnotation": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ]
+      }
+    },
+    "nmx": {
+      "fullName": "NM USDH DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x6b9891ed4bb1f034671f471667b1563bf7dc1327"
+        ]
+      }
+    },
+    "pyth": {
+      "fullName": "Pyth Network test 1",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xa67b36947149a7f2312bffc9d1c859bf12029986"
+        ]
+      }
+    },
+    "msda": {
+      "fullName": "MSD1 BTC Perp",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xef79196053c0ac0098357bd1de0471d0eb09f93a"
+        ]
+      }
+    },
+    "ho": {
+      "fullName": "HyperOdd Prediction Perps",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xa986ccc221ff13bb91b612d601b35fac3ceb1d65"
+        ]
+      }
+    },
+    "flsh": {
+      "fullName": "HyperFlash",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xef79196053c0ac0098357bd1de0471d0eb09f93a"
+        ]
+      }
+    },
+    "hyfl": {
+      "fullName": "HyperFlash",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xef79196053c0ac0098357bd1de0471d0eb09f93a"
+        ]
+      }
+    },
+    "csan": {
+      "fullName": "computeshield",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "sedx": {
+      "fullName": "sekai dex try",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x1e11d053eca86c24fed923d6048ef442cac82d49"
+        ]
+      }
+    },
+    "rbbt": {
+      "fullName": "Rabbit",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "rbte": {
+      "fullName": "RabbitE",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "demo": {
+      "fullName": "demo dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x4fe2e748884b25fcbb74adb8f88966c57a325aad"
+        ]
+      }
+    },
+    "flxn": {
+      "fullName": "flxn",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0xcee72ff7072ecf36d1084e6596f53018536f8eac"
+        ],
+        "setOracle": [
+          "0xc2811b586a30c53f8fccec9015d92682d0a0d07d"
+        ],
+        "insertMarginTable": [
+          "0xcee72ff7072ecf36d1084e6596f53018536f8eac"
+        ],
+        "haltTrading": [
+          "0xcee72ff7072ecf36d1084e6596f53018536f8eac"
+        ],
+        "setMarginTableIds": [
+          "0xcee72ff7072ecf36d1084e6596f53018536f8eac"
+        ],
+        "setOpenInterestCaps": [
+          "0xcee72ff7072ecf36d1084e6596f53018536f8eac"
+        ],
+        "setFundingMultipliers": [
+          "0xcee72ff7072ecf36d1084e6596f53018536f8eac",
+          "0xdf2796c881e2a4196a7e59bd8708b5e10e485fca"
+        ],
+        "setDeployerFees": [
+          "0xcee72ff7072ecf36d1084e6596f53018536f8eac"
+        ]
+      }
+    },
+    "bsx": {
+      "fullName": "BasisX dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x5c96042488f308ad361057b8d91bb5a5a908313d"
+        ]
+      }
+    },
+    "loh": {
+      "fullName": "Lohcrypto DEX by Tovkes",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x5c8045554aae07de9b0e009ac5a9c26e27638dad"
+        ]
+      }
+    },
+    "xvm": {
+      "fullName": "EXCHANGE VIRTUAL MACHINE",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x0000000000c7153b8c085618fb91cb1214092201",
+          "0x0fdae19ba2e38d5c0ef00837e9366eee62c3fab5"
+        ]
+      }
+    },
+    "dydx": {
+      "fullName": "NEXON DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x122ed97a3aa0034f0ef05d3f01e8e9d83e1f6e7d"
+        ]
+      }
+    },
+    "fzx": {
+      "fullName": "Felix Exchange",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xe495371cad3abb8fbdca3b1cddafc0f303901e0c"
+        ]
+      }
+    },
+    "abdc": {
+      "fullName": "America's Best Dance Crew",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x96a1b0ce2609bfade6908daea3f8c02512226d63"
+        ]
+      }
+    },
+    "fam": {
+      "fullName": "Famous Dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x32d12513ab62d4dc7143a0f6cb605752ace46822"
+        ]
+      }
+    },
+    "gato": {
+      "fullName": "EL GATO THE MF",
+      "oracleUpdater": null,
+      "grants": {
+        "setOpenInterestCaps": [
+          "0x426c3dad1de7e4b6fde4ee1d2daefb0589612c22"
+        ]
+      }
+    },
+    "bart": {
+      "fullName": "Bart Simpson Dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x04930c1f68e065869942967b70ef56cdd3ddda4c",
+          "0x7ec20995f0a681315d66fbedc016ea2c2ac7c78a",
+          "0xfb29bf58e7d0edaf4f6e1cbd68f79689d310ce8e"
+        ],
+        "haltTrading": [
+          "0x04930c1f68e065869942967b70ef56cdd3ddda4c",
+          "0x0c4b266e6818ab15d901394d9a7fa82be354fb56",
+          "0x97878e89e37d1c565af9213a49416585fdd17ca5"
+        ],
+        "setMarginTableIds": [
+          "0x04930c1f68e065869942967b70ef56cdd3ddda4c"
+        ],
+        "setOpenInterestCaps": [
+          "0x04930c1f68e065869942967b70ef56cdd3ddda4c"
+        ],
+        "setFundingMultipliers": [
+          "0x04930c1f68e065869942967b70ef56cdd3ddda4c"
+        ],
+        "setMarginModes": [
+          "0x04930c1f68e065869942967b70ef56cdd3ddda4c"
+        ],
+        "setFundingInterestRates": [
+          "0x6f4e99a0207fd20334b506c92bb572d422bbe587",
+          "0x7ec20995f0a681315d66fbedc016ea2c2ac7c78a"
+        ]
+      }
+    },
+    "sss": {
+      "fullName": "SSS",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xb75f5d1e8595e351dd6ef25d27fdad538dd98e71"
+        ]
+      }
+    },
+    "owal": {
+      "fullName": "OWALA",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x96a1b0ce2609bfade6908daea3f8c02512226d63"
+        ]
+      }
+    },
+    "gg": {
+      "fullName": "hyperliquid blockchain is my bitch",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "fdnk": {
+      "fullName": "FDNK",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x89b9675a1dc24a7260a60b5c3ff1f81d501c6dce"
+        ]
+      }
+    },
+    "trve": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "odd": {
+      "fullName": "HyperOdd Prediction Perps",
+      "oracleUpdater": "0xc38eed75325c3409c5a2a40b736b81b7f9f94661",
+      "grants": {
+        "setOracle": [
+          "0xc38eed75325c3409c5a2a40b736b81b7f9f94661"
+        ]
+      }
+    },
+    "trv": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "qwrn": {
+      "fullName": "Qwrn",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x89b9675a1dc24a7260a60b5c3ff1f81d501c6dce"
+        ],
+        "setMarginTableIds": [
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ],
+        "setOpenInterestCaps": [
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ],
+        "setFundingMultipliers": [
+          "0x833e2df6e49cd0b6fe5371f704bb8e08fdf0afe1"
+        ]
+      }
+    },
+    "zzzz": {
+      "fullName": "Felix Exchange",
+      "oracleUpdater": "0x94757f8dcb4bf73b850195660e959d1105cfedd5",
+      "grants": {
+        "registerAsset": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setOracle": [
+          "0x94757f8dcb4bf73b850195660e959d1105cfedd5",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "insertMarginTable": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setFeeRecipient": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "haltTrading": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setMarginTableIds": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setOpenInterestCaps": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setFundingMultipliers": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ]
+      }
+    },
+    "gass": {
+      "fullName": "gass Exchange",
+      "oracleUpdater": "0xa9cf5f5caef388f841b7f1b39f4c8e7dd8dc11f5",
+      "grants": {
+        "setOracle": [
+          "0xa9cf5f5caef388f841b7f1b39f4c8e7dd8dc11f5",
+          "0xadb21c8c8e2552722af7f39b0289f911e9c112b5"
+        ]
+      }
+    },
+    "whtm": {
+      "fullName": "Whtm",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "rip": {
+      "fullName": "RIP",
+      "oracleUpdater": "0xa5fd065f83147abaf1d39b5d57d16659d87f9780",
+      "grants": {
+        "registerAsset": [
+          "0x6c94700aa91824ebd5982b029179848cc26052dc"
+        ],
+        "setOracle": [
+          "0x94a63d216ba3d94792ed743240ddb6507ccdfb9a",
+          "0x9be04c076cfb2b5e82a1349c54e96d581e9e9da2",
+          "0xa5fd065f83147abaf1d39b5d57d16659d87f9780"
+        ],
+        "insertMarginTable": [
+          "0x6c94700aa91824ebd5982b029179848cc26052dc"
+        ],
+        "setFeeRecipient": [
+          "0x6c94700aa91824ebd5982b029179848cc26052dc"
+        ],
+        "haltTrading": [
+          "0x6c94700aa91824ebd5982b029179848cc26052dc"
+        ],
+        "setMarginTableIds": [
+          "0x6c94700aa91824ebd5982b029179848cc26052dc"
+        ],
+        "setOpenInterestCaps": [
+          "0x6c94700aa91824ebd5982b029179848cc26052dc"
+        ],
+        "setFundingMultipliers": [
+          "0x6c94700aa91824ebd5982b029179848cc26052dc"
+        ],
+        "setMarginModes": [
+          "0x6c94700aa91824ebd5982b029179848cc26052dc"
+        ]
+      }
+    },
+    "sand": {
+      "fullName": "Dune Sand DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xd222e9eb048d6177e585de7e54cc4c7f35a20b09"
+        ]
+      }
+    },
+    "hmax": {
+      "fullName": "hypermax",
+      "oracleUpdater": "0xd9b97911228021e54ede5aa7a58dbb4ec63883da",
+      "grants": {
+        "setOracle": [
+          "0xd9b97911228021e54ede5aa7a58dbb4ec63883da"
+        ]
+      }
+    },
+    "slob": {
+      "fullName": "she slob on my blob till i hyperliquid",
+      "oracleUpdater": "0x97878e89e37d1c565af9213a49416585fdd17ca5",
+      "grants": {
+        "registerAsset": [
+          "0x672851820440b717647e29b6b495e015b7eb1702"
+        ],
+        "setOracle": [
+          "0x0eda5eac8f4c1f225e59fd6f23bdbd8097876a1e",
+          "0x442b4bf7f986aea79ec4af9daabb793d839ee028",
+          "0x97878e89e37d1c565af9213a49416585fdd17ca5"
+        ],
+        "haltTrading": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ]
+      }
+    },
+    "hyfi": {
+      "fullName": "HYFI",
+      "oracleUpdater": "0x86d3ee9ff0983bc33b93cc8983371a500f873446",
+      "grants": {
+        "setOracle": [
+          "0x86d3ee9ff0983bc33b93cc8983371a500f873446"
+        ]
+      }
+    },
+    "str": {
+      "fullName": "Stratium DEX",
+      "oracleUpdater": "0xae8f7cbfae2061834f4bd716ed44f7654c6b2795",
+      "grants": {
+        "setOracle": [
+          "0x897ee1987787a2cd302ea9d729e5c46ccd302afe",
+          "0xae8f7cbfae2061834f4bd716ed44f7654c6b2795"
+        ]
+      }
+    },
+    "trov": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "erez": {
+      "fullName": "Erez",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x89b9675a1dc24a7260a60b5c3ff1f81d501c6dce"
+        ]
+      }
+    },
+    "paef": {
+      "fullName": "Paef",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x89b9675a1dc24a7260a60b5c3ff1f81d501c6dce"
+        ]
+      }
+    },
+    "mcd": {
+      "fullName": "Old MacDonald's Farm",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "birb": {
+      "fullName": "BIRB BIRB BIRB BIRB BIRB",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "plsh": {
+      "fullName": "My beloved plushies",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "cnst": {
+      "fullName": "A constant price DEX",
+      "oracleUpdater": "0x9a7b865e7a34078b7537cb48db89c65095908ad3",
+      "grants": {
+        "registerAsset": [
+          "0xb4faa779a557d144f2573e173927783c3418cf1c"
+        ],
+        "setOracle": [
+          "0x9a7b865e7a34078b7537cb48db89c65095908ad3",
+          "0xb4faa779a557d144f2573e173927783c3418cf1c"
+        ],
+        "haltTrading": [
+          "0xb4faa779a557d144f2573e173927783c3418cf1c"
+        ],
+        "setMarginTableIds": [
+          "0xb4faa779a557d144f2573e173927783c3418cf1c"
+        ],
+        "setOpenInterestCaps": [
+          "0xb4faa779a557d144f2573e173927783c3418cf1c"
+        ],
+        "setFundingMultipliers": [
+          "0xb4faa779a557d144f2573e173927783c3418cf1c"
+        ],
+        "setDeployerFees": [
+          "0xb4faa779a557d144f2573e173927783c3418cf1c"
+        ]
+      }
+    },
+    "trvv": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "trvo": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "tvr": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "torv": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "tvro": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "tvor": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "hyna": {
+      "fullName": "HyENA",
+      "oracleUpdater": "0xf429f5f36d604e74a4a3457b3f7a3a93ee25ba95",
+      "grants": {
+        "setOracle": [
+          "0xf429f5f36d604e74a4a3457b3f7a3a93ee25ba95"
+        ]
+      }
+    },
+    "tdex": {
+      "fullName": "T Dex",
+      "oracleUpdater": "0x86afb7a9b93e0878a7c77f20dec859736afaebb3",
+      "grants": {
+        "setOracle": [
+          "0x86afb7a9b93e0878a7c77f20dec859736afaebb3"
+        ]
+      }
+    },
+    "neo": {
+      "fullName": "HYPERneobank",
+      "oracleUpdater": "0x0fa2b70508ce2921b69667c471bf7b6cc1565cc5",
+      "grants": {
+        "setOracle": [
+          "0x0fa2b70508ce2921b69667c471bf7b6cc1565cc5"
+        ]
+      }
+    },
+    "bhpx": {
+      "fullName": "Ben Test HIP3 DEX",
+      "oracleUpdater": "0x4a74e79738009711a6ddb6653614d43ba9f431b9",
+      "grants": {
+        "setOracle": [
+          "0x4a74e79738009711a6ddb6653614d43ba9f431b9",
+          "0xa6fd5f048bb0d8b155797b52ecff6201d3c04dca"
+        ]
+      }
+    },
+    "yldx": {
+      "fullName": "SUSDE Perpetual Exchange",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "dpro": {
+      "fullName": "dpro dex",
+      "oracleUpdater": "0x870a62a5ea54477de889d00e74026d5d1d9732fe",
+      "grants": {
+        "setOracle": [
+          "0x870a62a5ea54477de889d00e74026d5d1d9732fe"
+        ]
+      }
+    },
+    "wa": {
+      "fullName": "wa:GDR Test DEX",
+      "oracleUpdater": "0x47515db2eab01758c740ab220352a34b8d5a3826",
+      "grants": {
+        "setOracle": [
+          "0x47515db2eab01758c740ab220352a34b8d5a3826"
+        ]
+      }
+    },
+    "org": {
+      "fullName": "org dex",
+      "oracleUpdater": "0xf5e2c3905c402ea494e71248c6c75338b9098cf6",
+      "grants": {
+        "setOracle": [
+          "0xf5e2c3905c402ea494e71248c6c75338b9098cf6"
+        ]
+      }
+    },
+    "hfx": {
+      "fullName": "HyperFX Perpetual DEX",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "fxx": {
+      "fullName": "hyperfx",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "pmt": {
+      "fullName": "pmt",
+      "oracleUpdater": "0x0a1aa3a92d99a3ab3c0e5e89e1de5ec1c90aa347",
+      "grants": {
+        "setOracle": [
+          "0x0a1aa3a92d99a3ab3c0e5e89e1de5ec1c90aa347"
+        ]
+      }
+    },
+    "trva": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "trvb": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "perp": {
+      "fullName": "Perpetuals",
+      "oracleUpdater": "0xdae30b59439fd45baff5326025b649d07f3ecf6a",
+      "grants": {
+        "setOracle": [
+          "0xdae30b59439fd45baff5326025b649d07f3ecf6a"
+        ]
+      }
+    },
+    "elxl": {
+      "fullName": "Elexial Perpetuals Testnet",
+      "oracleUpdater": "0xd0860d3ec6a01554e7c53125daa363a07716e9fe",
+      "grants": {
+        "setOracle": [
+          "0xd0860d3ec6a01554e7c53125daa363a07716e9fe"
+        ]
+      }
+    },
+    "ddd": {
+      "fullName": "d mak",
+      "oracleUpdater": "0x389d732f04bc9d65b81d48614440e89229ba8ec1",
+      "grants": {
+        "setOracle": [
+          "0x389d732f04bc9d65b81d48614440e89229ba8ec1"
+        ]
+      }
+    },
+    "trvc": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "brd": {
+      "fullName": "uncrustable",
+      "oracleUpdater": "0xd2c4fe047d8e9719daa6c07283a671531cc507f4",
+      "grants": {
+        "setOracle": [
+          "0xd2c4fe047d8e9719daa6c07283a671531cc507f4"
+        ]
+      }
+    },
+    "axx": {
+      "fullName": "axtra work",
+      "oracleUpdater": "0xf989bfbafdcbd09631ad348964eafd666fbabd71",
+      "grants": {
+        "setOracle": [
+          "0xf989bfbafdcbd09631ad348964eafd666fbabd71"
+        ]
+      }
+    },
+    "ddex": {
+      "fullName": "urwelcome",
+      "oracleUpdater": "0x46f23652bd6a76842676fe74a18f40b40d8333a3",
+      "grants": {
+        "setOracle": [
+          "0x46f23652bd6a76842676fe74a18f40b40d8333a3"
+        ]
+      }
+    },
+    "ab": {
+      "fullName": "grrr",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "etft": {
+      "fullName": "ETF Perpetuals Exchange",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "llll": {
+      "fullName": "lllm",
+      "oracleUpdater": "0xf989bfbafdcbd09631ad348964eafd666fbabd71",
+      "grants": {
+        "setOracle": [
+          "0xf989bfbafdcbd09631ad348964eafd666fbabd71"
+        ]
+      }
+    },
+    "nuts": {
+      "fullName": "big ol knutz",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x798b026878603494176edb7aea2c23935a6b166f"
+        ],
+        "setOracle": [
+          "0x798b026878603494176edb7aea2c23935a6b166f"
+        ]
+      }
+    },
+    "jdo": {
+      "fullName": "jdo",
+      "oracleUpdater": "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b",
+      "grants": {
+        "setOracle": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ]
+      }
+    },
+    "otcm": {
+      "fullName": "Outcome Dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xd222e9eb048d6177e585de7e54cc4c7f35a20b09"
+        ]
+      }
+    },
+    "xmas": {
+      "fullName": "xmas dex",
+      "oracleUpdater": "0x2d8563ff2f29fca1b75af16a4eb9eb24baba034d",
+      "grants": {
+        "setOracle": [
+          "0x2d8563ff2f29fca1b75af16a4eb9eb24baba034d"
+        ]
+      }
+    },
+    "rub": {
+      "fullName": "ETF Perpetuals Exchange",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "avtr": {
+      "fullName": "Avatar: Fire and Ash",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "wgts": {
+      "fullName": "wgts",
+      "oracleUpdater": "0x1c7685f1aff576ee874edb6d3b04fa45f5584670",
+      "grants": {
+        "registerAsset": [
+          "0x1e11d053eca86c24fed923d6048ef442cac82d49",
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "setOracle": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "haltTrading": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "setMarginTableIds": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "setDeployerFees": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ]
+      }
+    },
+    "vrse": {
+      "fullName": "verse dex",
+      "oracleUpdater": "0x28dcaa58f3eddf50697f7bc9acf874155480deef",
+      "grants": {
+        "setOracle": [
+          "0x0168b311da080004808b931d1fb8db96e88fc21b",
+          "0x28dcaa58f3eddf50697f7bc9acf874155480deef",
+          "0x98659227c5e2951521988ffffb416aa60d95d6c9"
+        ]
+      }
+    },
+    "gst": {
+      "fullName": "geist",
+      "oracleUpdater": "0x7743878a1b845dca5c6202f899ca3b22fa1ce28e",
+      "grants": {
+        "setOracle": [
+          "0x7743878a1b845dca5c6202f899ca3b22fa1ce28e",
+          "0xccb8d6006dd80d530d85eaae3548f4cd2283acb1"
+        ]
+      }
+    },
+    "otc": {
+      "fullName": "The Outcome Dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x55091631e94c92fb6a0c615e844fdc3244e6acfb"
+        ]
+      }
+    },
+    "bee": {
+      "fullName": "Bee Exchange",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x1395bf7ff0a41e99ca7aa0a1e394abaf2f8897eb"
+        ]
+      }
+    },
+    "trvd": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "unc": {
+      "fullName": "unc Exchange",
+      "oracleUpdater": "0x89374822b92babc32c3217f84ba21f1a723b49f0",
+      "grants": {
+        "setOracle": [
+          "0x89374822b92babc32c3217f84ba21f1a723b49f0",
+          "0xad903ac66f2e1b0d01f7579be471d4d2dea4007b"
+        ]
+      }
+    },
+    "dddd": {
+      "fullName": "D D D",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x2cb0dc3ac9a528527db7cc9210b9d4e3c7f68e19"
+        ],
+        "setOracle": [
+          "0xa38b734767c8a477cd86075ee1e73d48bf96e3b6"
+        ],
+        "haltTrading": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginTableIds": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setOpenInterestCaps": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingInterestRates": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ]
+      }
+    },
+    "dxn": {
+      "fullName": "dex1",
+      "oracleUpdater": "0xbb2f38dfa5edbdb022b61a16b944f03ff8b9d474",
+      "grants": {
+        "setOracle": [
+          "0xbb2f38dfa5edbdb022b61a16b944f03ff8b9d474"
+        ]
+      }
+    },
+    "egrl": {
+      "fullName": "egirl excellence",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "haltTrading": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "setFundingMultipliers": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "setMarginModes": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ]
+      }
+    },
+    "nyc": {
+      "fullName": "fuhgeddaboudit",
+      "oracleUpdater": "0xeb028e6d802237b411a3980f55aea0498eaa07d0",
+      "grants": {
+        "registerAsset": [
+          "0x252537940740629ae6c83f6c5f1459c2f8f6eb3e",
+          "0x2b56c3a6429d96433812697a9070d3194fc6de08"
+        ],
+        "setOracle": [
+          "0xeb028e6d802237b411a3980f55aea0498eaa07d0"
+        ]
+      }
+    },
+    "bmx": {
+      "fullName": "bmx",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x8d1c2249a1a61747cd9954250ed693c45a6302c5",
+          "0x94a63d216ba3d94792ed743240ddb6507ccdfb9a",
+          "0x9be04c076cfb2b5e82a1349c54e96d581e9e9da2"
+        ],
+        "insertMarginTable": [
+          "0x8d1c2249a1a61747cd9954250ed693c45a6302c5"
+        ],
+        "haltTrading": [
+          "0x8d1c2249a1a61747cd9954250ed693c45a6302c5"
+        ],
+        "setMarginTableIds": [
+          "0x8d1c2249a1a61747cd9954250ed693c45a6302c5"
+        ],
+        "setOpenInterestCaps": [
+          "0x8d1c2249a1a61747cd9954250ed693c45a6302c5"
+        ],
+        "setFundingMultipliers": [
+          "0x8d1c2249a1a61747cd9954250ed693c45a6302c5",
+          "0x915b4e76caa1d2e6be257633d0db59b6a39f5fbd",
+          "0xbd7abbaedd3850bb158ab2d707c369b0d39ef67c"
+        ],
+        "setMarginModes": [
+          "0x8d1c2249a1a61747cd9954250ed693c45a6302c5"
+        ],
+        "setFundingInterestRates": [
+          "0x8d1c2249a1a61747cd9954250ed693c45a6302c5"
+        ],
+        "setPerpAnnotation": [
+          "0x8d1c2249a1a61747cd9954250ed693c45a6302c5"
+        ]
+      }
+    },
+    "purr": {
+      "fullName": "hypurr excellence",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "vdex": {
+      "fullName": "vdex",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x42a4656e3fbad2dcd4c42fff22dc16b9df1576fc"
+        ],
+        "setOracle": [
+          "0x42a4656e3fbad2dcd4c42fff22dc16b9df1576fc"
+        ],
+        "insertMarginTable": [
+          "0x42a4656e3fbad2dcd4c42fff22dc16b9df1576fc"
+        ],
+        "haltTrading": [
+          "0x42a4656e3fbad2dcd4c42fff22dc16b9df1576fc"
+        ],
+        "setOpenInterestCaps": [
+          "0x42a4656e3fbad2dcd4c42fff22dc16b9df1576fc"
+        ]
+      }
+    },
+    "narr": {
+      "fullName": "Hyper Narrative",
+      "oracleUpdater": "0x418a1677d1da9bcfa6d042fdc617218d6cd5d187",
+      "grants": {
+        "setOracle": [
+          "0x418a1677d1da9bcfa6d042fdc617218d6cd5d187"
+        ]
+      }
+    },
+    "abcd": {
+      "fullName": "abcd dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xade57a27ddf7e671d712b07923a6e7101f5db371"
+        ]
+      }
+    },
+    "mox": {
+      "fullName": "modex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "angl": {
+      "fullName": "angelic dex",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "setOracle": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "setOpenInterestCaps": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ],
+        "setFundingMultipliers": [
+          "0x446848ebbeaffcd2f680ea0ad5e6f9b9544c4b3b"
+        ]
+      }
+    },
+    "trvf": {
+      "fullName": "Trove",
+      "oracleUpdater": "0xec6c68168d9fd51bb078acc74722aeff14db220b",
+      "grants": {
+        "setOracle": [
+          "0xec6c68168d9fd51bb078acc74722aeff14db220b"
+        ]
+      }
+    },
+    "hnb": {
+      "fullName": "HYPER Neobank",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ggwp": {
+      "fullName": "gigadex",
+      "oracleUpdater": "0xebfe9646dd5a4841d4a58a61a3a43550859df966",
+      "grants": {
+        "registerAsset": [
+          "0xebfe9646dd5a4841d4a58a61a3a43550859df966",
+          "0xfefefefefefefefefefefefefefefefefefefefe"
+        ],
+        "setOracle": [
+          "0xfefefefefefefefefefefefefefefefefefefefe"
+        ],
+        "haltTrading": [
+          "0xfefefefefefefefefefefefefefefefefefefefe"
+        ],
+        "setFundingMultipliers": [
+          "0xfefefefefefefefefefefefefefefefefefefefe"
+        ],
+        "setMarginModes": [
+          "0xfefefefefefefefefefefefefefefefefefefefe"
+        ]
+      }
+    },
+    "plat": {
+      "fullName": "platypus",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "orma": {
+      "fullName": "orma ORMA",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ormb": {
+      "fullName": "ormb ORMB",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ormc": {
+      "fullName": "ormc ORMC",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ormd": {
+      "fullName": "ormd ORMD",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "orme": {
+      "fullName": "orme ORME",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ormf": {
+      "fullName": "ormf ORMF",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ormg": {
+      "fullName": "ormg ORMG",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ormh": {
+      "fullName": "ormh ORMH",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "tngs": {
+      "fullName": "Tings",
+      "oracleUpdater": "0xc5f7318bcadce90801ea22aa65e655b1d0f3e37e",
+      "grants": {
+        "setOracle": [
+          "0xc5f7318bcadce90801ea22aa65e655b1d0f3e37e"
+        ]
+      }
+    },
+    "ormi": {
+      "fullName": "ormi dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "brnt": {
+      "fullName": "Brainrot DEX",
+      "oracleUpdater": "0xd7a0916a054a4ef97e35f9e28438de50efdbac30",
+      "grants": {
+        "setOracle": [
+          "0xd7a0916a054a4ef97e35f9e28438de50efdbac30"
+        ],
+        "haltTrading": [
+          "0x02824b7869e3c4630b76a3037ad1388efabeb218"
+        ]
+      }
+    },
+    "yex": {
+      "fullName": "Nunchi YEX",
+      "oracleUpdater": "0x2a1285253678490b28e81988c41147651fb420c3",
+      "grants": {
+        "setOracle": [
+          "0x2a1285253678490b28e81988c41147651fb420c3",
+          "0x897ee1987787a2cd302ea9d729e5c46ccd302afe"
+        ]
+      }
+    },
+    "ez": {
+      "fullName": "EZSUSD",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x44e9d0a3a3754fb1b554d22bcb4e82d376d49007"
+        ]
+      }
+    },
+    "rbit": {
+      "fullName": "BTC Binance-Bybit Spot Spread",
+      "oracleUpdater": "0xdd7832281562b3e43aeddc5457fe7563c943975a",
+      "grants": {
+        "setOracle": [
+          "0xdd7832281562b3e43aeddc5457fe7563c943975a"
+        ]
+      }
+    },
+    "ysh": {
+      "fullName": "Stratium Crypto DEX",
+      "oracleUpdater": "0xae8f7cbfae2061834f4bd716ed44f7654c6b2795",
+      "grants": {
+        "setOracle": [
+          "0xae8f7cbfae2061834f4bd716ed44f7654c6b2795"
+        ]
+      }
+    },
+    "moo": {
+      "fullName": "moomoo",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "guac": {
+      "fullName": "guac Exchange",
+      "oracleUpdater": "0xedd8614b19e9af152525d7f191ea65d53eb5f7fb",
+      "grants": {
+        "setOracle": [
+          "0x6101f62bec41fa810808a0012a3ccf7ff182f204",
+          "0xedd8614b19e9af152525d7f191ea65d53eb5f7fb"
+        ]
+      }
+    },
+    "osrs": {
+      "fullName": "OSRS Test Dex",
+      "oracleUpdater": "0x9f168f1d6dae2c5ffc9e0a339c58a006e4d3eef1",
+      "grants": {
+        "setOracle": [
+          "0x764ed9d59c91a2c653fd50c43585917366244335",
+          "0x9f168f1d6dae2c5ffc9e0a339c58a006e4d3eef1",
+          "0xa6fd5f048bb0d8b155797b52ecff6201d3c04dca"
+        ],
+        "setFundingInterestRates": [
+          "0xa6fd5f048bb0d8b155797b52ecff6201d3c04dca"
+        ]
+      }
+    },
+    "moom": {
+      "fullName": "moomoo",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "idx": {
+      "fullName": "index perps",
+      "oracleUpdater": "0x47978c20437e2ea97a042451f67e2e91a0bfd7fb",
+      "grants": {
+        "setOracle": [
+          "0x1e063ebb67ad2d306d8aef560ace1fb44e4cc1a4",
+          "0x47978c20437e2ea97a042451f67e2e91a0bfd7fb",
+          "0xbf0d8abffe63384a9fb5f3e935d64d2cf9a43f0c"
+        ],
+        "haltTrading": [
+          "0x1e063ebb67ad2d306d8aef560ace1fb44e4cc1a4",
+          "0xbf0d8abffe63384a9fb5f3e935d64d2cf9a43f0c"
+        ]
+      }
+    },
+    "scpe": {
+      "fullName": "Scape Exchange",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x2bfc82d21f77616f4f48a36888c4120e5533ed45",
+          "0x9c2a202cfe7ee9c1e5d8b8505400509eff6e621f"
+        ]
+      }
+    },
+    "mag": {
+      "fullName": "Magnitude",
+      "oracleUpdater": "0x7813afc5e65ef28ac865dcf83ef42d74fa903cce",
+      "grants": {
+        "registerAsset": [
+          "0xb4e713b2fdceb2319f236390911d702cb39ad6d8",
+          "0xf13b0b2511099222d84a3a33d6fbb4963a9b3d4f"
+        ],
+        "setOracle": [
+          "0x7813afc5e65ef28ac865dcf83ef42d74fa903cce",
+          "0xb4e713b2fdceb2319f236390911d702cb39ad6d8",
+          "0xf13b0b2511099222d84a3a33d6fbb4963a9b3d4f"
+        ]
+      }
+    },
+    "frce": {
+      "fullName": "Force",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "setOracle": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63",
+          "0x679688138d242a5e3e4ff70ef93dd9b859ddc075"
+        ],
+        "insertMarginTable": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "setFeeRecipient": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "haltTrading": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "setMarginTableIds": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "setOpenInterestCaps": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "setFundingMultipliers": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "setMarginModes": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "setDeployerFees": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "setFundingInterestRates": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "disableDex": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ],
+        "setPerpAnnotation": [
+          "0x0283ca7d25a6bb8dd7d4e3d39408b6137248bc63"
+        ]
+      }
+    },
+    "hodx": {
+      "fullName": "HyperOdd Perps",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "yoyo": {
+      "fullName": "yoyo dex",
+      "oracleUpdater": "0xa4c0ccdbc49638b5e9ad2151bdaa36136cae3906",
+      "grants": {
+        "setOracle": [
+          "0x0309f757cae2bf91f4c15d6b70f560d4e6b371f2",
+          "0xa4c0ccdbc49638b5e9ad2151bdaa36136cae3906",
+          "0xb7a5cd7b6d059c494f2fc8077cca99809b54942e"
+        ]
+      }
+    },
+    "cmdt": {
+      "fullName": "CMDT Water Rights",
+      "oracleUpdater": "0x6a91f7b24f5c6de6ac88779998ba54ee9fd093ba",
+      "grants": {
+        "setOracle": [
+          "0x6a91f7b24f5c6de6ac88779998ba54ee9fd093ba"
+        ]
+      }
+    },
+    "cmda": {
+      "fullName": "CMDT Water Rights",
+      "oracleUpdater": "0x6a91f7b24f5c6de6ac88779998ba54ee9fd093ba",
+      "grants": {
+        "setOracle": [
+          "0x6a91f7b24f5c6de6ac88779998ba54ee9fd093ba"
+        ]
+      }
+    },
+    "xoxo": {
+      "fullName": "xoxo",
+      "oracleUpdater": "0x7e2c255d047a7a4de9dea0009997ccb151f3276b",
+      "grants": {
+        "setOracle": [
+          "0x7e2c255d047a7a4de9dea0009997ccb151f3276b"
+        ]
+      }
+    },
+    "idxx": {
+      "fullName": "index perps",
+      "oracleUpdater": "0x1ec184a213edf1705ca1a3299349404249472e44",
+      "grants": {
+        "setOracle": [
+          "0x1ec184a213edf1705ca1a3299349404249472e44"
+        ]
+      }
+    },
+    "cmdb": {
+      "fullName": "CMDT Water Rights",
+      "oracleUpdater": "0x6a91f7b24f5c6de6ac88779998ba54ee9fd093ba",
+      "grants": {
+        "setOracle": [
+          "0x6a91f7b24f5c6de6ac88779998ba54ee9fd093ba"
+        ]
+      }
+    },
+    "ycl": {
+      "fullName": "yCL WTI Oil Funding Rate Exchange",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ohtn": {
+      "fullName": "Ohtani Card Index",
+      "oracleUpdater": "0x61e7e67c06f2d58b52daded8279b9212d6d053ab",
+      "grants": {
+        "setOracle": [
+          "0x61e7e67c06f2d58b52daded8279b9212d6d053ab"
+        ]
+      }
+    },
+    "zktx": {
+      "fullName": "ZK Test Exchange",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x25fcfb04f6b45ffb6240951f322ad16357d8bcf7",
+          "0x30ebaf05f6602190f9f53e95a4c0d20d90f8aedb",
+          "0x82dfa1c1a735989aced3bd25222e2b230ca4beb9"
+        ],
+        "setOracle": [
+          "0x25fcfb04f6b45ffb6240951f322ad16357d8bcf7",
+          "0x82dfa1c1a735989aced3bd25222e2b230ca4beb9"
+        ],
+        "setFundingMultipliers": [
+          "0x450434693f2037f1278f11b0b9f2acc38896977e"
+        ],
+        "setDeployerFees": [
+          "0x450434693f2037f1278f11b0b9f2acc38896977e"
+        ],
+        "setFundingInterestRates": [
+          "0x450434693f2037f1278f11b0b9f2acc38896977e"
+        ]
+      }
+    },
+    "soci": {
+      "fullName": "Ohtani Card Index",
+      "oracleUpdater": "0x6deaaa1c3225286c62e3998a26e244f855b9cf2f",
+      "grants": {
+        "setOracle": [
+          "0x6deaaa1c3225286c62e3998a26e244f855b9cf2f"
+        ]
+      }
+    },
+    "otni": {
+      "fullName": "Ohtani Card Index",
+      "oracleUpdater": "0x77fb76f3385d6300bd80e3c11478da3dd1151055",
+      "grants": {
+        "setOracle": [
+          "0x77fb76f3385d6300bd80e3c11478da3dd1151055"
+        ]
+      }
+    },
+    "nova": {
+      "fullName": "Nova Test",
+      "oracleUpdater": "0xefc44611448dcd05851422c5c7628f3c4104d831",
+      "grants": {
+        "setOracle": [
+          "0x83b7b3160bd4e344bd32dc8d1fd47140892cd862",
+          "0xefc44611448dcd05851422c5c7628f3c4104d831"
+        ]
+      }
+    },
+    "ani": {
+      "fullName": "ani testnet dex",
+      "oracleUpdater": "0x80060fe56a7a2fdd8c934a28b85100aae92e2294",
+      "grants": {
+        "setOracle": [
+          "0x40e85e4ac738614446309ad910c76b948bb42a85",
+          "0x80060fe56a7a2fdd8c934a28b85100aae92e2294",
+          "0xc2811b586a30c53f8fccec9015d92682d0a0d07d"
+        ]
+      }
+    },
+    "soya": {
+      "fullName": "Soya",
+      "oracleUpdater": "0x34f361d83f94080ec3af944c213edefbcb191bad",
+      "grants": {
+        "setOracle": [
+          "0x34f361d83f94080ec3af944c213edefbcb191bad"
+        ]
+      }
+    },
+    "brs": {
+      "fullName": "BRS Perps",
+      "oracleUpdater": "0x71eea1b5abcd12052b16b78401faee3ea4df8e9d",
+      "grants": {
+        "setOracle": [
+          "0x71eea1b5abcd12052b16b78401faee3ea4df8e9d"
+        ]
+      }
+    },
+    "tenx": {
+      "fullName": "10x",
+      "oracleUpdater": "0xffffb7adf7e6f30a97ae586e10ff99fc1eeb8362",
+      "grants": {
+        "setOracle": [
+          "0xffffb7adf7e6f30a97ae586e10ff99fc1eeb8362"
+        ]
+      }
+    },
+    "jack": {
+      "fullName": "Jack Testnet Dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "myx": {
+      "fullName": "myx perps",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "pmas": {
+      "fullName": "PM A-Share Perp DEX",
+      "oracleUpdater": "0xe4ec6c0a0a3a4c846816fc38d667aa56c450fac9",
+      "grants": {
+        "setOracle": [
+          "0xe4ec6c0a0a3a4c846816fc38d667aa56c450fac9"
+        ]
+      }
+    },
+    "dude": {
+      "fullName": "Dude",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "rsge": {
+      "fullName": "RuneScape Grand Exchange",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "hov": {
+      "fullName": "HyperOdd Perps",
+      "oracleUpdater": "0xe2e7bfe54ddfe5983807c187a57a939c33eaeb2e",
+      "grants": {
+        "setOracle": [
+          "0xe2e7bfe54ddfe5983807c187a57a939c33eaeb2e"
+        ]
+      }
+    },
+    "dlx": {
+      "fullName": "decilex",
+      "oracleUpdater": "0x1a2612b640da91feb2d3c8c9da02ecce85ae192b",
+      "grants": {
+        "setOracle": [
+          "0x1a2612b640da91feb2d3c8c9da02ecce85ae192b",
+          "0x1ec1b130ff9948c07209c9b1f4e426c6127da70a"
+        ]
+      }
+    },
+    "dxx": {
+      "fullName": "dexxxX",
+      "oracleUpdater": "0x1ec1b130ff9948c07209c9b1f4e426c6127da70a",
+      "grants": {
+        "setOracle": [
+          "0x1ec1b130ff9948c07209c9b1f4e426c6127da70a"
+        ]
+      }
+    },
+    "dyel": {
+      "fullName": "Do you even lift?",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x2cb0dc3ac9a528527db7cc9210b9d4e3c7f68e19"
+        ],
+        "setOracle": [
+          "0xe99202afc998c66b16c1dbb41148ed25efda86c4"
+        ],
+        "haltTrading": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginTableIds": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setOpenInterestCaps": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingMultipliers": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginModes": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingInterestRates": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setPerpAnnotation": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ]
+      }
+    },
+    "blob": {
+      "fullName": "New Slob Dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setDeployerFees": [
+          "0x4242424242424242424242424242424242424242"
+        ],
+        "setFundingInterestRates": [
+          "0x4242424242424242424242424242424242424242"
+        ],
+        "disableDex": [
+          "0x4242424242424242424242424242424242424242"
+        ]
+      }
+    },
+    "mooo": {
+      "fullName": "mooo what",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "rolo": {
+      "fullName": "Rolo Exchange",
+      "oracleUpdater": "0x61d05a1131a5ebab144aaaff6806f0c509a16c07",
+      "grants": {
+        "setOracle": [
+          "0x61d05a1131a5ebab144aaaff6806f0c509a16c07"
+        ]
+      }
+    },
+    "sejp": {
+      "fullName": "sekai phase2 sejp",
+      "oracleUpdater": "0xff4360a18cd3b1c127026aa2ea327868a5a64b26",
+      "grants": {
+        "setOracle": [
+          "0xff4360a18cd3b1c127026aa2ea327868a5a64b26"
+        ]
+      }
+    },
+    "sjhu": {
+      "fullName": "sekai phase2 sjhu",
+      "oracleUpdater": "0x30259f47f81d3f569e858f58bbe36fdbc102efd6",
+      "grants": {
+        "setOracle": [
+          "0x30259f47f81d3f569e858f58bbe36fdbc102efd6"
+        ]
+      }
+    },
+    "dolo": {
+      "fullName": "Dolo Exchange",
+      "oracleUpdater": "0xf597f50ddfb6cf2c4cf5c0a022c0fbefd757df7d",
+      "grants": {
+        "setOracle": [
+          "0xf597f50ddfb6cf2c4cf5c0a022c0fbefd757df7d"
+        ]
+      }
+    },
+    "sqxl": {
+      "fullName": "sekai phase2 sqxl",
+      "oracleUpdater": "0x136a78ea4059f7ed2d092198f60de8a97a4cc0c2",
+      "grants": {
+        "setOracle": [
+          "0x136a78ea4059f7ed2d092198f60de8a97a4cc0c2"
+        ]
+      }
+    },
+    "krzh": {
+      "fullName": "karazhan dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x392565cc5c4354184bd59910e361aa375a07713c"
+        ],
+        "setFundingMultipliers": [
+          "0x392565cc5c4354184bd59910e361aa375a07713c"
+        ]
+      }
+    },
+    "kwo": {
+      "fullName": "kwo",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "name": {
+      "fullName": "<Insert Name Here>",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xa38b734767c8a477cd86075ee1e73d48bf96e3b6",
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "haltTrading": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginTableIds": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setOpenInterestCaps": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingMultipliers": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginModes": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setPerpAnnotation": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ]
+      }
+    },
+    "aha": {
+      "fullName": "hahahaha",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xa38b734767c8a477cd86075ee1e73d48bf96e3b6",
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "haltTrading": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginTableIds": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setOpenInterestCaps": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingMultipliers": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginModes": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setPerpAnnotation": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ]
+      }
+    },
+    "tsst": {
+      "fullName": "TTSSTT Perp DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x51a7f093db3feb0b0c3c763a11c8615f302977be"
+        ],
+        "setOracle": [
+          "0x1ec1b130ff9948c07209c9b1f4e426c6127da70a"
+        ],
+        "insertMarginTable": [
+          "0x37cc46c85e38ce4df3bb93b4fb8ebf8fb25585c7"
+        ],
+        "haltTrading": [
+          "0x37cc46c85e38ce4df3bb93b4fb8ebf8fb25585c7"
+        ],
+        "setMarginTableIds": [
+          "0x37cc46c85e38ce4df3bb93b4fb8ebf8fb25585c7"
+        ],
+        "setOpenInterestCaps": [
+          "0x37cc46c85e38ce4df3bb93b4fb8ebf8fb25585c7"
+        ],
+        "setFundingMultipliers": [
+          "0x37cc46c85e38ce4df3bb93b4fb8ebf8fb25585c7"
+        ],
+        "setMarginModes": [
+          "0x37cc46c85e38ce4df3bb93b4fb8ebf8fb25585c7"
+        ],
+        "setDeployerFees": [
+          "0x37cc46c85e38ce4df3bb93b4fb8ebf8fb25585c7"
+        ],
+        "setFundingInterestRates": [
+          "0x37cc46c85e38ce4df3bb93b4fb8ebf8fb25585c7"
+        ],
+        "setPerpAnnotation": [
+          "0x37cc46c85e38ce4df3bb93b4fb8ebf8fb25585c7"
+        ]
+      }
+    },
+    "neol": {
+      "fullName": "NEOliquid",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ],
+        "setOracle": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ],
+        "insertMarginTable": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ],
+        "haltTrading": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ],
+        "setMarginTableIds": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ],
+        "setOpenInterestCaps": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ],
+        "setFundingMultipliers": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ],
+        "setMarginModes": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ],
+        "setFundingInterestRates": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ],
+        "setPerpAnnotation": [
+          "0xa9196891b83de719f401c16536c336918a820efe"
+        ]
+      }
+    },
+    "flxx": {
+      "fullName": "Felix Exchange 2",
+      "oracleUpdater": "0x94757f8dcb4bf73b850195660e959d1105cfedd5",
+      "grants": {
+        "setOracle": [
+          "0x94757f8dcb4bf73b850195660e959d1105cfedd5"
+        ]
+      }
+    },
+    "dd": {
+      "fullName": "d mak chob mak",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x2cb0dc3ac9a528527db7cc9210b9d4e3c7f68e19",
+          "0xc4514914debbe9caee3e8786aa29b27a05c4957c"
+        ],
+        "setOracle": [
+          "0x64752ac82334692392e7f9aba941dc9ce470c46e",
+          "0x7ec20995f0a681315d66fbedc016ea2c2ac7c78a",
+          "0xf163ae1d902c068a4189e404b7de5cdebde1596a"
+        ],
+        "haltTrading": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginTableIds": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setOpenInterestCaps": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingMultipliers": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginModes": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setDeployerFees": [
+          "0x226e025aba91ef8f74c5b417f0b5b432ef5e4006"
+        ],
+        "setFundingInterestRates": [
+          "0x6f4e99a0207fd20334b506c92bb572d422bbe587",
+          "0x7ec20995f0a681315d66fbedc016ea2c2ac7c78a",
+          "0xf163ae1d902c068a4189e404b7de5cdebde1596a"
+        ],
+        "setPerpAnnotation": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ]
+      }
+    },
+    "vt": {
+      "fullName": "VT",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "hfl": {
+      "fullName": "HFL Dex",
+      "oracleUpdater": "0x65458d34c580ace98de608896212c82684468c99",
+      "grants": {
+        "setOracle": [
+          "0x65458d34c580ace98de608896212c82684468c99"
+        ]
+      }
+    },
+    "hkx": {
+      "fullName": "Abul Testnet DEX",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "pew": {
+      "fullName": "PEW Mock Market",
+      "oracleUpdater": "0xa922fda14151f4bf354c7e17752f2bde8fbf5e75",
+      "grants": {
+        "setOracle": [
+          "0xa922fda14151f4bf354c7e17752f2bde8fbf5e75"
+        ]
+      }
+    },
+    "magm": {
+      "fullName": "Magnitude",
+      "oracleUpdater": "0xb4e713b2fdceb2319f236390911d702cb39ad6d8",
+      "grants": {
+        "setOracle": [
+          "0xb4e713b2fdceb2319f236390911d702cb39ad6d8"
+        ],
+        "haltTrading": [
+          "0xb4e713b2fdceb2319f236390911d702cb39ad6d8"
+        ]
+      }
+    },
+    "eepy": {
+      "fullName": "Very eepy",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x2cb0dc3ac9a528527db7cc9210b9d4e3c7f68e19"
+        ],
+        "setOracle": [
+          "0xf163ae1d902c068a4189e404b7de5cdebde1596a"
+        ],
+        "haltTrading": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginTableIds": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setOpenInterestCaps": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingMultipliers": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginModes": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingInterestRates": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setPerpAnnotation": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ]
+      }
+    },
+    "magk": {
+      "fullName": "Magnitude",
+      "oracleUpdater": "0xb4e713b2fdceb2319f236390911d702cb39ad6d8",
+      "grants": {
+        "setOracle": [
+          "0xb4e713b2fdceb2319f236390911d702cb39ad6d8"
+        ],
+        "haltTrading": [
+          "0xb4e713b2fdceb2319f236390911d702cb39ad6d8"
+        ]
+      }
+    },
+    "ktob": {
+      "fullName": "BTC Star DEX",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "nxlb": {
+      "fullName": "nexus expiry lab",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xcc590f774f9252a6b233e6a8f06952e7c30c1680"
+        ]
+      }
+    },
+    "dur": {
+      "fullName": "dur",
+      "oracleUpdater": "0x7fe8d34b0b22260ca678e895328db7da1724608a",
+      "grants": {
+        "setOracle": [
+          "0x7fe8d34b0b22260ca678e895328db7da1724608a"
+        ]
+      }
+    },
+    "shm": {
+      "fullName": "shm",
+      "oracleUpdater": "0xd57f4639d9c70c122e70172fbff402f4af6c241d",
+      "grants": {
+        "setOracle": [
+          "0xd57f4639d9c70c122e70172fbff402f4af6c241d"
+        ]
+      }
+    },
+    "mmmm": {
+      "fullName": "MMMM",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xc99c0fefd0b5f158a1a9b4f88f3333892ded0274"
+        ]
+      }
+    },
+    "acmt": {
+      "fullName": "ACMT A-share Price Return Perpetual",
+      "oracleUpdater": "0x01a35a43248aa95ece800b3b03a85ce5e4d38adb",
+      "grants": {
+        "setOracle": [
+          "0x01a35a43248aa95ece800b3b03a85ce5e4d38adb"
+        ]
+      }
+    },
+    "cna": {
+      "fullName": "CNA Testnet DEX",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "bb": {
+      "fullName": "bb testnet dex",
+      "oracleUpdater": "0x4e3c8dbf554b71d31c72400030235c42158c7604",
+      "grants": {
+        "setOracle": [
+          "0x4e3c8dbf554b71d31c72400030235c42158c7604"
+        ]
+      }
+    },
+    "dmhs": {
+      "fullName": "Test Crypto Exchange",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "lah": {
+      "fullName": "Lah DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "setOracle": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "setFeeRecipient": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "haltTrading": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "setMarginTableIds": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "setOpenInterestCaps": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "setFundingMultipliers": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "setMarginModes": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "setDeployerFees": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "setFundingInterestRates": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ],
+        "setPerpAnnotation": [
+          "0x5004228fb90001efb2875d8fdbea37c354455b58"
+        ]
+      }
+    },
+    "lob": {
+      "fullName": "lob testnet dex",
+      "oracleUpdater": "0x3de0cf6da9033640db25c121083372e08e0fc200",
+      "grants": {
+        "setOracle": [
+          "0x3de0cf6da9033640db25c121083372e08e0fc200",
+          "0x40e85e4ac738614446309ad910c76b948bb42a85",
+          "0xc2811b586a30c53f8fccec9015d92682d0a0d07d"
+        ]
+      }
+    },
+    "vkjf": {
+      "fullName": "Kraken HIP-3 test DEX",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ignp": {
+      "fullName": "Kraken HIP-3 test DEX",
+      "oracleUpdater": null,
+      "grants": {
+        "{\"hip3Star\":\"setOracle\"}": [
+          "0x62045ccfe92610016c22f09da0fb21d10af6c2b3",
+          "0x84a5e4e576ffb8b6a5accee6e5185f72d064c71a",
+          "0xa595ad9f3c46dd0f5bd0593e6530d4b74927c403"
+        ]
+      }
+    },
+    "kjex": {
+      "fullName": "kjex test dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "arg": {
+      "fullName": "Austral Finance",
+      "oracleUpdater": "0x47c1d6b51b1f3d00f4d5e78b85486d4b7136ebe2",
+      "grants": {
+        "setOracle": [
+          "0x47c1d6b51b1f3d00f4d5e78b85486d4b7136ebe2"
+        ]
+      }
+    },
+    "cfbx": {
+      "fullName": "CFB Oracle Metadata Test",
+      "oracleUpdater": "0x890eda06c3a7b9cb75164a813012828d0d7bbcdc",
+      "grants": {
+        "setOracle": [
+          "0x890eda06c3a7b9cb75164a813012828d0d7bbcdc"
+        ]
+      }
+    },
+    "lon": {
+      "fullName": "Lontong",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "par": {
+      "fullName": "Perpetual Alpha Rehearsal",
+      "oracleUpdater": "0x24574c94ab1e08638eb55db0af3687b5ebaae211",
+      "grants": {
+        "setOracle": [
+          "0x24574c94ab1e08638eb55db0af3687b5ebaae211",
+          "0x4fd2a220b8a89c7c671268c18e9971b7354f3b74",
+          "0xfc9f1e140b48af5e0af4f070f77b5baa143d5787"
+        ]
+      }
+    },
+    "aix": {
+      "fullName": "autonomous exchange",
+      "oracleUpdater": "0x1c615e44192c835a09ac3330d9ed293599405f3d",
+      "grants": {
+        "registerAsset": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ],
+        "setOracle": [
+          "0x1c615e44192c835a09ac3330d9ed293599405f3d"
+        ],
+        "setFeeRecipient": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ],
+        "haltTrading": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ],
+        "setMarginTableIds": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ],
+        "setOpenInterestCaps": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ],
+        "setFundingMultipliers": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ],
+        "setMarginModes": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ],
+        "setDeployerFees": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ],
+        "setFundingInterestRates": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ],
+        "setPerpAnnotation": [
+          "0xb72a3c0ac20a5bb3327d9d5eceb8741e20e9c759"
+        ]
+      }
+    },
+    "parx": {
+      "fullName": "Perpetual Alpha Rehearsal",
+      "oracleUpdater": "0xc836926cc798f71d4e82f1cbc9a0e6ff8a9a64e7",
+      "grants": {
+        "setOracle": [
+          "0x4d05d8b0b233104b9a670a8021ae14d0e17efade",
+          "0xc836926cc798f71d4e82f1cbc9a0e6ff8a9a64e7",
+          "0xf7b9fad1161eeab0b170a536c43eba067b65580f"
+        ]
+      }
+    },
+    "rrup": {
+      "fullName": "HSI FCM Test Demo",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "fcmt": {
+      "fullName": "FCM control test",
+      "oracleUpdater": null,
+      "grants": {
+        "{\"hip3Star\":\"modifyApproval\"}": [
+          "0x73b69db46d41c6b721fb5cb9ce9f29193140950e"
+        ],
+        "{\"hip3Star\":\"modifyBackstopLiquidatorApproval\"}": [
+          "0x73b69db46d41c6b721fb5cb9ce9f29193140950e"
+        ],
+        "{\"hip3Star\":\"setReduceOnly\"}": [
+          "0x73b69db46d41c6b721fb5cb9ce9f29193140950e"
+        ],
+        "{\"hip3Star\":\"cancel\"}": [
+          "0x73b69db46d41c6b721fb5cb9ce9f29193140950e"
+        ],
+        "{\"hip3Star\":\"cancelAll\"}": [
+          "0x73b69db46d41c6b721fb5cb9ce9f29193140950e"
+        ],
+        "{\"hip3Star\":\"order\"}": [
+          "0x73b69db46d41c6b721fb5cb9ce9f29193140950e"
+        ],
+        "{\"hip3Star\":\"sendAsset\"}": [
+          "0x73b69db46d41c6b721fb5cb9ce9f29193140950e"
+        ]
+      }
+    },
+    "nimb": {
+      "fullName": "NIMB STAR TEST",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "setOracle": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "insertMarginTable": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "setFeeRecipient": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "haltTrading": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "setMarginTableIds": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "setOpenInterestCaps": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "setFundingMultipliers": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "setMarginModes": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "setDeployerFees": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "setFundingInterestRates": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "disableDex": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "setPerpAnnotation": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "{\"hip3Star\":\"modifyApproval\"}": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee",
+          "0x489f9539abd76933987882bac4ed8c9fb434ab3a"
+        ],
+        "{\"hip3Star\":\"cancel\"}": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "{\"hip3Star\":\"cancelAll\"}": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "{\"hip3Star\":\"order\"}": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ],
+        "{\"hip3Star\":\"sendAsset\"}": [
+          "0x0c839e7f21c712e64f80ca0775ec1f35a43af3ee"
+        ]
+      }
+    },
+    "sta": {
+      "fullName": "STAR",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "stt": {
+      "fullName": "star2",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "pmew": {
+      "fullName": "PGmeow",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "tape": {
+      "fullName": "Tape",
+      "oracleUpdater": "0xd45f86067b86abd40b40d5ddb2f4920bbcbc33d5",
+      "grants": {
+        "setOracle": [
+          "0xd45f86067b86abd40b40d5ddb2f4920bbcbc33d5"
+        ]
+      }
+    },
+    "goy": {
+      "fullName": "Goy",
+      "oracleUpdater": "0x8940d2bdb2ab14aaebf33c0619b08940fb60b5ad",
+      "grants": {
+        "setOracle": [
+          "0x8940d2bdb2ab14aaebf33c0619b08940fb60b5ad"
+        ]
+      }
+    },
+    "eqde": {
+      "fullName": "EU equities test dex",
+      "oracleUpdater": "0x7f4129445a833356fe9c130748a6fba9548ce7a3",
+      "grants": {
+        "setOracle": [
+          "0x7f4129445a833356fe9c130748a6fba9548ce7a3"
+        ]
+      }
+    },
+    "one": {
+      "fullName": "one test dex",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "pa": {
+      "fullName": "Perpetual Alpha",
+      "oracleUpdater": "0xa15429790ce03cc382433ee40469225bd2904d99",
+      "grants": {
+        "setOracle": [
+          "0xa15429790ce03cc382433ee40469225bd2904d99"
+        ]
+      }
+    },
+    "pas": {
+      "fullName": "Perpetual Alpha",
+      "oracleUpdater": "0xa89c67454b8791bcebd3bb6802c085feb4ba0e25",
+      "grants": {
+        "setOracle": [
+          "0x289e13791248647d51b3ad2d2bd280809eddf825",
+          "0xa49cc79ad968130a1b60bd9012a10110870e987e",
+          "0xa89c67454b8791bcebd3bb6802c085feb4ba0e25"
+        ]
+      }
+    },
+    "lab": {
+      "fullName": "replay lab test dex",
+      "oracleUpdater": "0x27b7527b6512e361f3f80d61f0f1eba102d8b67f",
+      "grants": {
+        "setOracle": [
+          "0x27b7527b6512e361f3f80d61f0f1eba102d8b67f"
+        ]
+      }
+    }
+  },
+  "venues": {
+    "ao": 6,
+    "beat": 20,
+    "wren": 14,
+    "au": 16,
+    "protocol": 112,
+    "ag": 1,
+    "aw": 1,
+    "as": 3,
+    "af": 4,
+    "ah": 3,
+    "ar": 1,
+    "ac": 1,
+    "out": 9,
+    "ad": 6,
+    "pewt": 11,
+    "aa": 4,
+    "dorn": 4,
+    "flip": 17,
+    "kelp": 10,
+    "cat": 20,
+    "hehe": 6,
+    "txyc": 20,
+    "txya": 20,
+    "at": 9,
+    "spcl": 12,
+    "tyzz": 20,
+    "ax": 8,
+    "abaa": 10,
+    "am": 9,
+    "abab": 9,
+    "zq": 4,
+    "vox": 2,
+    "yeet": 16,
+    "flp": 17,
+    "txyz": 20,
+    "tzxy": 20,
+    "www": 6,
+    "st": 1,
+    "lo": 6,
+    "abac": 7,
+    "ae": 20,
+    "adf": 2,
+    "of": 9,
+    "abad": 7,
+    "mkr": 7,
+    "alch": 2,
+    "gsky": 1,
+    "av": 20,
+    "layr": 3,
+    "pgn": 3,
+    "momo": 5,
+    "txyb": 20,
+    "ali": 3,
+    "mig": 20,
+    "meow": 1,
+    "qnh": 1,
+    "ap": 2,
+    "omen": 1,
+    "zz": 9,
+    "game": 20,
+    "zzz": 1,
+    "ak": 20,
+    "sdn": 11,
+    "oxyz": 1,
+    "qn": 1,
+    "ai": 4,
+    "xcds": 3,
+    "ddty": 1,
+    "pdct": 4,
+    "aq": 4
+  },
+  "templates": {
+    "aiModelHeadToHead": "26f05b54ca2e",
+    "awardCandidate": "a5f8710eb3c0",
+    "awardEntryWins": "27828150b6ac",
+    "awardOther": "50e3815159d6",
+    "awardWinner": "dcf65637cedf",
+    "binaryPrice": "22eee104e0d3",
+    "binaryPrice2": "1c4c7bd83987",
+    "binaryPrice4": "2311e7a356c5",
+    "binaryPrice5": "19bac47bae63",
+    "binaryPrice6": "c91810ea0646",
+    "binaryPriceExternal": "f8dbea2066de",
+    "companyIpoConfirmed": "a8be8cc36393",
+    "companyIpoFirstDayMarketCap": "9ef2b925bbac",
+    "policyRateBucket": "8641dccb8adc",
+    "policyRateDecision": "344bf2cf0ae7",
+    "policyRateDecision2": "fd8461d92f84",
+    "policyRateDecision3": "b37b7eed6c7a",
+    "policyRateDecrease": "807c9ecf5bca",
+    "policyRateDecrease2": "95807249e6e1",
+    "policyRateDecrease3": "959d4d6d95b2",
+    "policyRateIncrease": "58d5bbc19f3f",
+    "policyRateIncrease2": "eed64cf71795",
+    "policyRateIncrease3": "822781dcf2a4",
+    "policyRateLadder": "b9e4cf1b2c6a",
+    "policyRateNoChange": "f06c51626e59",
+    "policyRateNoChange2": "7f453612704a",
+    "policyRateNoChange3": "12165d388e6b",
+    "priceTouch": "caef469a30ca",
+    "priceTouch2": "904ee51ff9b2",
+    "scalarPrice3": "cc41838f8dbb",
+    "scalePrice": "71d0c5810de6",
+    "scalePrice2": "7f10751207d4",
+    "sportsContestDraw": "3294eb4e70ed",
+    "sportsContestDraw2": "29a169fdee89",
+    "sportsContestDraw3": "f917dbbc1192",
+    "sportsContestDraw4": "247ceeaeacca",
+    "sportsContestDraw5": "e16278d96984",
+    "sportsContestParticipant": "5906ef0925a2",
+    "sportsContestParticipant2": "9a36fa28e0ec",
+    "sportsContestParticipant3": "7ade5f3e3ccd",
+    "sportsContestParticipant4": "98a4b108b4c7",
+    "sportsContestParticipant5": "dadc3de3aab5",
+    "sportsContestResult": "95217f0f4de9",
+    "sportsContestResult2": "feed205e00a6",
+    "sportsContestResult3": "7fe3d1b8fdd5",
+    "sportsContestResult4": "40c46bc67d98",
+    "sportsContestResult5": "f786cf608cdf",
+    "sportsContestWinner": "1d3770e72303",
+    "sportsContestWinner2": "5dd9c38caff7",
+    "sportsContestWinner3": "c4a2a8d65b1d",
+    "sportsContestWinner4": "75e2ec49b834",
+    "sportsContestWinner5": "af72f0748e21",
+    "sportsContestWinner6": "7247dec3e9ea",
+    "sportsContestWinner7": "1e6fc0749e7d",
+    "sportsOverUnderMarket": "a54e7c60ba1c",
+    "sportsScalarMarket": "0d3c44da1c07",
+    "sportsScalarMarket2": "4e7a1be112fa",
+    "sportsScalarMarket3": "4cd9602e7c72",
+    "sportsSpread": "08978c5a06fa",
+    "sportsTotal": "169333d32af4",
+    "sportsTournamentParticipant": "55d3afc66053",
+    "sportsTournamentParticipant2": "ece3d02af620",
+    "sportsTournamentParticipant3": "0704cf11f115",
+    "sportsTournamentParticipant4": "43d343c43763",
+    "sportsTournamentWinner": "a9700b686a5c",
+    "sportsTournamentWinner2": "c44c943b654a",
+    "sportsTournamentWinner3": "84e316061772",
+    "sportsTournamentWinner4": "256dbe766639"
+  }
+}

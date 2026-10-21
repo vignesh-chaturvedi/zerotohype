@@ -1,0 +1,1278 @@
+{
+  "perps": {
+    "BTC": {
+      "maxLeverage": 40,
+      "delisted": false
+    },
+    "ETH": {
+      "maxLeverage": 25,
+      "delisted": false
+    },
+    "ATOM": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "MATIC": {
+      "maxLeverage": 20,
+      "delisted": true
+    },
+    "DYDX": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "SOL": {
+      "maxLeverage": 20,
+      "delisted": false
+    },
+    "AVAX": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "BNB": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "APE": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "OP": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "LTC": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ARB": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "DOGE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "INJ": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "SUI": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "kPEPE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "CRV": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "LDO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "LINK": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "STX": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "RNDR": {
+      "maxLeverage": 20,
+      "delisted": true
+    },
+    "CFX": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "FTM": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "GMX": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SNX": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "XRP": {
+      "maxLeverage": 20,
+      "delisted": false
+    },
+    "BCH": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "APT": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "AAVE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "COMP": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "MKR": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "WLD": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "FXS": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "HPOS": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "RLB": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "UNIBOT": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "YGG": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "TRX": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "kSHIB": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "UNI": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "SEI": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "RUNE": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "OX": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "FRIEND": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "SHIA": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "CYBER": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "ZRO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "BLZ": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "DOT": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "BANANA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "TRB": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "FTT": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "LOOM": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "OGN": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "RDNT": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "ARK": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "BNT": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "CANTO": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "REQ": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "BIGTIME": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "KAS": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ORBS": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "BLUR": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "TIA": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "BSV": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ADA": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "TON": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "MINA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "POLYX": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "GAS": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PENDLE": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "STG": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "FET": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "STRAX": {
+      "maxLeverage": 10,
+      "delisted": true
+    },
+    "NEAR": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "MEME": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ORDI": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "BADGER": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "NEO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "ZEN": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "FIL": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "PYTH": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "SUSHI": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ILV": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "IMX": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "kBONK": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "GMT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SUPER": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "USTC": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "NFTI": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "JUP": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "kLUNC": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "RSR": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "GALA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "JTO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "NTRN": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "ACE": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MAV": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "WIF": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "CAKE": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PEOPLE": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ENS": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "ETC": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "XAI": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MANTA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "UMA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ONDO": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ALT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ZETA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "DYM": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MAVIA": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "W": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "PANDORA": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "STRK": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "PIXEL": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "AI": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "TAO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "AR": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "MYRO": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "kFLOKI": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "BOME": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ETHFI": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "ENA": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "MNT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "TNSR": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SAGA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MERL": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "HBAR": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "POPCAT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "OMNI": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "EIGEN": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "REZ": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "NOT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "TURBO": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "BRETT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "IO": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ZK": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "BLAST": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "LISTA": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "MEW": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "RENDER": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "kDOGS": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "POL": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "CATI": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "CELO": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "HMSTR": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SCR": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "NEIROETH": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "kNEIRO": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "GOAT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MOODENG": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "GRASS": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PURR": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PNUT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "XLM": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "CHILLGUY": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "SAND": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "IOTA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ALGO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "HYPE": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "ME": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MOVE": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "VIRTUAL": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "PENGU": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "USUAL": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "FARTCOIN": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "AI16Z": {
+      "maxLeverage": 5,
+      "delisted": true
+    },
+    "AIXBT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ZEREBRO": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "BIO": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "GRIFFAIN": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SPX": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "S": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "MORPHO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "TRUMP": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "MELANIA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ANIME": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "VINE": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "VVV": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "JELLY": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "BERA": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "TST": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "LAYER": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "IP": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "OM": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "KAITO": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "NIL": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PAXG": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "PROMPT": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "BABY": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "WCT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "HYPER": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ZORA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "INIT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "DOOD": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "LAUNCHCOIN": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "NXPC": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SOPH": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "RESOLV": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SYRUP": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PUMP": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "PROVE": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "YZY": {
+      "maxLeverage": 3,
+      "delisted": true
+    },
+    "XPL": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "WLFI": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "LINEA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "SKY": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ASTER": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "AVNT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "STBL": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "0G": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "HEMI": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "APEX": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "2Z": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ZEC": {
+      "maxLeverage": 10,
+      "delisted": false
+    },
+    "MON": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "MET": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "MEGA": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "CC": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "ICP": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "AERO": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "STABLE": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "FOGO": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "LIT": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "XMR": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "AXS": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "DASH": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "SKR": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "AZTEC": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "CHIP": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "GRAM": {
+      "maxLeverage": 5,
+      "delisted": false
+    },
+    "CASHCAT": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "PONS": {
+      "maxLeverage": 3,
+      "delisted": false
+    },
+    "USELESS": {
+      "maxLeverage": 3,
+      "delisted": false
+    }
+  },
+  "dexs": {
+    "xyz": {
+      "fullName": "XYZ",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0x8c4190018486a2dbac2629d688136e8990170ff2",
+          "0xc0892b4f864807ec26dde6ad8dad6914e079059d"
+        ],
+        "setOracle": [
+          "0x1234567890545d1df9ee64b35fdd16966e08acec"
+        ],
+        "setFeeRecipient": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0xc0892b4f864807ec26dde6ad8dad6914e079059d"
+        ],
+        "haltTrading": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0xc0892b4f864807ec26dde6ad8dad6914e079059d"
+        ],
+        "setMarginTableIds": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0x8c4190018486a2dbac2629d688136e8990170ff2",
+          "0xc0892b4f864807ec26dde6ad8dad6914e079059d"
+        ],
+        "setOpenInterestCaps": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0x8c4190018486a2dbac2629d688136e8990170ff2",
+          "0xc0892b4f864807ec26dde6ad8dad6914e079059d"
+        ],
+        "setFundingMultipliers": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0x8c4190018486a2dbac2629d688136e8990170ff2",
+          "0xc0892b4f864807ec26dde6ad8dad6914e079059d"
+        ],
+        "setMarginModes": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0x8c4190018486a2dbac2629d688136e8990170ff2",
+          "0xc0892b4f864807ec26dde6ad8dad6914e079059d"
+        ],
+        "setDeployerFees": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0x8c4190018486a2dbac2629d688136e8990170ff2"
+        ],
+        "setFundingInterestRates": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0x8c4190018486a2dbac2629d688136e8990170ff2",
+          "0xc0892b4f864807ec26dde6ad8dad6914e079059d"
+        ],
+        "setPerpAnnotation": [
+          "0x7d16f116d252db609c56d27d6c9605eb03e16657",
+          "0x8c4190018486a2dbac2629d688136e8990170ff2",
+          "0xc0892b4f864807ec26dde6ad8dad6914e079059d"
+        ]
+      }
+    },
+    "flx": {
+      "fullName": "Felix Exchange",
+      "oracleUpdater": "0x94757f8dcb4bf73b850195660e959d1105cfedd5",
+      "grants": {
+        "registerAsset": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setOracle": [
+          "0x94757f8dcb4bf73b850195660e959d1105cfedd5",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "insertMarginTable": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setFeeRecipient": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "haltTrading": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setMarginTableIds": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setOpenInterestCaps": [
+          "0x17f5d164a9fa8ed292cdc91e34c0edeed6fc9b90",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setFundingMultipliers": [
+          "0xae083732032a813f9142733cdf380e1bc9e518af",
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setMarginModes": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setDeployerFees": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setFundingInterestRates": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ],
+        "setPerpAnnotation": [
+          "0xd0d4ef34424af3da883672b8cdeca751293655a5"
+        ]
+      }
+    },
+    "vntl": {
+      "fullName": "Ventuals",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0xdfc9f8b03664fb312c51ebf820eaefb6732f495a"
+        ],
+        "setOracle": [
+          "0x0ac1e81a640f1492c286d71031af5af27a9b712e"
+        ],
+        "setMarginTableIds": [
+          "0x6bdf4b47b638a8bb8ba630fbf867dc0f458d953e"
+        ],
+        "setOpenInterestCaps": [
+          "0x6bdf4b47b638a8bb8ba630fbf867dc0f458d953e"
+        ],
+        "setFundingMultipliers": [
+          "0x6bdf4b47b638a8bb8ba630fbf867dc0f458d953e",
+          "0x9f82ce39734468c213f46834d0189222e1fadf5b"
+        ],
+        "setPerpAnnotation": [
+          "0x6bdf4b47b638a8bb8ba630fbf867dc0f458d953e"
+        ]
+      }
+    },
+    "hyna": {
+      "fullName": "HyENA",
+      "oracleUpdater": "0xaab93501e78f5105e265a1eafda10ce6530de17e",
+      "grants": {
+        "setOracle": [
+          "0xaab93501e78f5105e265a1eafda10ce6530de17e",
+          "0xaffde4868990b0b547dea3aaf8082b69825bbc2f"
+        ]
+      }
+    },
+    "km": {
+      "fullName": "Markets by Kinetiq",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x2cb0dc3ac9a528527db7cc9210b9d4e3c7f68e19"
+        ],
+        "setOracle": [
+          "0xe99202afc998c66b16c1dbb41148ed25efda86c4"
+        ],
+        "haltTrading": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginTableIds": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setOpenInterestCaps": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingMultipliers": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginModes": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingInterestRates": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setPerpAnnotation": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ]
+      }
+    },
+    "abcd": {
+      "fullName": "ABCDEx",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "cash": {
+      "fullName": "dreamcash",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0xa1607092ef78d439f097c1aec678a08902c773e2",
+          "0xe2de88eb25452f26dd02cbe21a3c2a4db17f9b1d"
+        ],
+        "insertMarginTable": [
+          "0x50ad2695c1e2a896c65b9a9382926eebbf4a77a6"
+        ],
+        "haltTrading": [
+          "0x50ad2695c1e2a896c65b9a9382926eebbf4a77a6"
+        ],
+        "setMarginTableIds": [
+          "0x50ad2695c1e2a896c65b9a9382926eebbf4a77a6"
+        ],
+        "setOpenInterestCaps": [
+          "0x50ad2695c1e2a896c65b9a9382926eebbf4a77a6"
+        ],
+        "setFundingMultipliers": [
+          "0x1a5ddaccd40db649cbe68d72a3017c30a96902fb",
+          "0x50ad2695c1e2a896c65b9a9382926eebbf4a77a6"
+        ],
+        "setMarginModes": [
+          "0x50ad2695c1e2a896c65b9a9382926eebbf4a77a6"
+        ],
+        "setFundingInterestRates": [
+          "0x50ad2695c1e2a896c65b9a9382926eebbf4a77a6"
+        ],
+        "setPerpAnnotation": [
+          "0x50ad2695c1e2a896c65b9a9382926eebbf4a77a6"
+        ]
+      }
+    },
+    "para": {
+      "fullName": "Paragon",
+      "oracleUpdater": "0x8888888c43cbb7e1c4132542e46831bffd866ed3",
+      "grants": {
+        "setOracle": [
+          "0x764ed9d59c91a2c653fd50c43585917366244335",
+          "0x8888888c43cbb7e1c4132542e46831bffd866ed3"
+        ]
+      }
+    },
+    "mkts": {
+      "fullName": "Markets By Kinetiq",
+      "oracleUpdater": null,
+      "grants": {
+        "registerAsset": [
+          "0x2cb0dc3ac9a528527db7cc9210b9d4e3c7f68e19",
+          "0xc4514914debbe9caee3e8786aa29b27a05c4957c"
+        ],
+        "setOracle": [
+          "0x64752ac82334692392e7f9aba941dc9ce470c46e",
+          "0xe99202afc998c66b16c1dbb41148ed25efda86c4"
+        ],
+        "haltTrading": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginTableIds": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setOpenInterestCaps": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingMultipliers": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setMarginModes": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setDeployerFees": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingInterestRates": [
+          "0xe38a4ea7103894d8d29f38bfe69b5d28f038581a",
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setPerpAnnotation": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ],
+        "setFundingClamps": [
+          "0xecc1e0731ca1cbd237c0564935637c4c9e899e41"
+        ]
+      }
+    },
+    "io": {
+      "fullName": "EntropyIO",
+      "oracleUpdater": "0x94757f8dcb4bf73b850195660e959d1105cfedd5",
+      "grants": {
+        "registerAsset": [
+          "0xd5d18d5f4026a33ca6c8fce75551b24cbb5452ea"
+        ],
+        "setOracle": [
+          "0x94757f8dcb4bf73b850195660e959d1105cfedd5"
+        ],
+        "setFeeRecipient": [
+          "0xd5d18d5f4026a33ca6c8fce75551b24cbb5452ea"
+        ],
+        "haltTrading": [
+          "0xd5d18d5f4026a33ca6c8fce75551b24cbb5452ea"
+        ],
+        "setMarginTableIds": [
+          "0x7704c6ec1fb6b359a63da840a0b1e9d66441ffe4"
+        ],
+        "setOpenInterestCaps": [
+          "0x7704c6ec1fb6b359a63da840a0b1e9d66441ffe4"
+        ],
+        "setFundingMultipliers": [
+          "0x7704c6ec1fb6b359a63da840a0b1e9d66441ffe4"
+        ],
+        "setMarginModes": [
+          "0xd5d18d5f4026a33ca6c8fce75551b24cbb5452ea"
+        ],
+        "setDeployerFees": [
+          "0xd5d18d5f4026a33ca6c8fce75551b24cbb5452ea"
+        ],
+        "setFundingInterestRates": [
+          "0x7704c6ec1fb6b359a63da840a0b1e9d66441ffe4"
+        ],
+        "setPerpAnnotation": [
+          "0x7704c6ec1fb6b359a63da840a0b1e9d66441ffe4"
+        ]
+      }
+    }
+  },
+  "venues": {
+    "out": 200,
+    "skew": 61,
+    "txyz": 72,
+    "protocol": 8
+  },
+  "templates": {
+    "aiModelHeadToHead": "16e36658a5f0",
+    "awardCandidate": "a5f8710eb3c0",
+    "awardEntryWins": "27828150b6ac",
+    "awardOther": "50e3815159d6",
+    "awardWinner": "dcf65637cedf",
+    "binaryPrice": "75e77eb15e3a",
+    "binaryPriceExternal": "ba885c7ce177",
+    "companyIpoConfirmed": "a8be8cc36393",
+    "companyIpoFirstDayMarketCap": "9ef2b925bbac",
+    "policyRateBucket": "8641dccb8adc",
+    "policyRateDecision": "b37b7eed6c7a",
+    "policyRateDecrease": "807c9ecf5bca",
+    "policyRateIncrease": "58d5bbc19f3f",
+    "policyRateLadder": "b9e4cf1b2c6a",
+    "policyRateNoChange": "f06c51626e59",
+    "priceTouch": "2856b6218c01",
+    "scalarPrice": "77d52ffeb40e",
+    "sportsContestDraw2": "ab056de4431a",
+    "sportsContestParticipant2": "9600e3f259ef",
+    "sportsContestResult": "9fce5925b5ab",
+    "sportsContestWinner": "99a9199c2b35",
+    "sportsOverUnderMarket": "7df99bfc027d",
+    "sportsScalarMarket": "e99cd1d32114",
+    "sportsSpread": "08978c5a06fa",
+    "sportsTotal": "169333d32af4",
+    "sportsTournamentNoWinner2": "ffa015df4b24",
+    "sportsTournamentParticipant": "5b88920eff48",
+    "sportsTournamentWinner": "ad4d175ddd80"
+  }
+}

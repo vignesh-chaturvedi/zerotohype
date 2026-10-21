@@ -12,7 +12,10 @@ Requires Node 22 or newer and pnpm.
 pnpm install
 pnpm dev        # http://localhost:4321
 pnpm build      # static site in dist/
+pnpm changelog  # check the API for changes and update the changelog
 ```
+
+The changelog job runs every 6 hours on GitHub Actions (`.github/workflows/changelog.yml`) and commits any changes it finds. It keeps its snapshots in `data/snapshots/` and its entries in `src/data/changelog.json`.
 
 ## Licences
 

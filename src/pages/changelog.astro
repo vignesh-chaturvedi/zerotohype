@@ -1,0 +1,102 @@
+---
+import Base from "../layouts/Base.astro";
+import entries from "../data/changelog.json";
+import meta from "../data/changelog-meta.json";
+
+type Entry = { time: string; network: string; area: string; summary: string };
+
+const escape = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+// Summaries use two bits of Markdown: `code` and [links](https://...).
+const inline = (s: string) =>
+  escape(s)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g, '<a href="$2">$1</a>');
+
+const day = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+const groups = new Map<string, Entry[]>();
+for (const e of entries as Entry[]) {
+  const key = day(e.time);
+  groups.set(key, [...(groups.get(key) ?? []), e]);
+}
+const since = day(meta.trackingSince);
+const lastRun = new Date(meta.lastRun).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" });
+const c = meta.counts;
+---
+
+<Base title="Changelog" description="What changed in Hyperliquid's API, detected automatically from mainnet, testnet and the docs.">
+  <header class="head">
+    <p class="eyebrow">API changelog</p>
+    <h1>What changed in Hyperliquid</h1>
+    <p class="lede">
+      Hyperliquid ships API changes before it documents them and publishes no changelog. A job
+      checks mainnet, testnet and the docs every 6 hours and records what changed: new perps and
+      HIP-3 DEXs, permission grants, HIP-4 venues and templates, and edited docs pages.
+    </p>
+    <p class="mono note">Tracking since {since} · last checked {lastRun} UTC</p>
+  </header>
+
+  <section class="now" aria-labelledby="now-title">
+    <h2 id="now-title">Right now</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th></th><th>Mainnet</th><th>Testnet</th></tr></thead>
+        <tbody>
+          <tr><td>Listed perps on the main DEX</td><td class="n">{c.mainnet.perps}</td><td class="n">{c.testnet.perps}</td></tr>
+          <tr><td>HIP-3 DEXs</td><td class="n">{c.mainnet.dexs}</td><td class="n">{c.testnet.dexs}</td></tr>
+          <tr><td>HIP-4 venues with live outcomes</td><td class="n">{c.mainnet.venues}</td><td class="n">{c.testnet.venues}</td></tr>
+          <tr><td>Outcome templates</td><td class="n">{c.mainnet.templates}</td><td class="n">{c.testnet.templates}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The docs have {c.docs.pages} pages outside the FAQ.</p>
+  </section>
+
+  <section class="log" aria-labelledby="log-title">
+    <h2 id="log-title">Changes</h2>
+    {groups.size === 0 ? (
+      <p class="empty">
+        No changes yet. Tracking started on {since}; anything that changes after that appears here,
+        newest first.
+      </p>
+    ) : (
+      [...groups.entries()].map(([date, items]) => (
+        <div class="day">
+          <h3 class="mono">{date}</h3>
+          <ul>
+            {items.map((e) => (
+              <li>
+                <span class={`net ${e.network}`}>{e.network}</span>
+                <span class="area">{e.area}</span>
+                <span class="text" set:html={inline(e.summary)} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    )}
+  </section>
+</Base>
+
+<style>
+  .head { display: grid; gap: 12px; }
+  .lede { font-size: 1.1rem; line-height: 1.55; max-width: 66ch; }
+  .note { font-size: 13px; color: var(--muted); }
+  .now, .log { display: grid; gap: 14px; }
+  .tbl { overflow-x: auto; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); max-width: 640px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--rule); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 12.5px; color: var(--muted); background: var(--sunk); }
+  td.n { font-family: var(--data); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .empty { color: var(--muted); max-width: 64ch; }
+  .day { display: grid; gap: 8px; }
+  .day h3 { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .day ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .day li { display: grid; grid-template-columns: 5.5rem 6rem minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 8px 12px; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; font-size: 14.5px; }
+  @media (max-width: 560px) { .day li { grid-template-columns: auto auto; } .day li .text { grid-column: 1 / -1; } }
+  .net, .area { font: 500 11px/1.4 var(--data); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+  .net.mainnet { color: var(--accent); }
+  .text { overflow-wrap: anywhere; }
+</style>
