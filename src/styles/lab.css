@@ -40,3 +40,4 @@
 .threshold { stroke: var(--mvp); stroke-width: 1.5; stroke-dasharray: 5 4; }
 .dot { fill: var(--accent); fill-opacity: 0.55; }
 .small { font-size: 13.5px; color: var(--muted); max-width: 72ch; }
+.window { fill: var(--accent); fill-opacity: 0.07; }

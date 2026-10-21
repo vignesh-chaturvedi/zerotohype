@@ -13,7 +13,7 @@ outside:
   - { title: Trade HIP-4 prediction markets, url: "https://www.quicknode.com/guides/hyperliquid/trade-hip-4-prediction-markets-on-hyperliquid", by: QuickNode }
   - { title: "HIP-4 settlement checks, Oct 8–13", url: "https://github.com/vignesh-chaturvedi/hyperkeeper/blob/main/reports/2026-10-13-hip4.md", by: hyperkeeper }
 build:
-  - { label: Settlement explorer, kind: lab }
+  - { label: Settlement explorer, kind: lab, status: live, href: "/labs/settlement/" }
   - { label: Settlement checker, kind: project }
 ---
 

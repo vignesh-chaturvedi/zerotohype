@@ -1,0 +1,187 @@
+---
+import Base from "../../layouts/Base.astro";
+import "../../styles/lab.css";
+---
+
+<Base title="Settlement explorer" description="Recompute real Hyperliquid HIP-4 settlements from recorded prices, and see which kind of average each venue uses.">
+  <div class="lab">
+    <header class="lab-head">
+      <p class="eyebrow">Lab · T8 Outcome markets</p>
+      <h1>Settlement explorer</h1>
+      <p class="lede">
+        Real HIP-4 markets from mainnet, with every price
+        <a href="https://github.com/vignesh-chaturvedi/hyperkeeper">hyperkeeper</a> recorded during
+        each settlement window. Pick one, see the prices against the threshold, and check which
+        way of averaging them gives the venue's actual result.
+      </p>
+    </header>
+
+    <section class="panel" aria-labelledby="pick-title">
+      <h2 id="pick-title">Market</h2>
+      <div class="field">
+        <label for="market">Settled market</label>
+        <select id="market"><option>Loading…</option></select>
+      </div>
+      <p class="small" id="group-note">–</p>
+    </section>
+
+    <section class="panel" aria-labelledby="facts-title">
+      <h2 id="facts-title">What it asked</h2>
+      <div class="grid-stats">
+        <div class="stat"><span>Venue and coin</span><b id="f-coin">–</b></div>
+        <div class="stat"><span>Averages</span><b id="f-kind">–</b></div>
+        <div class="stat"><span>Window</span><b id="f-window">–</b></div>
+        <div class="stat"><span>Threshold</span><b id="f-threshold">–</b></div>
+        <div class="stat"><span>Venue settled</span><b id="f-result">–</b></div>
+        <div class="stat"><span>Settled after</span><b id="f-lag">–</b></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="chart-title">
+      <h2 id="chart-title">Prices in the window</h2>
+      <div class="chart" id="chart" role="img" aria-label="Recorded prices across the settlement window, with the threshold as a dashed line"></div>
+      <p class="small" id="chart-note">–</p>
+    </section>
+
+    <section class="panel" aria-labelledby="avg-title">
+      <h2 id="avg-title">Three ways to average</h2>
+      <div class="tbl-wrap">
+        <table class="avg">
+          <thead><tr><th>Average</th><th>Value</th><th>From threshold</th><th>Says</th><th>Matches venue</th></tr></thead>
+          <tbody id="avg-rows"><tr><td colspan="5">–</td></tr></tbody>
+        </table>
+      </div>
+      <p class="small">
+        The template only says "TWAP of" a price. Across 197 of Skew's markets, the volume-weighted
+        average matched every settlement and the time-weighted one missed two. Outcome's mark-price
+        markets match the time-weighted average except for ties within a fraction of a basis point.
+      </p>
+    </section>
+
+    <p class="small">
+      Data: <a href="/data/hip4-settlements.json">hip4-settlements.json</a>, CC BY 4.0, built from
+      hyperkeeper's logs by <code>scripts/build-hip4-dataset.ts</code>.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; }
+  table.avg { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+  .avg th, .avg td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  .avg tr:last-child td { border-bottom: 0; }
+  .avg th { font-size: 12.5px; color: var(--muted); background: var(--sunk); }
+  .avg td.n { font-family: var(--data); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .yes-match { color: var(--ok); font-weight: 600; }
+  .no-match { color: var(--mvp); font-weight: 600; }
+</style>
+
+<script>
+  import { plainMean, timeWeighted, volumeWeighted, type Sample } from "../../lib/twap";
+
+  type Market = {
+    outcome: number; group: string; venue: string; coin: string; kind: "Mark" | "Trade" | "Candle1m"; rule: "above" | "touch";
+    threshold: string; expiry: string; windowStartMs: number; windowEndMs: number; actualYes: boolean;
+    settleLagS: number; touchedAt: string | null; samples: Sample[];
+  };
+  const notes: Record<string, string> = {
+    "Averages disagree": "The time-weighted and volume-weighted averages land on opposite sides of the threshold. Skew's result shows which one it uses.",
+    "Close calls": "These finished within a few basis points of the threshold, where the choice of average starts to matter.",
+    Ties: "Outcome's misses. hyperkeeper samples the mark about once a second, and these finished within a fraction of a basis point: too close to call from that data.",
+    Touch: "A priceTouch market: it resolves Yes as soon as a 3-second TWAP of the mark reaches the target. This window is the one that touched.",
+    Ordinary: "Clear results, far from the threshold, for comparison.",
+    Candles: "trade[XYZ] Events average five 1-minute candle closes, which anyone can fetch, so these can be checked without recording anything.",
+  };
+  const kindLabel = { Mark: "Mark price", Trade: "BTC trades", Candle1m: "1-minute closes" } as const;
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  const select = $("market") as HTMLSelectElement;
+  let markets: Market[] = [];
+
+  const fmt = (x: number) => x.toLocaleString("en-US", { maximumFractionDigits: 6 });
+  const lag = (s: number) => (s >= 3600 ? `${(s / 3600).toFixed(1)} h` : s >= 120 ? `${Math.round(s / 60)} min` : `${Math.round(s)} s`);
+
+  function show(m: Market) {
+    const length = m.windowEndMs - m.windowStartMs;
+    const threshold = Number(m.threshold);
+    $("group-note").textContent = notes[m.group] ?? "";
+    $("f-coin").textContent = `${m.venue} · ${m.coin}`;
+    $("f-kind").textContent = kindLabel[m.kind];
+    $("f-window").textContent = m.rule === "touch" ? `${length / 1000} s ending at the touch` : `${length / 1000} s ending ${m.expiry.slice(11, 16)} UTC, ${m.expiry.slice(0, 10)}`;
+    $("f-threshold").textContent = `${m.rule === "touch" ? "reaches" : "above"} ${fmt(threshold)}`;
+    $("f-result").textContent = m.actualYes ? "Yes" : "No";
+    $("f-lag").textContent = m.settleLagS == null ? "–" : `${lag(m.settleLagS)}${m.rule === "touch" ? " after the touch" : " after expiry"}`;
+
+    const rows: [string, number | null][] =
+      m.kind === "Candle1m"
+        ? [["Mean of the 1-minute closes (the template's average)", plainMean(m.samples, length)]]
+        : [
+            ["Time-weighted", timeWeighted(m.samples, length)],
+            ["Plain mean of samples", plainMean(m.samples, length)],
+            ...(m.kind === "Trade" ? ([["Volume-weighted", volumeWeighted(m.samples, length)]] as [string, number | null][]) : []),
+          ];
+    $("avg-rows").innerHTML = rows
+      .map(([name, v]) => {
+        if (v === null) return `<tr><td>${name}</td><td colspan="4">not enough data</td></tr>`;
+        const yes = m.rule === "touch" ? v >= threshold : v > threshold;
+        const bp = ((v - threshold) / threshold) * 1e4;
+        const match = yes === m.actualYes;
+        return `<tr><td>${name}</td><td class="n">${fmt(v)}</td><td class="n">${bp >= 0 ? "+" : ""}${bp.toFixed(2)} bp</td><td>${yes ? "Yes" : "No"}</td><td class="${match ? "yes-match" : "no-match"}">${match ? "Yes" : "No"}</td></tr>`;
+      })
+      .join("");
+    drawChart(m, length, threshold);
+    const n = m.samples.filter((s) => s[0] >= 0 && s[0] < length).length;
+    $("chart-note").textContent =
+      m.kind === "Trade" ? `${n} trades in the window; dot size shows trade size.`
+      : m.kind === "Mark" ? `${n} mark prices in the window, as received from the WebSocket.`
+      : "Each point is a 1-minute candle's close.";
+  }
+
+  function drawChart(m: Market, length: number, threshold: number) {
+    const host = $("chart");
+    const W = Math.max(300, host.clientWidth), H = 260;
+    const pad = { l: 80, r: 16, t: 16, b: 34 };
+    const pts = m.samples.filter((s) => s[0] <= length);
+    const prices = [...pts.map((s) => s[1]), threshold];
+    let lo = Math.min(...prices), hi = Math.max(...prices);
+    const span = hi - lo || threshold * 0.0001;
+    lo -= span * 0.08; hi += span * 0.08;
+    const x0 = Math.min(0, ...pts.map((s) => s[0]));
+    const x = (t: number) => pad.l + ((t - x0) / (length - x0)) * (W - pad.l - pad.r);
+    const y = (p: number) => pad.t + (1 - (p - lo) / (hi - lo)) * (H - pad.t - pad.b);
+    let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+    for (let i = 0; i <= 4; i++) {
+      const p = lo + ((hi - lo) * i) / 4;
+      svg += `<line class="gridline" x1="${pad.l}" x2="${W - pad.r}" y1="${y(p)}" y2="${y(p)}"/><text class="ax" x="${pad.l - 8}" y="${y(p) + 4}" text-anchor="end">${fmt(Number(p.toPrecision(7)))}</text>`;
+    }
+    svg += `<rect x="${x(0)}" y="${pad.t}" width="${x(length) - x(0)}" height="${H - pad.t - pad.b}" class="window"/>`;
+    for (const t of [0, length]) svg += `<text class="ax" x="${x(t)}" y="${H - 12}" text-anchor="${t ? "end" : "start"}">${t ? `${length / 1000} s` : "window opens"}</text>`;
+    svg += `<line class="threshold" x1="${pad.l}" x2="${W - pad.r}" y1="${y(threshold)}" y2="${y(threshold)}"/>`;
+    if (m.kind === "Trade") {
+      const maxSz = Math.max(...pts.map((s) => s[2] ?? 0)) || 1;
+      for (const s of pts) svg += `<circle class="dot" cx="${x(s[0])}" cy="${y(s[1])}" r="${(1.5 + 6 * Math.sqrt((s[2] ?? 0) / maxSz)).toFixed(1)}"/>`;
+    } else {
+      let d = "";
+      pts.forEach((s, i) => {
+        const nx = i + 1 < pts.length ? pts[i + 1][0] : length;
+        d += `${i ? "L" : "M"}${x(s[0]).toFixed(1)},${y(s[1]).toFixed(1)} L${x(Math.min(nx, length)).toFixed(1)},${y(s[1]).toFixed(1)} `;
+      });
+      svg += `<path class="curve" d="${d}"/>`;
+      if (m.kind === "Candle1m") for (const s of pts) svg += `<circle class="dot" cx="${x(s[0])}" cy="${y(s[1])}" r="4"/>`;
+    }
+    svg += `</svg>`;
+    host.innerHTML = svg;
+  }
+
+  async function init() {
+    const data = await (await fetch("/data/hip4-settlements.json")).json();
+    markets = data.markets as Market[];
+    const groups = [...new Set(markets.map((m) => m.group))];
+    select.innerHTML = groups
+      .map((g) => `<optgroup label="${g}">${markets.filter((m) => m.group === g).map((m) => `<option value="${m.outcome}">${m.coin} · ${m.venue} · outcome ${m.outcome}</option>`).join("")}</optgroup>`)
+      .join("");
+    show(markets[0]);
+  }
+  select.addEventListener("change", () => show(markets.find((m) => String(m.outcome) === select.value)!));
+  new ResizeObserver(() => { const m = markets.find((m) => String(m.outcome) === select.value); if (m) show(m); }).observe($("chart"));
+  init().catch(() => ($("group-note").textContent = "Couldn't load the dataset."));
+</script>
