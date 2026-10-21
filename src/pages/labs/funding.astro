@@ -1,0 +1,164 @@
+---
+import Base from "../../layouts/Base.astro";
+import "../../styles/lab.css";
+---
+
+<Base title="Funding and mark price" description="Live oracle, mark and impact prices for any Hyperliquid perp, with the premium and funding rate worked out from the published formula.">
+  <div class="lab">
+    <header class="lab-head">
+      <p class="eyebrow">Lab · T4 Trading mechanics</p>
+      <h1>Funding and mark price</h1>
+      <p class="lede">
+        Pick a perp and watch its prices update every 5 seconds from mainnet. The lab recomputes
+        the premium from the impact prices and shows where the hour's funding sits on the
+        published formula.
+      </p>
+    </header>
+
+    <section class="panel" aria-labelledby="pick-title">
+      <h2 id="pick-title">Perp</h2>
+      <div class="field">
+        <label for="coin">Main-DEX perp</label>
+        <select id="coin"><option value="BTC">BTC</option></select>
+      </div>
+      <p class="small" id="updated">Loading live data from api.hyperliquid.xyz…</p>
+    </section>
+
+    <section class="panel" aria-labelledby="prices-title">
+      <h2 id="prices-title">Prices now</h2>
+      <div class="grid-stats">
+        <div class="stat"><span>Oracle</span><b id="s-oracle">–</b></div>
+        <div class="stat"><span>Mark</span><b id="s-mark">–</b></div>
+        <div class="stat"><span>Mid</span><b id="s-mid">–</b></div>
+        <div class="stat"><span>Impact bid</span><b id="s-ibid">–</b></div>
+        <div class="stat"><span>Impact ask</span><b id="s-iask">–</b></div>
+      </div>
+      <p class="small">
+        The oracle drives funding; the mark drives margin, liquidations and TP/SL. Impact prices
+        are the average fill prices for a set notional size on each side of the book.
+      </p>
+    </section>
+
+    <section class="panel" aria-labelledby="premium-title">
+      <h2 id="premium-title">Premium, worked out</h2>
+      <pre class="value" id="premium-work">premium = (max(impact bid − oracle, 0) − max(oracle − impact ask, 0)) / oracle</pre>
+      <div class="grid-stats">
+        <div class="stat"><span>Premium, computed here</span><b id="s-prem-calc">–</b></div>
+        <div class="stat"><span>Premium, from the API</span><b id="s-prem-api">–</b></div>
+        <div class="stat"><span>Predicted funding, per hour</span><b id="s-funding">–</b></div>
+        <div class="stat"><span>The same, per year</span><b id="s-annual">–</b></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="curve-title">
+      <h2 id="curve-title">Where funding sits on the formula</h2>
+      <p class="small">
+        Hourly funding against the hour's average premium. Across the flat middle, the clamp cancels
+        the premium and funding equals the interest rate, 0.00125% an hour. The dot is today's
+        instantaneous premium; the dashed line is the API's predicted rate, which uses the average
+        over the hour so far.
+      </p>
+      <div class="chart" id="chart" role="img" aria-label="Hourly funding rate against average premium, with the current values marked"></div>
+      <p class="small" id="implied">–</p>
+    </section>
+
+    <section class="panel" aria-labelledby="pay-title">
+      <h2 id="pay-title">What a position pays</h2>
+      <div class="field">
+        <label for="size">Position size, in coins</label>
+        <input id="size" type="number" min="0" step="any" value="1" />
+      </div>
+      <p id="payment">–</p>
+      <p class="small">Payment = size × oracle price × hourly rate. It uses the oracle price, not the mark.</p>
+    </section>
+  </div>
+</Base>
+
+<script>
+  import { CLAMP_8H, INTEREST_8H, hourlyFunding, impliedAvgPremium, premium } from "../../lib/funding";
+
+  type Ctx = { oraclePx: string; markPx: string; midPx: string | null; impactPxs: [string, string] | null; premium: string | null; funding: string };
+  const API = "https://api.hyperliquid.xyz/info";
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  const select = $("coin") as HTMLSelectElement;
+  const sizeInput = $("size") as HTMLInputElement;
+  const pct = (x: number, digits = 4) => `${(x * 100).toFixed(digits)}%`;
+  const num = (x: number) => x.toLocaleString("en-US", { maximumFractionDigits: 6 });
+  let latest: { ctx: Ctx; coin: string } | null = null;
+
+  async function load() {
+    const res = await fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ type: "metaAndAssetCtxs" }) });
+    const [meta, ctxs] = (await res.json()) as [{ universe: { name: string; isDelisted?: boolean }[] }, Ctx[]];
+    if (select.options.length <= 1) {
+      const names = meta.universe.filter((u) => !u.isDelisted).map((u) => u.name);
+      select.innerHTML = names.map((n) => `<option value="${n}"${n === "BTC" ? " selected" : ""}>${n}</option>`).join("");
+    }
+    const i = meta.universe.findIndex((u) => u.name === select.value);
+    latest = { ctx: ctxs[i], coin: select.value };
+    render();
+    $("updated").textContent = `Live from api.hyperliquid.xyz · updated ${new Date().toLocaleTimeString()}`;
+  }
+
+  function render() {
+    if (!latest) return;
+    const { ctx } = latest;
+    const oracle = Number(ctx.oraclePx);
+    const [ibid, iask] = (ctx.impactPxs ?? ["NaN", "NaN"]).map(Number);
+    $("s-oracle").textContent = num(oracle);
+    $("s-mark").textContent = num(Number(ctx.markPx));
+    $("s-mid").textContent = ctx.midPx ? num(Number(ctx.midPx)) : "no book";
+    $("s-ibid").textContent = num(ibid);
+    $("s-iask").textContent = num(iask);
+    const calc = premium(oracle, ibid, iask);
+    const fromApi = ctx.premium === null ? NaN : Number(ctx.premium);
+    const funding = Number(ctx.funding);
+    $("premium-work").textContent =
+      `premium = (max(${num(ibid)} − ${num(oracle)}, 0) − max(${num(oracle)} − ${num(iask)}, 0)) / ${num(oracle)}\n        = ${pct(calc)}`;
+    $("s-prem-calc").textContent = pct(calc);
+    $("s-prem-api").textContent = Number.isNaN(fromApi) ? "–" : pct(fromApi);
+    $("s-funding").textContent = pct(funding, 5);
+    $("s-annual").textContent = pct(funding * 24 * 365, 2);
+    const implied = impliedAvgPremium(funding);
+    $("implied").textContent = implied === null
+      ? "The predicted rate equals the interest rate: the hour's average premium sits inside the flat zone, where the clamp cancels it."
+      : `The predicted rate is off the flat zone, so the hour's average premium so far is about ${pct(implied)}.`;
+    drawChart(Number.isNaN(fromApi) ? calc : fromApi, funding, implied);
+    const size = Number(sizeInput.value) || 0;
+    const pay = size * oracle * funding;
+    $("payment").textContent = pay === 0
+      ? "Enter a size to see the hourly payment."
+      : `Each hour a long of ${num(size)} ${latest.coin} ${pay > 0 ? "pays" : "receives"} about $${Math.abs(pay).toFixed(4)}, and a short ${pay > 0 ? "receives" : "pays"} the same.`;
+  }
+
+  function drawChart(nowPremium: number, apiFunding: number, implied: number | null) {
+    const host = $("chart");
+    const W = Math.max(300, host.clientWidth), H = 240;
+    const m = { l: 88, r: 24, t: 22, b: 34 };
+    const xMin = -0.0015, xMax = 0.0015;
+    const yMin = hourlyFunding(xMin), yMax = hourlyFunding(xMax);
+    const x = (p: number) => m.l + ((p - xMin) / (xMax - xMin)) * (W - m.l - m.r);
+    const y = (f: number) => m.t + (1 - (f - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+    const knots = [xMin, INTEREST_8H - CLAMP_8H, INTEREST_8H + CLAMP_8H, xMax];
+    const path = knots.map((p, i) => `${i ? "L" : "M"}${x(p).toFixed(1)},${y(hourlyFunding(p)).toFixed(1)}`).join(" ");
+    const xt = [-0.001, -0.0005, 0, 0.0005, 0.001];
+    const yt = [-0.000125, 0, 0.000125];
+    const clampP = Math.min(Math.max(nowPremium, xMin), xMax);
+    let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+    for (const t of xt) svg += `<line class="gridline" x1="${x(t)}" x2="${x(t)}" y1="${m.t}" y2="${H - m.b}"/><text class="ax" x="${x(t)}" y="${H - 12}" text-anchor="middle">${(t * 100).toFixed(2)}%</text>`;
+    for (const t of yt) svg += `<line class="gridline" x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/><text class="ax" x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${(t * 100).toFixed(5)}%</text>`;
+    svg += `<path class="curve" d="${path}"/>`;
+    const flatMid = (INTEREST_8H - CLAMP_8H + INTEREST_8H + CLAMP_8H) / 2;
+    svg += `<text class="ax" x="${x(flatMid)}" y="${y(INTEREST_8H / 8) - 8}" text-anchor="middle">flat: 0.00125% an hour</text>`;
+    if (apiFunding >= yMin && apiFunding <= yMax) svg += `<line class="marker-line" x1="${m.l}" x2="${W - m.r}" y1="${y(apiFunding)}" y2="${y(apiFunding)}"/>`;
+    if (implied !== null && implied >= xMin && implied <= xMax) svg += `<circle class="marker" cx="${x(implied)}" cy="${y(apiFunding)}" r="4"/>`;
+    svg += `<circle class="dot" cx="${x(clampP)}" cy="${y(hourlyFunding(clampP))}" r="6"/>`;
+    svg += `</svg>`;
+    host.innerHTML = svg;
+  }
+
+  select.addEventListener("change", () => { latest = null; load(); });
+  sizeInput.addEventListener("input", render);
+  new ResizeObserver(() => render()).observe($("chart"));
+  load();
+  setInterval(() => { if (!document.hidden) load().catch(() => ($("updated").textContent = "Couldn't reach api.hyperliquid.xyz; retrying.")); }, 5000);
+</script>

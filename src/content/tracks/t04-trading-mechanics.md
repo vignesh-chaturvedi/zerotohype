@@ -22,7 +22,7 @@ docs:
 outside:
   - { title: Monitor TP/SL trigger orders, url: "https://www.quicknode.com/guides/hyperliquid/monitor-tpsl-trigger-orders-stream-hyperliquid", by: QuickNode }
 build:
-  - { label: Funding and mark price, kind: lab }
+  - { label: Funding and mark price, kind: lab, status: live, href: "/labs/funding/" }
   - { label: Margin and liquidation price, kind: workbench }
   - { label: Fee tier, kind: workbench }
   - { label: Funding-rate scanner, kind: project }
