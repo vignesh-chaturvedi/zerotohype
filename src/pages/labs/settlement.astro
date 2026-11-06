@@ -52,8 +52,8 @@ import "../../styles/lab.css";
         </table>
       </div>
       <p class="small">
-        The template only says "TWAP of" a price. Across 197 of Skew's markets, the volume-weighted
-        average matched every settlement and the time-weighted one missed two. Outcome's mark-price
+        The template only says "TWAP of" a price. Across 1,121 of Skew's markets, the volume-weighted
+        average matched every settlement and the time-weighted one missed five. Outcome's mark-price
         markets match the time-weighted average except for ties within a fraction of a basis point.
       </p>
     </section>
@@ -82,7 +82,7 @@ import "../../styles/lab.css";
   type Market = {
     outcome: number; group: string; venue: string; coin: string; kind: "Mark" | "Trade" | "Candle1m"; rule: "above" | "touch";
     threshold: string; expiry: string; windowStartMs: number; windowEndMs: number; actualYes: boolean;
-    settleLagS: number; touchedAt: string | null; samples: Sample[];
+    settleLagS: number; touchedAt: string | null; touchFrom: "below" | "above" | null; samples: Sample[];
   };
   const notes: Record<string, string> = {
     "Averages disagree": "The time-weighted and volume-weighted averages land on opposite sides of the threshold. Skew's result shows which one it uses.",
@@ -107,7 +107,7 @@ import "../../styles/lab.css";
     $("f-coin").textContent = `${m.venue} · ${m.coin}`;
     $("f-kind").textContent = kindLabel[m.kind];
     $("f-window").textContent = m.rule === "touch" ? `${length / 1000} s ending at the touch` : `${length / 1000} s ending ${m.expiry.slice(11, 16)} UTC, ${m.expiry.slice(0, 10)}`;
-    $("f-threshold").textContent = `${m.rule === "touch" ? "reaches" : "above"} ${fmt(threshold)}`;
+    $("f-threshold").textContent = `${m.rule !== "touch" ? "above" : m.touchFrom === "above" ? "falls to" : "rises to"} ${fmt(threshold)}`;
     $("f-result").textContent = m.actualYes ? "Yes" : "No";
     $("f-lag").textContent = m.settleLagS == null ? "–" : `${lag(m.settleLagS)}${m.rule === "touch" ? " after the touch" : " after expiry"}`;
 
@@ -122,7 +122,7 @@ import "../../styles/lab.css";
     $("avg-rows").innerHTML = rows
       .map(([name, v]) => {
         if (v === null) return `<tr><td>${name}</td><td colspan="4">not enough data</td></tr>`;
-        const yes = m.rule === "touch" ? v >= threshold : v > threshold;
+        const yes = m.rule !== "touch" ? v > threshold : m.touchFrom === "above" ? v <= threshold : v >= threshold;
         const bp = ((v - threshold) / threshold) * 1e4;
         const match = yes === m.actualYes;
         return `<tr><td>${name}</td><td class="n">${fmt(v)}</td><td class="n">${bp >= 0 ? "+" : ""}${bp.toFixed(2)} bp</td><td>${yes ? "Yes" : "No"}</td><td class="${match ? "yes-match" : "no-match"}">${match ? "Yes" : "No"}</td></tr>`;

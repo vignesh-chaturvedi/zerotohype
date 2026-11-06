@@ -79,18 +79,20 @@ To read a result, call `{"type":"settledOutcome","outcome":7}`. It returns `null
 
 The template says "TWAP of {priceDescription}" and stops there. It doesn't say where the samples come from or how they're weighted. [hyperkeeper](https://github.com/vignesh-chaturvedi/hyperkeeper) has recomputed every mainnet price market since Oct 8, 2026 and compared its answer with each venue's settlement.
 
-| Venue | Settles on | Window | Venue settled after (median) | Match, Oct 8–17 |
+| Venue | Settles on | Window | Venue settled after (median) | Match, Oct 8 to Nov 6 |
 |---|---|---|---|---|
-| `out` | Mark price, sampled live | 60 s | 28 s | 2,784 of 2,788 |
-| `skew` | BTC trades, sampled live | 90 s | 51 s | 440 of 444 |
-| `txyz` | 1-minute candle closes | 300 s | 23 min (14 to 113) | 180 of 180 |
+| `out` | Mark price, sampled live | 60 s | 31 s | 8,585 of 8,600 |
+| `skew` | BTC trades, sampled live | 90 s | 44 s | 1,360 of 1,368 |
+| `txyz` | 1-minute candle closes | 300 s | 24 min | 598 of 601 |
 
 What that taught us:
 
 - **Mark and trade prices have no public history.** To recompute those markets you have to record the WebSocket feed from before each window opens. Candles are public, but only the most recent 5,000.
-- **Skew's trade average is volume-weighted.** A time-weighted average of BTC trades missed 2 of Skew's markets after Oct 13. A volume-weighted one matched all 197.
-- **Some misses can't be helped.** All four of `out`'s misses were within 0.25 bp of the threshold. Sampling the mark about once a second can't separate cases that close.
-- **Settling fast is a real job.** `txyz` took 14 to 113 minutes. One of Outcome's `priceTouch` markets, oil reaching 100, touched at 00:16 UTC on Oct 17 and settled at 06:42 UTC. Both results were knowable within seconds.
+- **Skew's trade average is volume-weighted.** From Oct 13 to Nov 6, a time-weighted average of BTC trades missed 5 of Skew's 1,121 markets. A volume-weighted one matched all of them.
+- **Drop replayed trades.** After a reconnect, the trades feed resends its last 30 or so trades. That happened in 13 of those 1,121 windows. Drop the repeats (each trade has a unique `tid`) and sort by time before you weight anything.
+- **Some misses can't be helped.** All 15 of `out`'s misses were within 0.25 bp of the threshold. Sampling the mark about once a second can't separate cases that close.
+- **Candle markets can miss too.** Three `txyz` markets missed by about 3 bp, each at the US stock open or close. Their candles had dropped out of the API before we checked, so the cause is still open.
+- **Settling fast is a real job.** `txyz` usually took 12 to 85 minutes, but whole batches have waited 3 to 4 hours, and two markets waited 17. One of Outcome's `priceTouch` markets, oil reaching 100, touched at 00:16 UTC on Oct 17 and settled at 06:42 UTC. Both results were knowable within seconds.
 
 ## Running a venue
 

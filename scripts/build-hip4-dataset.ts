@@ -8,6 +8,7 @@
 
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
+import { timeWeighted, volumeWeighted, type Sample } from "../src/lib/twap.ts";
 
 type Row = Record<string, any>;
 const dir = process.argv[2];
@@ -36,37 +37,76 @@ const picks: Pick[] = [];
 const take = (ids: number[], group: string, limit = ids.length) =>
   ids.filter((id) => !picks.some((p) => p.outcome === id)).slice(0, limit).forEach((outcome) => picks.push({ outcome, group }));
 const withSamples = [...settled.values()].filter((s) => sampled.has(s.outcome) && predicted.has(s.outcome));
-const margin = (s: Row) => Math.abs(predicted.get(s.outcome)!.margin_bps ?? 99);
+
+// After a reconnect, the trades feed resends its last ~30 trades, so time jumps back. Drop each
+// resent trade that repeats one already kept; anything new is kept and sorted into place below.
+type RawSample = [number, string, string | null];
+function dropReplays(raw: RawSample[]): RawSample[] {
+  const kept: RawSample[] = [];
+  const seen = new Set<string>();
+  let latest = -Infinity;
+  let replaying = false;
+  for (const s of raw) {
+    if (s[0] < latest) replaying = true;
+    const k = s.join("|");
+    if (replaying && s[0] <= latest && seen.has(k)) continue;
+    replaying = false;
+    kept.push(s);
+    seen.add(k);
+    latest = Math.max(latest, s[0]);
+  }
+  return kept;
+}
+
+// The window's samples in time order, relative to its start.
+function windowOf(outcome: number) {
+  const raw = sampled.get(outcome)!;
+  const start: number = raw.window_start_ms;
+  const end: number = raw.window_end_ms ?? raw.expiry_ms;
+  const samples: Sample[] = dropReplays(raw.samples)
+    .map(([t, px, sz]) => (sz === null ? [t - start, Number(px)] : [t - start, Number(px), Number(sz)]) as Sample)
+    .sort((a, b) => a[0] - b[0]);
+  return { start, end, samples };
+}
+// Margins come from these samples, not from hyperkeeper's logged price, so they match what the lab shows.
+const twapOf = (s: Row) => { const w = windowOf(s.outcome); return timeWeighted(w.samples, w.end - w.start); };
+const margin = (s: Row) => { const v = twapOf(s); return v === null ? 99 : Math.abs(((v - Number(s.threshold)) / Number(s.threshold)) * 1e4); };
 const byMargin = (rows: Row[]) => [...rows].sort((a, b) => margin(a) - margin(b));
 
 // Skew: every market where the averages disagree on the side, then close calls, then ordinary ones.
 const skew = withSamples.filter((s) => s.venue === "skew");
-const sideOf = (s: Row, key: string) => Number(predicted.get(s.outcome)![key] ?? NaN) > Number(s.threshold);
-take(skew.filter((s) => predicted.get(s.outcome)!.vwap_price && sideOf(s, "price") !== sideOf(s, "vwap_price")).map((s) => s.outcome), "Averages disagree");
+const disagree = (s: Row) => {
+  const w = windowOf(s.outcome);
+  const [twap, vwap] = [timeWeighted(w.samples, w.end - w.start), volumeWeighted(w.samples, w.end - w.start)];
+  return twap !== null && vwap !== null && twap > Number(s.threshold) !== vwap > Number(s.threshold);
+};
+take(skew.filter(disagree).map((s) => s.outcome), "Averages disagree");
 take(byMargin(skew.filter((s) => margin(s) < 3)).map((s) => s.outcome), "Close calls", 6);
 // Outcome: its misses, all within a fraction of a basis point, then close calls that matched.
 const out = withSamples.filter((s) => s.venue === "out" && s.rule !== "touch");
 take(out.filter((s) => s.predicted_yes !== s.actual_yes).map((s) => s.outcome), "Ties");
 take(byMargin(out.filter((s) => s.predicted_yes === s.actual_yes && margin(s) < 1)).map((s) => s.outcome), "Close calls", 4);
-// Touch markets with their touching window.
-take(withSamples.filter((s) => s.rule === "touch").map((s) => s.outcome), "Touch");
-// A few ordinary markets for contrast.
-take(byMargin(skew).reverse().map((s) => s.outcome), "Ordinary", 2);
-take(byMargin(out).reverse().map((s) => s.outcome), "Ordinary", 2);
+// Touch markets that touched, with their touching window. Untouched ones only show the last
+// window before expiry, which explains nothing.
+take(withSamples.filter((s) => s.rule === "touch" && s.actual_yes && s.touched_at).map((s) => s.outcome), "Touch");
+// A few ordinary markets for contrast, each from a different window and small enough to load fast.
+const oneWindowEach = (rows: Row[]) =>
+  rows.filter((r, i) => rows.findIndex((x) => x.expiry === r.expiry && x.coin === r.coin) === i && windowOf(r.outcome).samples.length <= 1000);
+take(oneWindowEach(byMargin(skew).reverse()).map((s) => s.outcome), "Ordinary", 2);
+take(oneWindowEach(byMargin(out).reverse()).map((s) => s.outcome), "Ordinary", 2);
 
 const markets: Row[] = [];
 for (const { outcome, group } of picks) {
   const s = settled.get(outcome)!;
-  const p = predicted.get(outcome)!;
-  const raw = sampled.get(outcome)!;
-  const start = raw.window_start_ms;
-  const end = raw.window_end_ms ?? raw.expiry_ms;
+  const { start, end, samples } = windowOf(outcome);
   markets.push({
     outcome, group, venue: s.venue, coin: s.coin, kind: s.kind, rule: s.rule ?? "above",
     threshold: s.threshold, expiry: s.expiry, windowStartMs: start, windowEndMs: end,
     actualYes: s.actual_yes, settleLagS: s.settle_lag_s,
     touchedAt: s.touched_at ?? null,
-    samples: raw.samples.map(([t, px, sz]: [number, string, string | null]) => (sz === null ? [t - start, Number(px)] : [t - start, Number(px), Number(sz)])),
+    // A touch counts from the side the price started on: the earliest recorded sample, well before the touch.
+    touchFrom: s.rule === "touch" ? (samples[0][1] < Number(s.threshold) ? "below" : "above") : null,
+    samples,
   });
 }
 
@@ -91,6 +131,17 @@ for (const s of recentCandle) {
     threshold: s.threshold, expiry: s.expiry, windowStartMs: start, windowEndMs: end,
     actualYes: s.actual_yes, settleLagS: s.settle_lag_s, touchedAt: null, samples: closes,
   });
+}
+
+// The API keeps only the last ~3.5 days of 1-minute candles, so keep earlier candle markets
+// from the current dataset when there aren't four recent ones to fetch.
+try {
+  const previous = JSON.parse(await readFile("public/data/hip4-settlements.json", "utf8")) as { markets: Row[] };
+  const have = new Set(markets.map((m) => m.outcome));
+  const old = previous.markets.filter((m) => m.group === "Candles" && !have.has(m.outcome));
+  markets.push(...old.slice(0, Math.max(0, 4 - markets.filter((m) => m.group === "Candles").length)));
+} catch {
+  // No earlier dataset.
 }
 
 await mkdir("public/data", { recursive: true });
