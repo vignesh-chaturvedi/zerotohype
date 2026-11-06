@@ -1249,7 +1249,7 @@
     "out": 199,
     "txyz": 40,
     "protocol": 8,
-    "fox": 8
+    "fox": 7
   },
   "templates": {
     "aiModelHeadToHead": "16e36658a5f0",
