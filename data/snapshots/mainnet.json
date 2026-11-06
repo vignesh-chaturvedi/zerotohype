@@ -935,6 +935,10 @@
     "USELESS": {
       "maxLeverage": 3,
       "delisted": false
+    },
+    "XTEN": {
+      "maxLeverage": 3,
+      "delisted": false
     }
   },
   "dexs": {
@@ -1222,6 +1226,7 @@
           "0x7704c6ec1fb6b359a63da840a0b1e9d66441ffe4"
         ],
         "setFundingMultipliers": [
+          "0x6aa98caaa958d405206f8f4f9b886d0d618e1b6a",
           "0x7704c6ec1fb6b359a63da840a0b1e9d66441ffe4"
         ],
         "setMarginModes": [
@@ -1240,10 +1245,11 @@
     }
   },
   "venues": {
-    "out": 200,
-    "skew": 61,
-    "txyz": 72,
-    "protocol": 8
+    "skew": 66,
+    "out": 199,
+    "txyz": 40,
+    "protocol": 8,
+    "fox": 8
   },
   "templates": {
     "aiModelHeadToHead": "16e36658a5f0",

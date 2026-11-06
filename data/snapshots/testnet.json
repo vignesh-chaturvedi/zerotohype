@@ -847,6 +847,10 @@
     "USELESS": {
       "maxLeverage": 5,
       "delisted": false
+    },
+    "XTEN": {
+      "maxLeverage": 3,
+      "delisted": false
     }
   },
   "dexs": {
@@ -3762,6 +3766,7 @@
       "oracleUpdater": "0x8940d2bdb2ab14aaebf33c0619b08940fb60b5ad",
       "grants": {
         "setOracle": [
+          "0x6ad051e4a9884cb7b2b6a533840dfcae29f40e39",
           "0x8940d2bdb2ab14aaebf33c0619b08940fb60b5ad"
         ]
       }
@@ -3808,12 +3813,41 @@
           "0x27b7527b6512e361f3f80d61f0f1eba102d8b67f"
         ]
       }
+    },
+    "oxob": {
+      "fullName": "Temporary permission test",
+      "oracleUpdater": null,
+      "grants": {
+        "disableDex": [
+          "0x7ba8766728e88d107bd4bf491b155a0a96e6749d"
+        ]
+      }
+    },
+    "oxoc": {
+      "fullName": "registerAsset2 permission test",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "ppp": {
+      "fullName": "ppp",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "bit": {
+      "fullName": "Bit Markets",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "mew": {
+      "fullName": "Mew",
+      "oracleUpdater": null,
+      "grants": {}
     }
   },
   "venues": {
     "ao": 6,
-    "beat": 20,
-    "wren": 14,
+    "game": 20,
+    "wren": 16,
     "au": 16,
     "protocol": 112,
     "ag": 1,
@@ -3827,10 +3861,9 @@
     "ad": 6,
     "pewt": 11,
     "aa": 4,
-    "dorn": 4,
-    "flip": 17,
-    "kelp": 10,
-    "cat": 20,
+    "flp": 20,
+    "kelp": 9,
+    "flip": 19,
     "hehe": 6,
     "txyc": 20,
     "txya": 20,
@@ -3844,14 +3877,15 @@
     "zq": 4,
     "vox": 2,
     "yeet": 16,
-    "flp": 17,
+    "ae": 20,
+    "aq": 20,
     "txyz": 20,
     "tzxy": 20,
     "www": 6,
     "st": 1,
     "lo": 6,
     "abac": 7,
-    "ae": 20,
+    "beat": 20,
     "adf": 2,
     "of": 9,
     "abad": 7,
@@ -3868,19 +3902,20 @@
     "meow": 1,
     "qnh": 1,
     "ap": 2,
-    "omen": 1,
     "zz": 9,
-    "game": 20,
     "zzz": 1,
     "ak": 20,
-    "sdn": 11,
     "oxyz": 1,
     "qn": 1,
     "ai": 4,
+    "catm": 5,
     "xcds": 3,
+    "dorn": 4,
     "ddty": 1,
-    "pdct": 4,
-    "aq": 4
+    "ay": 2,
+    "dadu": 2,
+    "omen": 2,
+    "cat": 4
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",

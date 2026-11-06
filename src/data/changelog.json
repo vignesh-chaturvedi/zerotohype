@@ -1,1 +1,140 @@
-[]
+[
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "mainnet",
+    "area": "perps",
+    "summary": "New perp listed: `XTEN`, up to 3× leverage"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "mainnet",
+    "area": "HIP-3",
+    "summary": "`io`: `setFundingMultipliers` granted to 0x6aa9…1b6a"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "mainnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `fox` (8)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "perps",
+    "summary": "New perp listed: `XTEN`, up to 3× leverage"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`goy`: `setOracle` granted to 0x6ad0…0e39"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `oxob` (Temporary permission test)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `oxoc` (registerAsset2 permission test)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `ppp` (ppp)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `bit` (Bit Markets)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `mew` (Mew)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `catm` (5)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `ay` (2)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `dadu` (2)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "HIP-4 venue has no live outcomes any more: `sdn`"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "HIP-4 venue has no live outcomes any more: `pdct`"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Sub-accounts](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/sub-accounts)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Funding](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/funding)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Order types](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/order-types)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Exchange endpoint](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Rate limits and user limits](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/rate-limits-and-user-limits)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Priority fees](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/priority-fees)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [L1 data schemas](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/l1-data-schemas)"
+  },
+  {
+    "time": "2026-11-06T12:17:52.651Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Read Me - Builder Tools](https://hyperliquid.gitbook.io/hyperliquid-docs/builder-tools/read-me-builder-tools)"
+  }
+]
