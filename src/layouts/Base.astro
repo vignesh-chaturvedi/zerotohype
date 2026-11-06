@@ -67,7 +67,7 @@ const nav = [
   nav a { font-size: 14.5px; color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 6px; }
   nav a:hover { background: var(--sunk); color: var(--ink); }
   nav a[aria-current="page"] { color: var(--ink); background: var(--sunk); }
-  .page { padding-block: 40px 72px; display: grid; gap: 48px; }
+  .page { padding-block: 40px 72px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; }
   .site-footer { padding-block: 24px 40px; border-top: 1px solid var(--rule); font-size: 13.5px; color: var(--muted); }
   .site-footer p { max-width: 80ch; }
 </style>
