@@ -29,7 +29,9 @@ The site is static. On Cloudflare Pages, connect the repository and use:
 |---|---|
 | Build command | `pnpm build` |
 | Output directory | `dist` |
-| Environment variable | `NODE_VERSION=24` |
+| Environment variables | `NODE_VERSION=24`, `PNPM_VERSION=11.20.0` |
+
+Cloudflare's build image defaults to pnpm 8, which can't read this lockfile, so set `PNPM_VERSION`.
 
 `public/_headers` sets basic security headers. Turn on Cloudflare Web Analytics in the Pages project settings; it needs no code and sets no cookies.
 
