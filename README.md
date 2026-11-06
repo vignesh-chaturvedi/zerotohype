@@ -23,17 +23,9 @@ Code: MIT (`LICENSE`). Content in `src/content/`: CC BY 4.0 (`CONTENT-LICENSE.md
 
 ## Deploy
 
-The site is static. On Cloudflare Pages, connect the repository and use:
+The site is static and runs on Cloudflare Workers with static assets. Connect the repository in Workers Builds and keep the defaults: build command `pnpm run build`, deploy command `npx wrangler deploy`. `wrangler.jsonc` serves `dist/` and answers unknown paths with `404.html`. Without it, `wrangler deploy` tries to convert the site to server rendering with the Cloudflare adapter, and the build fails.
 
-| Setting | Value |
-|---|---|
-| Build command | `pnpm build` |
-| Output directory | `dist` |
-| Environment variables | `NODE_VERSION=24`, `PNPM_VERSION=11.20.0` |
-
-Cloudflare's build image defaults to pnpm 8, which can't read this lockfile, so set `PNPM_VERSION`.
-
-`public/_headers` sets basic security headers. Turn on Cloudflare Web Analytics in the Pages project settings; it needs no code and sets no cookies.
+`public/_headers` sets basic security headers. Turn on Cloudflare Web Analytics in the dashboard; it needs no code and sets no cookies.
 
 ## Labs and data
 
