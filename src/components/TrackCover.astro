@@ -38,35 +38,44 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
 <div class={`cover ${variant}`} style={`--c: ${color}`}>
   <span class="cv-code">{num}</span>
   {label && <span class="cv-label">{label}</span>}
-  <svg viewBox="0 0 320 200" aria-hidden="true" focusable="false">
+  <svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" data-kind={motif}>
     {motif === "layers" && (
       <g>
         <path d="M120 128 L210 96 L300 128 L210 160 Z" class="f2" />
-        <path d="M120 78 V128 M300 78 V128" class="dash" />
-        <path d="M120 78 L210 46 L300 78 L210 110 Z" class="bg" />
-        <path d="M120 78 L210 46 L300 78 L210 110 Z" class="f1" />
-        <text x="210" y="81" text-anchor="middle" class="cv-t">HyperEVM</text>
         <text x="210" y="138" text-anchor="middle" class="cv-t">HyperCore</text>
+        <path d="M120 78 V128" class="dash" data-flow="2" data-mode="pingpong" />
+        <path d="M300 78 V128" class="dash" data-flow="2" data-mode="pingpong" />
+        <path d="M210 82 V128" class="rail" data-flow="1" data-mode="pingpong" />
+        <g class="lift">
+          <path d="M120 78 L210 46 L300 78 L210 110 Z" class="bg" />
+          <path d="M120 78 L210 46 L300 78 L210 110 Z" class="f1" />
+          <text x="210" y="81" text-anchor="middle" class="cv-t">HyperEVM</text>
+        </g>
       </g>
     )}
     {motif === "book" && (
       <g>
         <path d="M110 64 H128 V80 H146 V96 H162 V112 H178 V130 H192 V150 H204 V168 H110 Z" class="f2" />
         <path d="M212 168 V146 H226 V128 H242 V110 H258 V92 H276 V74 H292 V58 H305 V168 Z" class="f1" />
-        <path d="M110 64 H128 V80 H146 V96 H162 V112 H178 V130 H192 V150 H204 V168" />
-        <path d="M212 168 V146 H226 V128 H242 V110 H258 V92 H276 V74 H292 V58 H305" />
+        <path d="M110 64 H128 V80 H146 V96 H162 V112 H178 V130 H192 V150 H204 V168" data-snap="bid" />
+        <path d="M212 168 V146 H226 V128 H242 V110 H258 V92 H276 V74 H292 V58 H305" data-snap="ask" />
         <path d="M110 168 H305" />
-        <path d="M208 38 V172" class="dash" />
+        <path d="M208 38 V172" class="dash mid" />
+        <path d="M110 162 H204" class="rail" data-flow="2" />
+        <path d="M305 162 H212" class="rail" data-flow="2" />
         <text x="150" y="188" text-anchor="middle" class="cv-t">BIDS</text>
         <text x="262" y="188" text-anchor="middle" class="cv-t">ASKS</text>
       </g>
     )}
     {motif === "sign" && (
       <g>
-        {signCells.map((c) => <rect x={c.x} y={c.y} width="12" height="12" rx="2" class={c.on ? "f3" : "f0"} />)}
+        {signCells.map((c, i) => <rect x={c.x} y={c.y} width="12" height="12" rx="2" class={c.on ? "f3" : "f0"} data-col={i % 8} />)}
         <path d="M258 78 H276 M270 72 L276 78 L270 84" />
-        <circle cx="292" cy="78" r="13" class="f1" />
-        <path d="M286 78 L290.5 82.5 L298 73" class="thick" />
+        <path d="M252 78 H278" class="rail" data-flow="1" />
+        <g class="seal">
+          <circle cx="292" cy="78" r="13" class="f1" />
+          <path d="M286 78 L290.5 82.5 L298 73" class="thick" />
+        </g>
         <text x="112" y="140" class="cv-t">msgpack · keccak · sign</text>
         <path d="M112 152 H248" class="dash" />
         <text x="112" y="172" class="cv-t">recovered = your key</text>
@@ -74,15 +83,16 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
     )}
     {motif === "funding" && (
       <g>
-        {fundingBars.map((b) => <rect x={b.x} y={b.v > 0 ? 120 - b.v : 120} width="7" height={Math.abs(b.v)} rx="1.5" class="f2" />)}
+        {fundingBars.map((b) => <rect x={b.x} y={b.v > 0 ? 120 - b.v : 120} width="7" height={Math.abs(b.v)} rx="1.5" class="f2" data-bar={b.v.toFixed(1)} />)}
         <path d="M110 120 H305" class="dash" />
-        <path d="M110 112 C135 66 160 66 185 108 S235 168 262 126 S296 80 305 92" class="thick" />
+        <path d="M110 112 C135 66 160 66 185 108 S235 168 262 126 S296 80 305 92" class="thick" data-snap="curve" data-flow="2" />
         <text x="112" y="186" class="cv-t">PREMIUM · FUNDING / H</text>
       </g>
     )}
     {motif === "flow" && (
       <g>
-        {flowRows.map((y) => <path d={`M114 ${y} C170 ${y} 190 108 240 108`} />)}
+        {flowRows.map((y, i) => <path d={`M114 ${y} C170 ${y} 190 108 240 108`} class="route" data-row={i} data-y={y} />)}
+        {flowRows.map((y) => <path d={`M114 ${y} C170 ${y} 190 108 240 108 H288`} class="rail" data-flow="1" />)}
         {flowRows.map((y) => <circle cx="114" cy={y} r="3.5" class="f3" />)}
         <path d="M240 108 H290 M282 100 L292 108 L282 116" class="thick" />
         <text x="196" y="186" text-anchor="middle" class="cv-t">BUILDER CODE</text>
@@ -91,16 +101,16 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
     {motif === "ladder" && (
       <g>
         <path d="M120 38 V172 H305" />
-        {ladder.map((l) => <rect x={l.x} y={l.y - 4} width={l.w} height="8" rx="2" class={l.strong ? "f3" : "f2"} />)}
-        <circle cx="218" cy="112" r="4.5" class="f3" />
+        {ladder.map((l, i) => <rect x={l.x} y={l.y - 4} width={l.w} height="8" rx="2" class={l.strong ? "f3" : "f2"} data-rung={i} data-y={l.y} data-end={l.x + l.w} />)}
+        <circle cx="218" cy="112" r="4.5" class="f3 ladder-dot" />
         <text x="300" y="188" text-anchor="end" class="cv-t">PRICE LADDER</text>
       </g>
     )}
     {motif === "oracle" && (
       <g>
         <path d="M112 128 C150 114 180 104 210 96 S270 82 305 70" class="dash" />
-        <path d={oraclePath} class="thick" />
-        {oracleY.map((y, i) => <circle cx={112 + i * 21} cy={y} r="3" class="f3" />)}
+        <path d={oraclePath} class="thick" data-snap="step" data-flow="1" />
+        {oracleY.map((y, i) => <circle cx={112 + i * 21} cy={y} r="3" class="f3" data-near data-i={i} />)}
         <path d="M112 166 H305" />
         {oracleY.map((_, i) => <path d={`M${112 + i * 21} 166 v5`} />)}
         <text x="122" y="188" text-anchor="middle" class="cv-t">3 s</text>
@@ -109,9 +119,9 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
     )}
     {motif === "window" && (
       <g>
-        <rect x="248" y="44" width="57" height="128" class="f1" />
+        <rect x="248" y="44" width="57" height="128" class="f1 win" />
         <path d="M110 100 H305" class="dash" />
-        <path d="M110 124 L122 114 L134 120 L146 106 L158 112 L170 98 L182 104 L194 92 L206 100 L218 88 L230 96 L242 90 L254 100 L266 93 L278 86 L290 96 L305 89" class="thick" />
+        <path d="M110 124 L122 114 L134 120 L146 106 L158 112 L170 98 L182 104 L194 92 L206 100 L218 88 L230 96 L242 90 L254 100 L266 93 L278 86 L290 96 L305 89" class="thick" data-snap="trace" data-flow="1" />
         <text x="276" y="38" text-anchor="middle" class="cv-t">TWAP</text>
         <text x="276" y="188" text-anchor="middle" class="cv-t">90 s</text>
         <text x="112" y="94" class="cv-t">THRESHOLD</text>
@@ -119,9 +129,9 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
     )}
     {motif === "blocks" && (
       <g>
-        <path d="M140 138 L190 112 L240 86 L288 60" class="dash" />
+        <path d="M140 138 L190 112 L240 86 L288 60" class="dash" data-flow="2" />
         {cubes.map(({ cx, cy }) => (
-          <g>
+          <g data-near>
             <path d={`M${cx - s} ${cy - s / 2} L${cx} ${cy} L${cx} ${cy + s} L${cx - s} ${cy + s / 2} Z`} class="f2" />
             <path d={`M${cx} ${cy} L${cx + s} ${cy - s / 2} L${cx + s} ${cy + s / 2} L${cx} ${cy + s} Z`} class="f3" />
             <path d={`M${cx} ${cy - s} L${cx + s} ${cy - s / 2} L${cx} ${cy} L${cx - s} ${cy - s / 2} Z`} class="f1" />
@@ -132,8 +142,8 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
     )}
     {motif === "nodes" && (
       <g>
-        {edges.map(([a, b]) => <path d={`M${nodes[a].x} ${nodes[a].y} L${nodes[b].x} ${nodes[b].y}`} />)}
-        {nodes.map((n, i) => (i === 2 ? <circle cx={n.x} cy={n.y} r="10" class="f3" /> : <circle cx={n.x} cy={n.y} r="5.5" class="bg-stroke" />))}
+        {edges.map(([a, b]) => <path d={`M${nodes[a].x} ${nodes[a].y} L${nodes[b].x} ${nodes[b].y}`} class="edge" data-a={a} data-b={b} data-flow="1" />)}
+        {nodes.map((n, i) => <circle cx={n.x} cy={n.y} r={i === 2 ? 10 : 5.5} class={i === 2 ? "f3" : "bg-stroke"} data-node={i} data-near />)}
         <text x="112" y="186" class="cv-t">NODE · L1 DATA · EXPLORER</text>
       </g>
     )}
@@ -166,4 +176,5 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
   .cover :global(.bg-stroke) { fill: var(--cv-bg); }
   .cover :global(.dash) { stroke-dasharray: 3 4; stroke-opacity: 0.7; }
   .cover :global(.thick) { stroke-width: 2.4; }
+  .cover :global(.rail) { stroke: none; fill: none; }
 </style>

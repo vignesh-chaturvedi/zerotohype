@@ -75,10 +75,10 @@ const labs = [
     <div class="specimens" aria-label="Examples from the labs">
       <a class="spec spec-settle" href="/labs/settlement/" style={`--c: ${lookOf("T8").color}`}>
         <span class="spec-head"><span class="eyebrow">Settlement · {hero.venue} · {hero.coin}</span><span class="tag">outcome {hero.outcome}</span></span>
-        <svg viewBox={`0 0 ${W} ${H}`} class="spark" aria-hidden="true">
+        <svg viewBox={`0 0 ${W} ${H}`} class="spark" aria-hidden="true" data-kind="price" data-pad={pad} data-h={H} data-lo={lo} data-hi={hi} data-t0={t0} data-len={L}>
           <rect x={x(0)} y="0" width={x(L) - x(0)} height={H} class="win" />
           <path d={`M${pad} ${y(th)} H${W - pad}`} class="thr" />
-          <path d={trace} class="trace" />
+          <path d={trace} class="trace" data-snap="trace" data-flow="1" />
         </svg>
         <span class="spec-rows">
           <span><span>Volume-weighted</span><b>{fmt(vwap)}</b><span class={says(vwap) === "Yes" === hero.actualYes ? "ok" : "no"}>{says(vwap)} {says(vwap) === "Yes" === hero.actualYes ? "✓" : "✗"}</span></span>
@@ -246,7 +246,7 @@ const labs = [
   .spec-log { width: 78%; transform: rotate(-0.6deg); }
   .spec-log:hover { transform: rotate(-0.6deg) translateY(-3px); }
   .spec-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; }
-  .spark { width: 100%; height: auto; display: block; }
+  .spark { width: 100%; height: auto; display: block; color: var(--ink); overflow: visible; }
   .spark .win { fill: color-mix(in srgb, var(--c) 45%, transparent); }
   .spark .thr { stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 4 4; fill: none; }
   .spark .trace { stroke: var(--ink); stroke-width: 1.4; fill: none; stroke-linejoin: round; }
