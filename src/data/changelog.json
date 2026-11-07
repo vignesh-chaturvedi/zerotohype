@@ -1,5 +1,11 @@
 [
   {
+    "time": "2026-11-07T21:45:36.363Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "HIP-4 venue has no live outcomes any more: `game`"
+  },
+  {
     "time": "2026-11-06T12:17:52.651Z",
     "network": "mainnet",
     "area": "perps",
