@@ -1246,10 +1246,10 @@
   },
   "venues": {
     "skew": 66,
-    "out": 190,
+    "out": 182,
+    "fox": 7,
     "txyz": 25,
-    "protocol": 8,
-    "fox": 8
+    "protocol": 8
   },
   "templates": {
     "aiModelHeadToHead": "16e36658a5f0",

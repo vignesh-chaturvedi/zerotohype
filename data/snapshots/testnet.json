@@ -3907,6 +3907,7 @@
     "zzz": 1,
     "ak": 20,
     "oxyz": 1,
+    "omen": 2,
     "qn": 1,
     "ai": 4,
     "catm": 5,
@@ -3914,8 +3915,7 @@
     "dorn": 4,
     "ddty": 1,
     "ay": 2,
-    "dadu": 2,
-    "omen": 2
+    "dadu": 2
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",
