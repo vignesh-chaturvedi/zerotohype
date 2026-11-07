@@ -16,6 +16,7 @@
   --live: #d6371b;
   --mvp: #9a5a00;
   --ok: #1c7449;
+  --series-b: #1f6a96;
   --cover-amt: 100%;
   --cover-ink: #1d1b17;
   --cover-ink-tint: 0%;
@@ -31,7 +32,7 @@
   :root:not([data-theme="light"]) {
     --bg: #12110f; --surface: #1b1a17; --sunk: #242320; --ink: #eeeae2; --ink-2: #cfcac0; --muted: #a29d92;
     --rule: #2e2c28; --rule-strong: #403d37; --accent: #f2884a; --on-accent: #1b1a17; --primary: #eeeae2; --on-primary: #161512;
-    --live: #ff6b4f; --mvp: #e3a24e; --ok: #5cc493; --cover-amt: 26%; --cover-ink: #f6f2ea; --cover-ink-tint: 55%;
+    --live: #ff6b4f; --mvp: #e3a24e; --ok: #5cc493; --series-b: #74b9e6; --cover-amt: 26%; --cover-ink: #f6f2ea; --cover-ink-tint: 55%;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px -12px rgb(0 0 0 / 0.5);
     --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 22px 40px -18px rgb(0 0 0 / 0.6);
     color-scheme: dark;
@@ -40,7 +41,7 @@
 :root[data-theme="dark"] {
   --bg: #12110f; --surface: #1b1a17; --sunk: #242320; --ink: #eeeae2; --ink-2: #cfcac0; --muted: #a29d92;
   --rule: #2e2c28; --rule-strong: #403d37; --accent: #f2884a; --on-accent: #1b1a17; --primary: #eeeae2; --on-primary: #161512;
-  --live: #ff6b4f; --mvp: #e3a24e; --ok: #5cc493; --cover-amt: 26%; --cover-ink: #f6f2ea; --cover-ink-tint: 55%;
+  --live: #ff6b4f; --mvp: #e3a24e; --ok: #5cc493; --series-b: #74b9e6; --cover-amt: 26%; --cover-ink: #f6f2ea; --cover-ink-tint: 55%;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px -12px rgb(0 0 0 / 0.5);
   --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 22px 40px -18px rgb(0 0 0 / 0.6);
   color-scheme: dark;
@@ -77,6 +78,15 @@ img { max-width: 100%; }
 .muted { color: var(--muted); }
 .lede { font-size: clamp(1.05rem, 1.6vw, 1.2rem); line-height: 1.6; color: var(--ink-2); max-width: 62ch; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* The header's light/dark switch shows the mode it switches to. */
+.theme-toggle .i-sun { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .i-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+}
+:root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
 
 /* Buttons and small labels */
 .btn {

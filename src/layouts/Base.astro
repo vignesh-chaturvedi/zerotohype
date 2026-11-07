@@ -42,6 +42,13 @@ const marketCount = settlements.markets.length;
     <meta name="theme-color" content="#12110f" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={new URL(path, Astro.site)} />
+    <script is:inline>
+      // Apply a saved light or dark choice before the page paints; otherwise follow the system.
+      try {
+        const saved = localStorage.getItem("theme");
+        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+      } catch {}
+    </script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -66,6 +73,10 @@ const marketCount = settlements.markets.length;
           ))}
         </nav>
         <div class="actions">
+          <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
+            <svg class="i-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 12.3A7 7 0 0 1 7.7 3.5a7 7 0 1 0 8.8 8.8Z" /></svg>
+            <svg class="i-sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.6" /><path d="M10 1.8v2.1M10 16.1v2.1M1.8 10h2.1M16.1 10h2.1M4.2 4.2l1.5 1.5M14.3 14.3l1.5 1.5M4.2 15.8l1.5-1.5M14.3 5.7l1.5-1.5" /></svg>
+          </button>
           <a class="gh" href={repo} aria-label="Source on GitHub">
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" /></svg>
             <span>GitHub</span>
@@ -105,6 +116,27 @@ const marketCount = settlements.markets.length;
     </footer>
     <script>
       import "../scripts/diagram-motion.ts";
+
+      // Light/dark switch: flips whatever is showing now and remembers the choice.
+      const root = document.documentElement;
+      const toggle = document.getElementById("theme-toggle");
+      const systemDark = matchMedia("(prefers-color-scheme: dark)");
+      const current = () => root.dataset.theme ?? (systemDark.matches ? "dark" : "light");
+      const label = () => {
+        const next = current() === "dark" ? "light" : "dark";
+        toggle?.setAttribute("aria-label", `Switch to ${next} mode`);
+        toggle?.setAttribute("title", `Switch to ${next} mode`);
+        const bg = getComputedStyle(root).getPropertyValue("--bg").trim();
+        document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", bg));
+      };
+      toggle?.addEventListener("click", () => {
+        const next = current() === "dark" ? "light" : "dark";
+        root.dataset.theme = next;
+        try { localStorage.setItem("theme", next); } catch {}
+        label();
+      });
+      systemDark.addEventListener("change", label);
+      label();
     </script>
   </body>
 </html>
@@ -149,6 +181,13 @@ const marketCount = settlements.markets.length;
   nav a:hover { color: var(--ink); background: var(--sunk); }
   nav a[aria-current="page"] { color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--rule); }
   .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .theme-toggle {
+    display: inline-grid; place-items: center; width: 38px; height: 36px; padding: 0; border-radius: 10px; cursor: pointer;
+    color: var(--ink); background: var(--surface); border: 1px solid var(--rule-strong); transition: box-shadow 150ms var(--ease);
+  }
+  .theme-toggle:hover { box-shadow: var(--shadow); }
+  .theme-toggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .theme-toggle .i-moon { fill: currentColor; stroke: none; }
   .gh, .start { display: inline-flex; align-items: center; gap: 7px; font: 600 14px/1 var(--body); text-decoration: none; padding: 9px 13px; border-radius: 10px; }
   .gh { color: var(--ink); border: 1px solid var(--rule-strong); background: var(--surface); }
   .gh svg { width: 15px; height: 15px; fill: currentColor; }

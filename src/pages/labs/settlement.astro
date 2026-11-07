@@ -38,8 +38,12 @@ import "../../styles/lab.css";
     </section>
 
     <section class="panel" aria-labelledby="chart-title">
-      <h2 id="chart-title">Prices in the window</h2>
-      <div class="chart" id="chart" role="img" aria-label="Recorded prices across the settlement window, with the threshold as a dashed line"></div>
+      <div class="chart-head">
+        <h2 id="chart-title">Prices in the window</h2>
+        <button type="button" class="replay" id="replay">Replay the window <span aria-hidden="true">↻</span></button>
+      </div>
+      <div class="chart" id="chart" role="img" aria-label="Recorded prices across the settlement window, with the threshold as a dashed line and the running averages as lines"></div>
+      <p class="legend" id="legend"></p>
       <p class="small" id="chart-note">–</p>
     </section>
 
@@ -72,6 +76,31 @@ import "../../styles/lab.css";
   .avg tr:last-child td { border-bottom: 0; }
   .avg th { font-size: 12.5px; color: var(--muted); background: var(--sunk); }
   .avg td.n { font-family: var(--data); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .chart-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .replay { font: 600 13.5px/1 var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 10px; padding: 9px 13px; cursor: pointer; }
+  .replay:hover { box-shadow: var(--shadow); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 400 11.5px/1.4 var(--data); color: var(--muted); margin: 0; }
+  .legend :global(i) { display: inline-block; width: 18px; height: 0; border-top: 2px solid; vertical-align: middle; margin-right: 7px; }
+  .legend :global(.k-twap) { border-color: var(--ink); }
+  .legend :global(.k-vwap) { border-color: var(--series-b); }
+  .legend :global(.k-mean) { border-color: var(--ink); }
+  .legend :global(.k-thr) { border-color: var(--accent); border-top-style: dashed; }
+  .chart :global(svg) { touch-action: pan-y; cursor: crosshair; }
+  .chart :global(.run) { fill: none; stroke-width: 2; stroke-linejoin: round; }
+  .chart :global(.run-twap) { stroke: var(--ink); stroke-opacity: 0.85; }
+  .chart :global(.run-vwap) { stroke: var(--series-b); }
+  .chart :global(.run-end) { stroke: var(--surface); stroke-width: 2; }
+  .chart :global(.run-end.twap) { fill: var(--ink); }
+  .chart :global(.run-end.vwap) { fill: var(--series-b); }
+  .chart :global(.playhead) { stroke: var(--accent); stroke-width: 1.5; opacity: 0; }
+  .chart :global(.playing .playhead) { opacity: 0.9; }
+  .chart :global(.hx) { opacity: 0; pointer-events: none; transition: opacity 120ms var(--ease); }
+  .chart :global(.hovering .hx) { opacity: 1; }
+  .chart :global(.hx-line) { stroke: var(--ink); stroke-opacity: 0.45; stroke-dasharray: 3 3; }
+  .chart :global(.hx-ring) { fill: none; stroke: var(--accent); stroke-width: 2; }
+  .chart :global(.hx-box) { fill: var(--surface); stroke: var(--rule-strong); }
+  .chart :global(.hx-text) { font: 400 11px var(--data); fill: var(--ink); }
+  .chart :global(.hx-text .dim) { fill: var(--muted); }
   .yes-match { color: var(--ok); font-weight: 600; }
   .no-match { color: var(--mvp); font-weight: 600; }
 </style>
@@ -100,7 +129,7 @@ import "../../styles/lab.css";
   const fmt = (x: number) => x.toLocaleString("en-US", { maximumFractionDigits: 6 });
   const lag = (s: number) => (s >= 3600 ? `${(s / 3600).toFixed(1)} h` : s >= 120 ? `${Math.round(s / 60)} min` : `${Math.round(s)} s`);
 
-  function show(m: Market) {
+  function show(m: Market, animate = true) {
     const length = m.windowEndMs - m.windowStartMs;
     const threshold = Number(m.threshold);
     $("group-note").textContent = notes[m.group] ?? "";
@@ -128,7 +157,8 @@ import "../../styles/lab.css";
         return `<tr><td>${name}</td><td class="n">${fmt(v)}</td><td class="n">${bp >= 0 ? "+" : ""}${bp.toFixed(2)} bp</td><td>${yes ? "Yes" : "No"}</td><td class="${match ? "yes-match" : "no-match"}">${match ? "Yes" : "No"}</td></tr>`;
       })
       .join("");
-    drawChart(m, length, threshold);
+    current = m;
+    drawChart(m, length, threshold, animate);
     const n = m.samples.filter((s) => s[0] >= 0 && s[0] < length).length;
     $("chart-note").textContent =
       m.kind === "Trade" ? `${n} trades in the window; dot size shows trade size.`
@@ -136,19 +166,59 @@ import "../../styles/lab.css";
       : "Each point is a 1-minute candle's close.";
   }
 
-  function drawChart(m: Market, length: number, threshold: number) {
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let replayRaf = 0;
+  let drawnWidth = 0;
+  let current: Market | null = null;
+
+  /** Running averages across the window, evaluated on a grid of times. */
+  function runningAverages(m: Market, length: number) {
+    const grid = Array.from({ length: 241 }, (_, i) => (length * i) / 240);
+    const s = m.samples;
+    const twap: (number | null)[] = [], other: (number | null)[] = [];
+    if (m.kind === "Candle1m") {
+      let sum = 0, n = 0, j = 0;
+      for (const g of grid) {
+        while (j < s.length && s[j][0] <= g) { if (s[j][0] >= 0) { sum += s[j][1]; n++; } j++; }
+        twap.push(n ? sum / n : null); other.push(null);
+      }
+      return { grid, twap, other };
+    }
+    const open = s.findLastIndex((q) => q[0] <= 0);
+    let area = 0, at = 0, price = open >= 0 ? s[open][1] : NaN, j = open + 1;
+    let notional = 0, volume = 0, k = 0;
+    for (const g of grid) {
+      while (j < s.length && s[j][0] <= g) { area += price * (s[j][0] - at); at = s[j][0]; price = s[j][1]; j++; }
+      const total = area + price * (g - at);
+      twap.push(open >= 0 && g > 0 ? total / g : open >= 0 ? price : null);
+      while (k < s.length && s[k][0] <= g) { if (s[k][0] >= 0 && s[k].length > 2) { notional += s[k][1] * s[k][2]!; volume += s[k][2]!; } k++; }
+      other.push(m.kind === "Trade" && volume > 0 ? notional / volume : null);
+    }
+    return { grid, twap, other };
+  }
+
+  function drawChart(m: Market, length: number, threshold: number, animate: boolean) {
     const host = $("chart");
-    const W = Math.max(300, host.clientWidth), H = 260;
+    cancelAnimationFrame(replayRaf);
+    const W = Math.max(300, host.clientWidth), H = 280;
+    drawnWidth = host.clientWidth;
     const pad = { l: 80, r: 16, t: 16, b: 34 };
     const pts = m.samples.filter((s) => s[0] <= length);
-    const prices = [...pts.map((s) => s[1]), threshold];
+    const run = runningAverages(m, length);
+    const runVals = [...run.twap, ...run.other].filter((v): v is number => v !== null);
+    const prices = [...pts.map((s) => s[1]), threshold, ...runVals];
     let lo = Math.min(...prices), hi = Math.max(...prices);
     const span = hi - lo || threshold * 0.0001;
     lo -= span * 0.08; hi += span * 0.08;
     const x0 = Math.min(0, ...pts.map((s) => s[0]));
     const x = (t: number) => pad.l + ((t - x0) / (length - x0)) * (W - pad.l - pad.r);
     const y = (p: number) => pad.t + (1 - (p - lo) / (hi - lo)) * (H - pad.t - pad.b);
+    const tAt = (px: number) => x0 + ((px - pad.l) / (W - pad.l - pad.r)) * (length - x0);
+    const line = (vals: (number | null)[]) =>
+      vals.map((v, i) => (v === null ? "" : `${vals[i - 1] == null ? "M" : "L"}${x(run.grid[i]).toFixed(1)},${y(v).toFixed(1)}`)).join(" ");
+
     let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+    svg += `<defs><clipPath id="reveal"><rect id="reveal-rect" x="0" y="0" width="${W}" height="${H}"/></clipPath></defs>`;
     for (let i = 0; i <= 4; i++) {
       const p = lo + ((hi - lo) * i) / 4;
       svg += `<line class="gridline" x1="${pad.l}" x2="${W - pad.r}" y1="${y(p)}" y2="${y(p)}"/><text class="ax" x="${pad.l - 8}" y="${y(p) + 4}" text-anchor="end">${fmt(Number(p.toPrecision(7)))}</text>`;
@@ -156,20 +226,99 @@ import "../../styles/lab.css";
     svg += `<rect x="${x(0)}" y="${pad.t}" width="${x(length) - x(0)}" height="${H - pad.t - pad.b}" class="window"/>`;
     for (const t of [0, length]) svg += `<text class="ax" x="${x(t)}" y="${H - 12}" text-anchor="${t ? "end" : "start"}">${t ? `${length / 1000} s` : "window opens"}</text>`;
     svg += `<line class="threshold" x1="${pad.l}" x2="${W - pad.r}" y1="${y(threshold)}" y2="${y(threshold)}"/>`;
+    svg += `<g clip-path="url(#reveal)">`;
     if (m.kind === "Trade") {
       const maxSz = Math.max(...pts.map((s) => s[2] ?? 0)) || 1;
-      for (const s of pts) svg += `<circle class="dot" cx="${x(s[0])}" cy="${y(s[1])}" r="${(1.5 + 6 * Math.sqrt((s[2] ?? 0) / maxSz)).toFixed(1)}"/>`;
+      for (const s of pts) svg += `<circle class="dot" cx="${x(s[0]).toFixed(1)}" cy="${y(s[1]).toFixed(1)}" r="${(1.5 + 6 * Math.sqrt((s[2] ?? 0) / maxSz)).toFixed(1)}"/>`;
     } else {
       let d = "";
       pts.forEach((s, i) => {
         const nx = i + 1 < pts.length ? pts[i + 1][0] : length;
         d += `${i ? "L" : "M"}${x(s[0]).toFixed(1)},${y(s[1]).toFixed(1)} L${x(Math.min(nx, length)).toFixed(1)},${y(s[1]).toFixed(1)} `;
       });
-      svg += `<path class="curve" d="${d}"/>`;
+      svg += `<path class="curve" d="${d}" style="stroke-opacity:.45"/>`;
       if (m.kind === "Candle1m") for (const s of pts) svg += `<circle class="dot" cx="${x(s[0])}" cy="${y(s[1])}" r="4"/>`;
     }
+    svg += `<path class="run run-twap" d="${line(run.twap)}"/>`;
+    if (m.kind === "Trade") svg += `<path class="run run-vwap" d="${line(run.other)}"/>`;
+    const lastT = run.twap.at(-1), lastV = run.other.at(-1);
+    if (lastT != null) svg += `<circle class="run-end twap" cx="${x(length)}" cy="${y(lastT)}" r="4.5"/>`;
+    if (m.kind === "Trade" && lastV != null) svg += `<circle class="run-end vwap" cx="${x(length)}" cy="${y(lastV)}" r="4.5"/>`;
+    svg += `</g>`;
+    svg += `<line class="playhead" id="playhead" x1="0" x2="0" y1="${pad.t}" y2="${H - pad.b}"/>`;
+    svg += `<g class="hx"><line class="hx-line" id="hx-line" y1="${pad.t}" y2="${H - pad.b}"/><circle class="hx-ring" id="hx-ring" r="7"/><rect class="hx-box" id="hx-box" rx="6"/><text class="hx-text" id="hx-text"></text></g>`;
     svg += `</svg>`;
     host.innerHTML = svg;
+
+    $("legend").innerHTML =
+      m.kind === "Trade" ? `<span><i class="k-twap"></i>Running time-weighted</span><span><i class="k-vwap"></i>Running volume-weighted</span><span><i class="k-thr"></i>Threshold</span>`
+      : m.kind === "Mark" ? `<span><i class="k-twap"></i>Running time-weighted</span><span><i class="k-thr"></i>Threshold</span>`
+      : `<span><i class="k-mean"></i>Running mean of the closes</span><span><i class="k-thr"></i>Threshold</span>`;
+
+    const svgEl = host.querySelector("svg")!;
+    const reveal = host.querySelector("#reveal-rect")!;
+    const playhead = host.querySelector("#playhead")!;
+
+    // Replay: sweep the window from left to right, drawing trades and averages as they happen.
+    if (animate && !reduceMotion) {
+      const from = pad.l, to = W - pad.r, ms = 2200;
+      let begin = 0;
+      svgEl.classList.add("playing");
+      const step = (now: number) => {
+        if (!begin) begin = now;
+        const k = Math.min(1, (now - begin) / ms);
+        const e = 1 - Math.pow(1 - k, 2.2);
+        const edge = from + (to - from) * e;
+        reveal.setAttribute("width", String(edge + 6));
+        playhead.setAttribute("x1", String(edge)); playhead.setAttribute("x2", String(edge));
+        if (k < 1) replayRaf = requestAnimationFrame(step);
+        else { svgEl.classList.remove("playing"); reveal.setAttribute("width", String(W)); }
+      };
+      reveal.setAttribute("width", String(from));
+      replayRaf = requestAnimationFrame(step);
+      // If frames are held back (a background tab), show the whole chart anyway.
+      setTimeout(() => {
+        if (host.querySelector("svg") !== svgEl || !svgEl.classList.contains("playing")) return;
+        cancelAnimationFrame(replayRaf);
+        svgEl.classList.remove("playing");
+        reveal.setAttribute("width", String(W));
+      }, ms + 800);
+    }
+
+    // Hover: what was traded at that moment, and each running average so far.
+    const hxLine = host.querySelector("#hx-line")!, ring = host.querySelector("#hx-ring")!;
+    const box = host.querySelector<SVGRectElement>("#hx-box")!, text = host.querySelector<SVGTextElement>("#hx-text")!;
+    const nearest = (t: number) => {
+      let lo2 = 0, hi2 = pts.length - 1;
+      while (hi2 - lo2 > 1) { const mid = (lo2 + hi2) >> 1; if (pts[mid][0] < t) lo2 = mid; else hi2 = mid; }
+      return Math.abs(pts[lo2][0] - t) <= Math.abs(pts[hi2][0] - t) ? pts[lo2] : pts[hi2];
+    };
+    const money = (v: number) => v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    svgEl.addEventListener("pointermove", (ev) => {
+      const ctm = svgEl.getScreenCTM();
+      if (!ctm || !pts.length) return;
+      const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(ctm.inverse());
+      const px = Math.min(W - pad.r, Math.max(pad.l, p.x));
+      const t = tAt(px);
+      const s = nearest(t);
+      hxLine.setAttribute("x1", String(px)); hxLine.setAttribute("x2", String(px));
+      ring.setAttribute("cx", String(x(s[0]))); ring.setAttribute("cy", String(y(s[1])));
+      const gi = Math.max(0, Math.min(240, Math.round((t / length) * 240)));
+      const lines: [string, string][] = [[t < 0 ? `${(-t / 1000).toFixed(1)} s before the window` : `${(t / 1000).toFixed(1)} s into the window`, "dim"]];
+      lines.push([m.kind === "Trade" ? `trade ${money(s[1])} × ${s[2]} ${m.coin}` : m.kind === "Mark" ? `mark ${money(s[1])}` : `close ${money(s[1])}`, ""]);
+      if (t >= 0 && run.twap[gi] != null) lines.push([`${m.kind === "Candle1m" ? "mean" : "time-weighted"} so far ${money(run.twap[gi]!)}`, ""]);
+      if (t >= 0 && m.kind === "Trade" && run.other[gi] != null) lines.push([`volume-weighted so far ${money(run.other[gi]!)}`, ""]);
+      text.innerHTML = lines.map(([l, c], i) => `<tspan x="0" dy="${i ? 15 : 0}" class="${c}">${l}</tspan>`).join("");
+      const b = text.getBBox();
+      const left = px > W * 0.6;
+      const bx = left ? px - b.width - 22 : px + 12;
+      const by = Math.max(pad.t + 4, Math.min(H - pad.b - b.height - 14, p.y - b.height / 2));
+      text.setAttribute("transform", `translate(${bx + 8} ${by + 15})`);
+      box.setAttribute("x", String(bx)); box.setAttribute("y", String(by));
+      box.setAttribute("width", String(b.width + 16)); box.setAttribute("height", String(b.height + 12));
+      svgEl.classList.add("hovering");
+    });
+    svgEl.addEventListener("pointerleave", () => svgEl.classList.remove("hovering"));
   }
 
   async function init() {
@@ -182,6 +331,7 @@ import "../../styles/lab.css";
     show(markets[0]);
   }
   select.addEventListener("change", () => show(markets.find((m) => String(m.outcome) === select.value)!));
-  new ResizeObserver(() => { const m = markets.find((m) => String(m.outcome) === select.value); if (m) show(m); }).observe($("chart"));
+  new ResizeObserver(() => { if (current && $("chart").clientWidth !== drawnWidth) show(current, false); }).observe($("chart"));
+  $("replay").addEventListener("click", () => { if (current) show(current, true); });
   init().catch(() => ($("group-note").textContent = "Couldn't load the dataset."));
 </script>
