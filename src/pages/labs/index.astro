@@ -1,57 +1,89 @@
 ---
 import Base from "../../layouts/Base.astro";
+import TrackCover from "../../components/TrackCover.astro";
+import { lookOf } from "../../lib/track-look";
+import settlements from "../../../public/data/hip4-settlements.json";
 
 const labs = [
   {
+    n: "01",
+    code: "T3",
     href: "/labs/sign-without-money/",
     title: "Sign without money",
     track: "T3 Signing and sending",
-    what: "Sign an action with a throwaway key and let the exchange tell you whether your encoding is right. Then break it on purpose.",
-    live: true,
+    note: "Testnet · throwaway key",
+    what: "Sign an action with a key made in your browser and let the exchange tell you whether your encoding is right. Then break it on purpose, one common bug at a time.",
   },
   {
+    n: "02",
+    code: "T4",
     href: "/labs/funding/",
     title: "Funding and mark price",
     track: "T4 Trading mechanics",
-    what: "Live oracle, mark and impact prices for any perp, with the premium and funding rate worked out in front of you.",
-    live: true,
+    note: "Mainnet · read-only",
+    what: "Live oracle, mark and impact prices for any perp, with the premium and funding rate worked out in front of you and checked against the API's own number.",
   },
   {
+    n: "03",
+    code: "T8",
     href: "/labs/settlement/",
     title: "Settlement explorer",
     track: "T8 Outcome markets",
-    what: "Recompute real HIP-4 settlements from recorded prices, and see which kind of average each venue uses.",
-    live: true,
+    note: `${settlements.markets.length} real settlements`,
+    what: "Recompute real HIP-4 settlements from the prices hyperkeeper recorded, and see which kind of average each venue really uses.",
   },
 ];
 ---
 
 <Base title="Labs" description="Hands-on Hyperliquid labs that run in your browser against the live API. No funds, no real keys.">
-  <header class="head">
+  <header class="page-head">
     <p class="eyebrow">Labs</p>
-    <h1>Labs</h1>
+    <h1>Labs that run on the <em>real API.</em></h1>
     <p class="lede">
       Each lab runs in your browser and talks to Hyperliquid's API directly. None needs funds or a
       real key, and none can change anything on the exchange.
     </p>
   </header>
-  <ul class="labs">
+  <ol class="labs">
     {labs.map((lab) => (
       <li>
-        {lab.live ? <a class="card" href={lab.href}><span class="eyebrow">{lab.track}</span><span class="title">{lab.title}</span><span class="what">{lab.what}</span><span class="tag ok">Live</span></a>
-          : <div class="card off"><span class="eyebrow">{lab.track}</span><span class="title">{lab.title}</span><span class="what">{lab.what}</span><span class="tag">Coming</span></div>}
+        <a class="lab-card" href={lab.href} style={`--c: ${lookOf(lab.code).color}`}>
+          <TrackCover code={lab.code} label={lab.note} num={lab.n} />
+          <span class="lab-body">
+            <span class="lab-top"><span class="eyebrow">Lab {lab.n} · {lab.track}</span><span class="tag ok">Live</span></span>
+            <span class="lab-title">{lab.title}</span>
+            <span class="lab-what">{lab.what}</span>
+            <span class="lab-go">Open the lab <span aria-hidden="true">→</span></span>
+          </span>
+        </a>
       </li>
     ))}
-  </ul>
+  </ol>
+  <p class="more muted">
+    More are on the way: a live order book, a margin and liquidation workbench, and a CoreWriter
+    encoder. Each track's page lists what it will get.
+  </p>
 </Base>
 
 <style>
-  .head { display: grid; gap: 12px; }
-  .lede { font-size: 1.1rem; line-height: 1.55; max-width: 64ch; }
-  .labs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-  .card { height: 100%; display: grid; gap: 8px; align-content: start; justify-items: start; padding: 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); color: var(--ink); text-decoration: none; }
-  a.card:hover { border-color: var(--accent); }
-  .card.off { color: var(--muted); }
-  .title { font: 700 1.15rem/1.25 var(--display); }
-  .what { font-size: 14.5px; color: var(--muted); }
+  .labs { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  .lab-card {
+    display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 28px; align-items: center; padding: 12px;
+    border-radius: 24px; text-decoration: none; color: var(--ink);
+    background: color-mix(in srgb, var(--c) calc(var(--cover-amt) * 0.4), var(--surface));
+    border: 1px solid color-mix(in srgb, var(--c) 55%, var(--rule));
+    transition: transform 220ms var(--ease), box-shadow 220ms var(--ease);
+  }
+  .lab-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+  .lab-body { display: grid; gap: 12px; padding: 12px 18px 12px 0; }
+  .lab-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .lab-title { font: 500 clamp(1.7rem, 3.6vw, 2.4rem)/1.02 var(--display); letter-spacing: -0.045em; }
+  .lab-what { color: var(--ink-2); max-width: 54ch; }
+  .lab-go { font-weight: 600; }
+  .lab-card:hover .lab-go span { display: inline-block; transform: translateX(3px); transition: transform 180ms var(--ease); }
+  .more { max-width: 66ch; font-size: 15px; }
+  @media (max-width: 760px) {
+    .lab-card { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .lab-body { padding: 10px 8px 8px; }
+  }
 </style>

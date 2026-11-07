@@ -1,4 +1,5 @@
 ---
+import "@fontsource/schibsted-grotesk/500.css";
 import "@fontsource/schibsted-grotesk/600.css";
 import "@fontsource/schibsted-grotesk/700.css";
 import "@fontsource/public-sans/400.css";
@@ -7,6 +8,7 @@ import "@fontsource/public-sans/600.css";
 import "@fontsource/martian-mono/400.css";
 import "@fontsource/martian-mono/500.css";
 import "../styles/global.css";
+import settlements from "../../public/data/hip4-settlements.json";
 
 interface Props {
   title: string;
@@ -17,11 +19,13 @@ const { title, description } = Astro.props;
 const fullTitle = title === "Zero to HYPE" ? title : `${title} · Zero to HYPE`;
 const path = Astro.url.pathname;
 const nav = [
-  { href: "/", label: "Roadmap" },
-  { href: "/labs/", label: "Labs" },
-  { href: "/changelog/", label: "Changelog" },
-  { href: "/about/", label: "About" },
+  { href: "/", label: "Roadmap", match: (p: string) => p === "/" || p.startsWith("/tracks/") },
+  { href: "/labs/", label: "Labs", match: (p: string) => p.startsWith("/labs/") },
+  { href: "/changelog/", label: "Changelog", match: (p: string) => p.startsWith("/changelog/") },
+  { href: "/about/", label: "About", match: (p: string) => p.startsWith("/about/") },
 ];
+const repo = "https://github.com/vignesh-chaturvedi/zerotohype";
+const marketCount = settlements.markets.length;
 ---
 
 <!doctype html>
@@ -31,43 +35,141 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f5f3ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#12110f" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={new URL(path, Astro.site)} />
   </head>
   <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <a class="livebar" href="/labs/settlement/">
+      <span class="live"><span class="live-dot"></span>Live</span>
+      <span class="livebar-text">Settlement explorer: replay {marketCount} real HIP-4 settlements</span>
+      <span aria-hidden="true">→</span>
+    </a>
     <header class="site">
       <div class="wrap bar">
-        <a class="mark" href="/">Zero to <span>HYPE</span></a>
+        <a class="brand" href="/" aria-label="Zero to HYPE, home">
+          <svg class="glyph" viewBox="0 0 28 28" aria-hidden="true">
+            <rect width="28" height="28" rx="8" />
+            <ellipse cx="11.6" cy="15.4" rx="4.6" ry="6.2" class="g-zero" />
+            <path d="M17 11 L22.2 5.8 M18 5.8 H22.2 V10" class="g-arrow" />
+          </svg>
+          <span class="word">Zero to <span class="hype">HYPE</span></span>
+        </a>
         <nav aria-label="Site">
           {nav.map((item) => (
-            <a href={item.href} aria-current={path === item.href ? "page" : undefined}>{item.label}</a>
+            <a href={item.href} aria-current={item.match(path) ? "page" : undefined}>{item.label}</a>
           ))}
         </nav>
+        <div class="actions">
+          <a class="gh" href={repo} aria-label="Source on GitHub">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" /></svg>
+            <span>GitHub</span>
+          </a>
+          <a class="start" href="/tracks/t01-orientation/">Start <span aria-hidden="true">→</span></a>
+        </div>
       </div>
     </header>
-    <main class="wrap page">
+    <main id="main" class="wrap page">
       <slot />
     </main>
-    <footer class="wrap site-footer">
-      <p>
-        Zero to HYPE is an independent, open-source project and is not affiliated with Hyperliquid.
-        Code under MIT, content under CC BY 4.0. Facts are checked against the live API; each page
-        shows when.
-      </p>
+    <footer class="site-foot">
+      <div class="wrap foot">
+        <div class="foot-brand">
+          <p class="foot-mark">Zero to <span>HYPE</span></p>
+          <p class="foot-note">A free, open-source field guide for building on Hyperliquid. No sign-up, no paywall.</p>
+        </div>
+        <div class="foot-cols">
+          <div>
+            <p class="eyebrow">Learn</p>
+            <a href="/">Roadmap</a>
+            <a href="/labs/">Labs</a>
+            <a href="/changelog/">API changelog</a>
+          </div>
+          <div>
+            <p class="eyebrow">Project</p>
+            <a href="/about/">About</a>
+            <a href={repo}>Source on GitHub</a>
+            <a href={`${repo}/issues`}>Report a mistake</a>
+          </div>
+        </div>
+        <p class="legal">
+          Independent and not affiliated with Hyperliquid. Code under MIT, content under CC BY 4.0.
+          Facts are checked against the live API, and each lesson shows when.
+        </p>
+      </div>
     </footer>
   </body>
 </html>
 
 <style>
-  header.site { border-bottom: 1px solid var(--rule); background: var(--surface); }
-  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-block: 14px; }
-  .mark { font: 700 1.15rem/1 var(--display); color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
-  .mark span { color: var(--accent); }
-  nav { display: flex; gap: 4px; flex-wrap: wrap; }
-  nav a { font-size: 14.5px; color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 6px; }
-  nav a:hover { background: var(--sunk); color: var(--ink); }
-  nav a[aria-current="page"] { color: var(--ink); background: var(--sunk); }
-  .page { padding-block: 40px 72px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; }
-  .site-footer { padding-block: 24px 40px; border-top: 1px solid var(--rule); font-size: 13.5px; color: var(--muted); }
-  .site-footer p { max-width: 80ch; }
+  .skip { position: absolute; left: 12px; top: -60px; z-index: 30; padding: 10px 14px; border-radius: 10px; background: var(--primary); color: var(--on-primary); }
+  .skip:focus { top: 12px; }
+
+  .livebar {
+    display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+    padding: 8px max(20px, env(safe-area-inset-right, 0px)) 8px max(20px, env(safe-area-inset-left, 0px));
+    background: var(--sunk); color: var(--ink-2); text-decoration: none; font-size: 13.5px; text-align: center;
+    border-bottom: 1px solid var(--rule);
+  }
+  .livebar:hover .livebar-text { text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 560px) {
+    .livebar { flex-wrap: nowrap; justify-content: flex-start; font-size: 12.5px; }
+    .livebar-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  }
+  .live {
+    display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px 3px 6px; border-radius: 6px;
+    font: 500 10px/1 var(--data); letter-spacing: 0.12em; text-transform: uppercase; color: var(--live);
+    background: color-mix(in srgb, var(--live) 12%, var(--surface)); border: 1px solid color-mix(in srgb, var(--live) 30%, transparent);
+  }
+
+  header.site {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar { display: flex; align-items: center; gap: 12px 24px; padding-block: 12px; flex-wrap: wrap; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+  .glyph { width: 28px; height: 28px; flex: none; }
+  .glyph rect { fill: var(--primary); }
+  .g-zero { fill: none; stroke: var(--on-primary); stroke-width: 2.4; }
+  .g-arrow { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .word { font: 600 1.08rem/1 var(--display); letter-spacing: -0.02em; }
+  .hype { font: 500 0.82rem/1 var(--data); letter-spacing: 0.02em; padding: 4px 6px; margin-left: 2px; border-radius: 6px; background: var(--ink); color: var(--bg); vertical-align: 1px; }
+  nav { display: flex; gap: 2px; flex-wrap: wrap; }
+  nav a { font-size: 14.5px; color: var(--muted); text-decoration: none; padding: 7px 11px; border-radius: 9px; transition: background 150ms var(--ease), color 150ms var(--ease); }
+  nav a:hover { color: var(--ink); background: var(--sunk); }
+  nav a[aria-current="page"] { color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--rule); }
+  .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .gh, .start { display: inline-flex; align-items: center; gap: 7px; font: 600 14px/1 var(--body); text-decoration: none; padding: 9px 13px; border-radius: 10px; }
+  .gh { color: var(--ink); border: 1px solid var(--rule-strong); background: var(--surface); }
+  .gh svg { width: 15px; height: 15px; fill: currentColor; }
+  .start { color: var(--on-primary); background: var(--primary); border: 1px solid var(--primary); }
+  .gh:hover, .start:hover { box-shadow: var(--shadow); }
+  @media (max-width: 760px) {
+    .bar { gap: 10px; }
+    nav { order: 3; width: 100%; margin-inline: -8px; }
+    nav a { padding: 6px 8px; }
+    .gh span { display: none; }
+  }
+
+  .page { padding-block: 48px 96px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+
+  .site-foot { border-top: 1px solid var(--rule); background: var(--surface); }
+  .foot { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px 48px; padding-block: 48px 36px; }
+  .foot-brand { display: grid; gap: 10px; align-content: start; }
+  .foot-mark { font: 500 clamp(2rem, 5vw, 3.2rem)/1 var(--display); letter-spacing: -0.045em; }
+  .foot-mark span { font: 400 0.8em/1 var(--data); letter-spacing: -0.06em; color: var(--accent); }
+  .foot-note { color: var(--muted); max-width: 44ch; }
+  .foot-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .foot-cols div { display: grid; gap: 8px; align-content: start; }
+  .foot-cols a { color: var(--ink-2); text-decoration: none; font-size: 15px; }
+  .foot-cols a:hover { color: var(--accent); }
+  .legal { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); max-width: 90ch; }
+  @media (max-width: 760px) { .foot { grid-template-columns: minmax(0, 1fr); } }
 </style>

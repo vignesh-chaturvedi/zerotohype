@@ -1,0 +1,169 @@
+---
+// A track's cover: its colour, its code, and a line drawing of what the track is about.
+import { lookOf } from "../lib/track-look";
+
+interface Props {
+  code: string;
+  /** "card" for the roadmap grid, "banner" for the top of a track page. */
+  variant?: "card" | "banner";
+  label?: string;
+  /** The big number in the corner; defaults to the track's. */
+  num?: string;
+}
+
+const { code, variant = "card", label, num = code.replace("T", "").padStart(2, "0") } = Astro.props;
+const { color, motif } = lookOf(code);
+
+// Deterministic shapes for the drawings that need many marks.
+const signCells = Array.from({ length: 32 }, (_, i) => ({ x: 112 + (i % 8) * 17, y: 52 + Math.floor(i / 8) * 17, on: (i * 7 + Math.floor(i / 8) * 3) % 5 < 2 }));
+const fundingBars = Array.from({ length: 16 }, (_, i) => ({ x: 113 + i * 12, v: Math.sin(i * 0.62 + 0.4) * 26 + Math.sin(i * 1.7) * 6 }));
+const flowRows = Array.from({ length: 7 }, (_, i) => 46 + i * 20);
+const ladder = Array.from({ length: 10 }, (_, i) => ({ y: 160 - i * 12, x: 130 + i * 9, w: 30 + ((i * 29) % 40), strong: i % 3 === 0 }));
+const oracleY = [122, 112, 117, 98, 104, 90, 95, 80, 86, 72];
+const oraclePath = oracleY.map((y, i) => (i === 0 ? `M112 ${y}` : `H${112 + i * 21} V${y}`)).join(" ") + " H305";
+const cubes = [
+  { cx: 140, cy: 138 },
+  { cx: 190, cy: 112 },
+  { cx: 240, cy: 86 },
+  { cx: 288, cy: 60 },
+];
+const s = 17;
+const nodes = [
+  { x: 130, y: 72 }, { x: 176, y: 46 }, { x: 222, y: 84 }, { x: 272, y: 54 },
+  { x: 160, y: 132 }, { x: 228, y: 146 }, { x: 288, y: 118 },
+];
+const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [4, 5], [0, 4]];
+---
+
+<div class={`cover ${variant}`} style={`--c: ${color}`}>
+  <span class="cv-code">{num}</span>
+  {label && <span class="cv-label">{label}</span>}
+  <svg viewBox="0 0 320 200" aria-hidden="true" focusable="false">
+    {motif === "layers" && (
+      <g>
+        <path d="M120 128 L210 96 L300 128 L210 160 Z" class="f2" />
+        <path d="M120 78 V128 M300 78 V128" class="dash" />
+        <path d="M120 78 L210 46 L300 78 L210 110 Z" class="bg" />
+        <path d="M120 78 L210 46 L300 78 L210 110 Z" class="f1" />
+        <text x="210" y="81" text-anchor="middle" class="cv-t">HyperEVM</text>
+        <text x="210" y="138" text-anchor="middle" class="cv-t">HyperCore</text>
+      </g>
+    )}
+    {motif === "book" && (
+      <g>
+        <path d="M110 64 H128 V80 H146 V96 H162 V112 H178 V130 H192 V150 H204 V168 H110 Z" class="f2" />
+        <path d="M212 168 V146 H226 V128 H242 V110 H258 V92 H276 V74 H292 V58 H305 V168 Z" class="f1" />
+        <path d="M110 64 H128 V80 H146 V96 H162 V112 H178 V130 H192 V150 H204 V168" />
+        <path d="M212 168 V146 H226 V128 H242 V110 H258 V92 H276 V74 H292 V58 H305" />
+        <path d="M110 168 H305" />
+        <path d="M208 38 V172" class="dash" />
+        <text x="150" y="188" text-anchor="middle" class="cv-t">BIDS</text>
+        <text x="262" y="188" text-anchor="middle" class="cv-t">ASKS</text>
+      </g>
+    )}
+    {motif === "sign" && (
+      <g>
+        {signCells.map((c) => <rect x={c.x} y={c.y} width="12" height="12" rx="2" class={c.on ? "f3" : "f0"} />)}
+        <path d="M258 78 H276 M270 72 L276 78 L270 84" />
+        <circle cx="292" cy="78" r="13" class="f1" />
+        <path d="M286 78 L290.5 82.5 L298 73" class="thick" />
+        <text x="112" y="140" class="cv-t">msgpack · keccak · sign</text>
+        <path d="M112 152 H248" class="dash" />
+        <text x="112" y="172" class="cv-t">recovered = your key</text>
+      </g>
+    )}
+    {motif === "funding" && (
+      <g>
+        {fundingBars.map((b) => <rect x={b.x} y={b.v > 0 ? 120 - b.v : 120} width="7" height={Math.abs(b.v)} rx="1.5" class="f2" />)}
+        <path d="M110 120 H305" class="dash" />
+        <path d="M110 112 C135 66 160 66 185 108 S235 168 262 126 S296 80 305 92" class="thick" />
+        <text x="112" y="186" class="cv-t">PREMIUM · FUNDING / H</text>
+      </g>
+    )}
+    {motif === "flow" && (
+      <g>
+        {flowRows.map((y) => <path d={`M114 ${y} C170 ${y} 190 108 240 108`} />)}
+        {flowRows.map((y) => <circle cx="114" cy={y} r="3.5" class="f3" />)}
+        <path d="M240 108 H290 M282 100 L292 108 L282 116" class="thick" />
+        <text x="196" y="186" text-anchor="middle" class="cv-t">BUILDER CODE</text>
+      </g>
+    )}
+    {motif === "ladder" && (
+      <g>
+        <path d="M120 38 V172 H305" />
+        {ladder.map((l) => <rect x={l.x} y={l.y - 4} width={l.w} height="8" rx="2" class={l.strong ? "f3" : "f2"} />)}
+        <circle cx="218" cy="112" r="4.5" class="f3" />
+        <text x="300" y="188" text-anchor="end" class="cv-t">PRICE LADDER</text>
+      </g>
+    )}
+    {motif === "oracle" && (
+      <g>
+        <path d="M112 128 C150 114 180 104 210 96 S270 82 305 70" class="dash" />
+        <path d={oraclePath} class="thick" />
+        {oracleY.map((y, i) => <circle cx={112 + i * 21} cy={y} r="3" class="f3" />)}
+        <path d="M112 166 H305" />
+        {oracleY.map((_, i) => <path d={`M${112 + i * 21} 166 v5`} />)}
+        <text x="122" y="188" text-anchor="middle" class="cv-t">3 s</text>
+        <text x="300" y="188" text-anchor="end" class="cv-t">setOracle</text>
+      </g>
+    )}
+    {motif === "window" && (
+      <g>
+        <rect x="248" y="44" width="57" height="128" class="f1" />
+        <path d="M110 100 H305" class="dash" />
+        <path d="M110 124 L122 114 L134 120 L146 106 L158 112 L170 98 L182 104 L194 92 L206 100 L218 88 L230 96 L242 90 L254 100 L266 93 L278 86 L290 96 L305 89" class="thick" />
+        <text x="276" y="38" text-anchor="middle" class="cv-t">TWAP</text>
+        <text x="276" y="188" text-anchor="middle" class="cv-t">90 s</text>
+        <text x="112" y="94" class="cv-t">THRESHOLD</text>
+      </g>
+    )}
+    {motif === "blocks" && (
+      <g>
+        <path d="M140 138 L190 112 L240 86 L288 60" class="dash" />
+        {cubes.map(({ cx, cy }) => (
+          <g>
+            <path d={`M${cx - s} ${cy - s / 2} L${cx} ${cy} L${cx} ${cy + s} L${cx - s} ${cy + s / 2} Z`} class="f2" />
+            <path d={`M${cx} ${cy} L${cx + s} ${cy - s / 2} L${cx + s} ${cy + s / 2} L${cx} ${cy + s} Z`} class="f3" />
+            <path d={`M${cx} ${cy - s} L${cx + s} ${cy - s / 2} L${cx} ${cy} L${cx - s} ${cy - s / 2} Z`} class="f1" />
+          </g>
+        ))}
+        <text x="112" y="186" class="cv-t">precompile ⇄ CoreWriter</text>
+      </g>
+    )}
+    {motif === "nodes" && (
+      <g>
+        {edges.map(([a, b]) => <path d={`M${nodes[a].x} ${nodes[a].y} L${nodes[b].x} ${nodes[b].y}`} />)}
+        {nodes.map((n, i) => (i === 2 ? <circle cx={n.x} cy={n.y} r="10" class="f3" /> : <circle cx={n.x} cy={n.y} r="5.5" class="bg-stroke" />))}
+        <text x="112" y="186" class="cv-t">NODE · L1 DATA · EXPLORER</text>
+      </g>
+    )}
+  </svg>
+</div>
+
+<style>
+  .cover {
+    --cv-bg: color-mix(in srgb, var(--c) var(--cover-amt), var(--surface));
+    position: relative; overflow: hidden; border-radius: 14px; aspect-ratio: 16 / 10;
+    background-color: var(--cv-bg);
+    color: color-mix(in srgb, var(--c) var(--cover-ink-tint), var(--cover-ink));
+    background-image: radial-gradient(color-mix(in srgb, currentColor 16%, transparent) 1px, transparent 1.3px);
+    background-size: 14px 14px; background-position: 7px 7px;
+  }
+  .cover.banner { aspect-ratio: auto; height: clamp(180px, 26vw, 260px); border-radius: 18px; }
+  .cover svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .cover.banner svg { left: auto; right: 0; width: min(100%, 520px); }
+  .cv-code { position: absolute; top: 14px; left: 16px; font: 500 clamp(1.6rem, 3.4vw, 2.2rem)/1 var(--data); letter-spacing: -0.04em; }
+  .cover.banner .cv-code { top: 22px; left: 24px; font-size: clamp(2.4rem, 6vw, 4rem); }
+  .cv-label { position: absolute; left: 16px; bottom: 14px; font: 500 10.5px/1.2 var(--data); letter-spacing: 0.1em; text-transform: uppercase; max-width: 40%; }
+  .cover.banner .cv-label { left: 24px; bottom: 22px; }
+  @media (max-width: 560px) { .cover.banner .cv-label { display: none; } }
+  .cover :global(.cv-t) { font: 500 9.5px var(--data); letter-spacing: 0.08em; fill: currentColor; stroke: none; }
+  .cover :global(.f0) { fill: none; }
+  .cover :global(.f1) { fill: currentColor; fill-opacity: 0.1; }
+  .cover :global(.f2) { fill: currentColor; fill-opacity: 0.22; }
+  .cover :global(.f3) { fill: currentColor; fill-opacity: 0.85; }
+  .cover :global(.bg) { fill: var(--cv-bg); }
+  .cover :global(.bg-stroke) { fill: var(--cv-bg); }
+  .cover :global(.dash) { stroke-dasharray: 3 4; stroke-opacity: 0.7; }
+  .cover :global(.thick) { stroke-width: 2.4; }
+</style>

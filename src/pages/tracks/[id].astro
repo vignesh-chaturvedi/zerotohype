@@ -1,91 +1,177 @@
 ---
 import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
+import TrackCover from "../../components/TrackCover.astro";
+import { lookOf } from "../../lib/track-look";
 
 export async function getStaticPaths() {
   const tracks = (await getCollection("tracks")).sort((a, b) => a.data.order - b.data.order);
+  const all = tracks.map((t) => ({ id: t.id, code: t.data.code, title: t.data.title, stage: t.data.stage, depth: t.data.depth }));
   return tracks.map((track, i) => ({
     params: { id: track.id },
-    props: { track, prev: tracks[i - 1], next: tracks[i + 1] },
+    props: { track, prev: tracks[i - 1], next: tracks[i + 1], all },
   }));
 }
 
-const { track, prev, next } = Astro.props;
+const { track, prev, next, all } = Astro.props;
 const { Content } = await render(track);
 const t = track.data;
 const kindLabel = { lab: "Lab", workbench: "Workbench", project: "Project", guide: "Guide" } as const;
 const verified = t.verified?.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+const stages = [...new Set(all.map((a) => a.stage))];
+const position = all.findIndex((a) => a.id === track.id) + 1;
 ---
 
 <Base title={`${t.code} ${t.title}`} description={t.summary}>
-  <header class="head">
-    <p class="eyebrow">{t.code} · {t.stage}</p>
-    <h1>{t.title}</h1>
-    <p class="summary">{t.summary}</p>
-    <p class="status">
-      {t.depth === "lesson" ? <span class="tag ok">Lesson</span> : <span class="tag">Reading list</span>}
-      {verified ? <span class="mono">Checked against the live API on {verified}</span> : null}
-    </p>
-  </header>
+  <div class="layout" style={`--c: ${lookOf(t.code).color}`}>
+    <aside class="side" aria-label="Roadmap">
+      <p class="eyebrow">The roadmap</p>
+      {stages.map((stage) => (
+        <div class="side-group">
+          <p class="side-stage">{stage}</p>
+          <ol>
+            {all.filter((a) => a.stage === stage).map((a) => (
+              <li>
+                <a href={`/tracks/${a.id}/`} aria-current={a.id === track.id ? "page" : undefined} style={`--c: ${lookOf(a.code).color}`}>
+                  <span class="side-code">{a.code}</span>
+                  <span class="side-title">{a.title}</span>
+                  <span class={`side-dot ${a.depth}`} title={a.depth === "lesson" ? "Lesson" : "Reading list"} />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </aside>
 
-  <div class="reading">
-    <section>
-      <h2>Read first</h2>
-      <p class="muted">The official docs for this track.</p>
-      <ul>
-        {t.docs.map((d) => <li><a href={d.url}>{d.title}</a></li>)}
-      </ul>
-    </section>
-    {t.outside.length > 0 && (
-      <section>
-        <h2>Then</h2>
-        <p class="muted">Tutorials and write-ups worth your time.</p>
-        <ul>
-          {t.outside.map((d) => (
-            <li><a href={d.url}>{d.title}</a>{d.by && <span class="by"> · {d.by}</span>}</li>
+    <div class="main">
+      <details class="mobile-map">
+        <summary><span class="eyebrow">Roadmap</span> <span>{t.code} of 10 · all tracks</span></summary>
+        <ol>
+          {all.map((a) => (
+            <li><a href={`/tracks/${a.id}/`} aria-current={a.id === track.id ? "page" : undefined}><span class="side-code">{a.code}</span> {a.title}</a></li>
           ))}
-        </ul>
-      </section>
-    )}
-    {t.build.length > 0 && (
-      <section>
-        <h2>Build</h2>
-        <p class="muted">Hands-on work for this track.</p>
-        <ul>
-          {t.build.map((b) => (
-            <li>
-              {b.href && b.status === "live" ? <a href={b.href}>{kindLabel[b.kind]}: {b.label}</a> : <span>{kindLabel[b.kind]}: {b.label}</span>}
-              {b.status === "planned" ? <span class="tag">Coming</span> : <span class="tag ok">Live</span>}
-            </li>
-          ))}
-        </ul>
-      </section>
-    )}
+        </ol>
+      </details>
+
+      <TrackCover code={t.code} variant="banner" label={t.stage} />
+
+      <header class="head">
+        <p class="eyebrow">{t.code} · {t.stage} · {position} of {all.length}</p>
+        <h1>{t.title}</h1>
+        <p class="lede">{t.summary}</p>
+        <p class="status">
+          {t.depth === "lesson" ? <span class="tag ok">Lesson</span> : <span class="tag">Reading list</span>}
+          {verified ? <span class="pill"><span class="live-dot" />Checked against the live API · <b>{verified}</b></span> : null}
+        </p>
+      </header>
+
+      <div class="reading">
+        <section>
+          <p class="eyebrow"><span class="n">01</span> Read first</p>
+          <p class="muted">The official docs for this track.</p>
+          <ul>
+            {t.docs.map((d) => <li><a href={d.url}>{d.title}</a></li>)}
+          </ul>
+        </section>
+        {t.outside.length > 0 && (
+          <section>
+            <p class="eyebrow"><span class="n">02</span> Then</p>
+            <p class="muted">Tutorials and write-ups worth your time.</p>
+            <ul>
+              {t.outside.map((d) => (
+                <li><a href={d.url}>{d.title}</a>{d.by && <span class="by">{d.by}</span>}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+        {t.build.length > 0 && (
+          <section class="build">
+            <p class="eyebrow"><span class="n">{t.outside.length > 0 ? "03" : "02"}</span> Build</p>
+            <p class="muted">Hands-on work for this track.</p>
+            <ul>
+              {t.build.map((b) => (
+                <li>
+                  {b.href && b.status === "live" ? <a href={b.href}>{kindLabel[b.kind]}: {b.label}</a> : <span>{kindLabel[b.kind]}: {b.label}</span>}
+                  {b.status === "planned" ? <span class="tag">Coming</span> : <span class="tag ok">Live</span>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
+
+      <article class="prose">
+        <Content />
+      </article>
+
+      <nav class="pager" aria-label="Tracks">
+        {prev ? (
+          <a href={`/tracks/${prev.id}/`} style={`--c: ${lookOf(prev.data.code).color}`}>
+            <span class="eyebrow">← Previous</span>
+            <span class="pager-title"><span class="swatch" />{prev.data.code} {prev.data.title}</span>
+          </a>
+        ) : <span />}
+        {next ? (
+          <a class="end" href={`/tracks/${next.id}/`} style={`--c: ${lookOf(next.data.code).color}`}>
+            <span class="eyebrow">Next →</span>
+            <span class="pager-title"><span class="swatch" />{next.data.code} {next.data.title}</span>
+          </a>
+        ) : <span />}
+      </nav>
+    </div>
   </div>
-
-  <article class="prose">
-    <Content />
-  </article>
-
-  <nav class="pager" aria-label="Tracks">
-    {prev ? <a href={`/tracks/${prev.id}/`}><span class="eyebrow">Previous</span>{prev.data.code} {prev.data.title}</a> : <span />}
-    {next ? <a class="end" href={`/tracks/${next.id}/`}><span class="eyebrow">Next</span>{next.data.code} {next.data.title}</a> : <span />}
-  </nav>
 </Base>
 
 <style>
-  .head { display: grid; gap: 12px; }
-  .summary { font-size: 1.12rem; line-height: 1.55; max-width: 64ch; }
-  .status { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 12.5px; color: var(--muted); }
-  .reading { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  @media (max-width: 900px) { .reading { grid-template-columns: minmax(0, 1fr); } }
-  .reading section { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
-  .reading h2 { font-size: 1.05rem; }
-  .reading p { font-size: 14px; }
-  .reading ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; font-size: 14.5px; }
-  .reading li { overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
-  .by { color: var(--muted); font-size: 13px; }
-  .pager { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--rule); padding-top: 20px; }
-  .pager a { display: grid; gap: 4px; text-decoration: none; font-weight: 600; }
-  .pager a.end { text-align: right; }
+  .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 48px; align-items: start; }
+  .main { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; min-width: 0; }
+
+  .side { position: sticky; top: 84px; display: grid; gap: 18px; max-height: calc(100vh - 110px); overflow-y: auto; padding-right: 6px; }
+  .side-group { display: grid; gap: 6px; }
+  .side-stage { font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+  .side ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .side a {
+    display: grid; grid-template-columns: 2.4rem minmax(0, 1fr) auto; gap: 8px; align-items: center;
+    padding: 7px 10px; border-radius: 10px; text-decoration: none; color: var(--ink-2); font-size: 14px; line-height: 1.3;
+  }
+  .side a:hover { background: var(--sunk); color: var(--ink); }
+  .side a[aria-current="page"] { background: color-mix(in srgb, var(--c) calc(var(--cover-amt) * 0.6), var(--surface)); color: var(--ink); font-weight: 600; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 70%, var(--rule)); }
+  .side-code { font: 400 11.5px/1 var(--data); color: var(--muted); }
+  .side-dot { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--muted); }
+  .side-dot.lesson { background: var(--ok); border-color: var(--ok); }
+
+  .mobile-map { display: none; border: 1px solid var(--rule); border-radius: 14px; background: var(--surface); }
+  .mobile-map summary { cursor: pointer; padding: 12px 16px; display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--ink-2); }
+  .mobile-map ol { list-style: none; margin: 0; padding: 4px 8px 10px; display: grid; gap: 2px; }
+  .mobile-map a { display: block; padding: 8px 10px; border-radius: 9px; color: var(--ink-2); text-decoration: none; font-size: 14.5px; }
+  .mobile-map a[aria-current="page"] { background: var(--sunk); color: var(--ink); font-weight: 600; }
+
+  .head { display: grid; gap: 14px; }
+  .head h1 { font-size: clamp(2.3rem, 5.4vw, 3.8rem); letter-spacing: -0.05em; line-height: 1; }
+  .status { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+  .reading { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .reading section { background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+  .reading section.build { background: color-mix(in srgb, var(--c) calc(var(--cover-amt) * 0.35), var(--surface)); border-color: color-mix(in srgb, var(--c) 55%, var(--rule)); }
+  .reading .eyebrow { display: flex; gap: 8px; align-items: center; color: var(--ink); }
+  .reading .n { color: var(--muted); }
+  .reading p.muted { font-size: 13.5px; }
+  .reading ul { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 9px; font-size: 14.5px; line-height: 1.45; }
+  .reading li { overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+  .by { color: var(--muted); font-size: 12.5px; }
+
+  .pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding-top: 12px; }
+  .pager a { display: grid; gap: 8px; padding: 18px; border: 1px solid var(--rule); border-radius: 16px; background: var(--surface); text-decoration: none; color: var(--ink); transition: transform 200ms var(--ease), box-shadow 200ms var(--ease); }
+  .pager a:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .pager a.end { text-align: right; justify-items: end; }
+  .pager-title { display: inline-flex; align-items: center; gap: 10px; font: 600 1.1rem/1.2 var(--display); letter-spacing: -0.02em; }
+  .swatch { width: 14px; height: 14px; border-radius: 4px; background: color-mix(in srgb, var(--c) var(--cover-amt), var(--surface)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 15%, transparent); flex: none; }
+
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .side { display: none; }
+    .mobile-map { display: block; }
+  }
+  @media (max-width: 560px) { .pager { grid-template-columns: minmax(0, 1fr); } .pager a.end { text-align: left; justify-items: start; } }
 </style>
