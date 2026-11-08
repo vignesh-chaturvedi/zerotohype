@@ -3859,7 +3859,7 @@
     "ac": 1,
     "out": 9,
     "ad": 6,
-    "beat": 16,
+    "beat": 20,
     "aa": 4,
     "kelp": 9,
     "flip": 19,
@@ -3876,8 +3876,8 @@
     "zq": 4,
     "vox": 2,
     "yeet": 16,
-    "ae": 16,
-    "aq": 8,
+    "ae": 20,
+    "aq": 20,
     "txyz": 20,
     "tzxy": 20,
     "www": 6,
@@ -3914,7 +3914,8 @@
     "omen": 2,
     "ddty": 1,
     "ay": 2,
-    "dadu": 2
+    "dadu": 2,
+    "game": 20
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",
