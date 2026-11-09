@@ -49,6 +49,19 @@
   --display: "Schibsted Grotesk", "Schibsted Grotesk Fallback", "Helvetica Neue", Arial, sans-serif;
   --body: "Public Sans", "Public Sans Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
   --data: "Martian Mono", "Martian Mono Fallback", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* Code colours (Shiki's css-variables theme), from the palette so they follow the theme; each one
+     reads at 4.5:1 or more on --sunk in both themes. */
+  --astro-code-background: var(--sunk);
+  --astro-code-foreground: var(--ink);
+  --astro-code-token-keyword: var(--accent);
+  --astro-code-token-string: var(--ok);
+  --astro-code-token-string-expression: var(--ok);
+  --astro-code-token-constant: var(--mvp);
+  --astro-code-token-function: var(--series-b);
+  --astro-code-token-parameter: var(--ink-2);
+  --astro-code-token-punctuation: var(--ink-2);
+  --astro-code-token-comment: var(--muted);
+  --astro-code-token-link: var(--accent);
   color-scheme: dark;
 }
 :root[data-theme="light"] {
@@ -56,6 +69,7 @@
   --bg: #f5f3ee; --surface: #fffefb; --sunk: #ece8df; --ink: #1a1b1d; --ink-2: #3b3c3f; --muted: #5c5851;
   --rule: #e2ddd2; --rule-strong: #cfc8ba; --accent: #b23c0e; --on-accent: #ffffff; --primary: #1a1b1d; --on-primary: #fbfaf6;
   --live: #d6371b; --mvp: #9a5a00; --ok: #1c7449; --bid: #1c7449; --ask: #b23c0e; --series-b: #1f6a96;
+  --astro-code-token-constant: #8f5400; /* --mvp is just under 4.5:1 on --sunk */
   --cover-amt: 100%; --cover-ink: #1d1b17; --cover-ink-tint: 0%;
   --shadow: 0 1px 2px rgb(40 30 10 / 0.05), 0 10px 30px -12px rgb(40 30 10 / 0.12);
   --shadow-lift: 0 2px 4px rgb(40 30 10 / 0.06), 0 22px 40px -18px rgb(40 30 10 / 0.22);
@@ -82,6 +96,12 @@ code, kbd, pre, .mono { font-family: var(--data); }
 code { font-size: 0.8em; background: var(--sunk); padding: 0.1em 0.38em; border-radius: 5px; overflow-wrap: anywhere; }
 pre { font-size: 0.8rem; line-height: 1.65; background: var(--sunk); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 18px; overflow-x: auto; margin: 0; }
 pre code { background: none; padding: 0; font-size: inherit; }
+/* Lesson code blocks get a bar with the language and a Copy button (code-blocks.ts). */
+.code-block { border: 1px solid var(--rule); border-radius: 12px; background: var(--sunk); overflow: hidden; }
+.code-block pre { border: 0; border-radius: 0; }
+.code-bar { display: flex; align-items: center; gap: 12px; padding: 6px 8px 6px 18px; border-bottom: 1px solid var(--rule); font: 500 0.75rem/1 var(--data); letter-spacing: 0.04em; color: var(--muted); }
+.code-copy { margin-left: auto; padding: 6px 9px; border: 1px solid var(--rule-strong); border-radius: 6px; background: none; color: var(--ink-2); font: inherit; cursor: pointer; }
+.code-copy:hover { color: var(--ink); border-color: var(--ink-2); }
 img { max-width: 100%; }
 
 .wrap {
