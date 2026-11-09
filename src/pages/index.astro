@@ -14,6 +14,7 @@ const docCount = new Set(tracks.flatMap((t) => t.data.docs.map((d) => d.url))).s
 const outsideCount = new Set(tracks.flatMap((t) => t.data.outside.map((d) => d.url))).size;
 const kindLabel = { lab: "Lab", workbench: "Workbench", project: "Project", guide: "Guide" } as const;
 const lessonCount = tracks.filter((t) => t.data.depth === "lesson").length;
+const count = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 
 // Hero specimen: a real Skew market where the two averages disagree, drawn from the lab's dataset.
 type Market = { outcome: number; group: string; venue: string; coin: string; threshold: string; actualYes: boolean; windowStartMs: number; windowEndMs: number; samples: Sample[] };
@@ -90,7 +91,7 @@ const labs = [
       <p class="eyebrow">01 · The roadmap</p>
       <h2 id="roadmap-title">Ten tracks, in the order you'll need them.</h2>
       <p class="muted">
-        {docCount} official pages and {outsideCount} outside guides, sorted into tracks. Each one says what
+        {count(docCount, "official page")} and {count(outsideCount, "outside guide")}, sorted into tracks. Each one says what
         to read first, what's worth reading next and what to build. {lessonCount} have full lessons.
       </p>
       <div class="progress" data-progress>
@@ -140,7 +141,7 @@ const labs = [
                   ))}
                 </ul>
               )}
-              <p class="pv-meta">{t.data.docs.length} official pages · {t.data.outside.length} outside guides</p>
+              <p class="pv-meta">{count(t.data.docs.length, "official page")} · {count(t.data.outside.length, "outside guide")}</p>
             </div>
           </div>
         ))}
