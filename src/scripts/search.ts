@@ -1,7 +1,7 @@
 // Site search: a dialog opened with ⌘K, Ctrl+K or "/", backed by the Pagefind index that the build
 // writes to /pagefind/. The index loads on first open, and every search runs in the browser.
 
-type SubResult = { title: string; url: string; excerpt: string };
+type SubResult = { title: string; url: string; excerpt: string; weighted_locations?: { balanced_score: number }[] };
 type Data = { url: string; excerpt: string; meta: { title?: string; kind?: string }; sub_results?: SubResult[] };
 type Pagefind = {
   options(o: object): Promise<void>;
@@ -50,6 +50,17 @@ function showSuggestions() {
 
 const clean = (s = "") => s.replace(/<(?!\/?mark>)[^>]*>/g, "");
 
+/** How well a section of a page matches: Pagefind weighs each match, more in headings than in text. */
+const score = (s: SubResult) => (s.weighted_locations ?? []).reduce((total, l) => total + l.balanced_score, 0);
+
+/** The two sections of a page that match best, leaving out any that match far worse than the best one. */
+function bestSections(d: Data) {
+  const subs = (d.sub_results ?? [])
+    .filter((s) => s.url !== d.url && s.title && s.title !== d.meta.title && s.excerpt !== d.excerpt)
+    .sort((a, b) => score(b) - score(a));
+  return subs.filter((s) => score(s) >= score(subs[0]) / 4).slice(0, 2);
+}
+
 async function run(q: string) {
   if (!list) return;
   if (!q.trim()) return showSuggestions();
@@ -69,7 +80,7 @@ async function run(q: string) {
   let n = 0;
   list.innerHTML = data
     .map((d) => {
-      const subs = (d.sub_results ?? []).filter((s) => s.url !== d.url && s.title && s.title !== d.meta.title && s.excerpt !== d.excerpt).slice(0, 2);
+      const subs = bestSections(d);
       return `<div class="hit-group">
         <a role="option" id="hit-${n++}" class="hit" href="${d.url}">
           <span class="hit-kind">${clean(d.meta.kind ?? "Page")}</span>
