@@ -137,7 +137,7 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
   .net, .area { font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .net.mainnet { color: var(--accent); }
   .text { overflow-wrap: anywhere; }
-  .day li { scroll-margin-top: 84px; }
+  .day li { scroll-margin-top: calc(var(--head-h) + 24px); }
   .day li:target { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
   .follow { font-size: 0.875rem; color: var(--muted); }
   .filter { display: flex; flex-wrap: wrap; gap: 6px; }
