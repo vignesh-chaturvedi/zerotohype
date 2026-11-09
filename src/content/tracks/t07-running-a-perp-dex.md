@@ -11,9 +11,11 @@ docs:
   - { title: HIP-3 deployer actions, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/hip-3-deployer-actions" }
   - { title: Oracle, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/oracle" }
 outside:
-  - { title: HIP-3 and the trust boundary, url: "https://chainstack.com/hyperliquid-hip3-builder-deployed-perpetuals-trust-boundary/", by: Chainstack }
-  - { title: "How trade[XYZ] builds its oracle price", url: "https://docs.trade.xyz/perpetuals/mechanics/oracle-price", by: "trade[XYZ]" }
-  - { title: hyperkeeper, an open-source oracle keeper, url: "https://github.com/vignesh-chaturvedi/hyperkeeper", by: Vignesh Chaturvedi }
+  - { title: HIP-3 and the trust boundary, url: "https://chainstack.com/hyperliquid-hip3-builder-deployed-perpetuals-trust-boundary/", by: Chainstack, note: "What HIP-3 hands the builder and what HyperCore keeps, step by step through deployment and the perpDeploy action, with a testnet lab." }
+  - { title: "How trade[XYZ] builds its oracle price", url: "https://docs.trade.xyz/perpetuals/mechanics/oracle-price", by: "trade[XYZ]", note: "How one live HIP-3 DEX builds its oracle price, from external and internal sources." }
+  - { title: hyperkeeper, an open-source oracle keeper, url: "https://github.com/vignesh-chaturvedi/hyperkeeper", by: Vignesh Chaturvedi, note: "Open-source operations for HIP-3 and HIP-4 deployers: oracle updates with failover, and HIP-4 settlement." }
+  - { title: "HIP-3 from the builder's side", url: "https://blocksec.com/blog/deep-dive-into-hip-3-a-builder-centric-perspective", by: BlockSec, note: "The launch flow, pricing and solvency, slashing, and the risks of misset parameters and outside oracles, with controls for each." }
+  - { title: "What is HIP-3?", url: "https://www.dwellir.com/blog/hyperliquid-hip-3-explained", by: Dwellir, note: "The life of a HIP-3 market, from staking and the deploy auction to running the oracle, and what the deployer controls." }
 build:
   - { label: Oracle duty simulator, kind: workbench }
   - { label: Oracle keeper in shadow mode, kind: project }

@@ -104,7 +104,7 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
           <p class="eyebrow"><span class="n">01</span> Read first</p>
           <p class="muted">The official docs for this track.</p>
           <ul>
-            {t.docs.map((d) => <li><a href={d.url}>{d.title}</a></li>)}
+            {t.docs.map((d) => <li><a href={d.url}>{d.title}</a>{d.note && <span class="note">{d.note}</span>}</li>)}
           </ul>
         </section>
         {t.outside.length > 0 && (
@@ -113,7 +113,7 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
             <p class="muted">Tutorials and write-ups worth your time.</p>
             <ul>
               {t.outside.map((d) => (
-                <li><a href={d.url}>{d.title}</a>{d.by && <span class="by">{d.by}</span>}</li>
+                <li><a href={d.url}>{d.title}</a>{d.by && <span class="by">{d.by}</span>}{d.note && <span class="note">{d.note}</span>}</li>
               ))}
             </ul>
           </section>
@@ -231,6 +231,7 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
   .reading ul { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 9px; font-size: 0.90625rem; line-height: 1.45; }
   .reading li { overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
   .by { color: var(--muted); font-size: 0.78125rem; }
+  .reading .note { flex-basis: 100%; font-size: 0.84375rem; line-height: 1.45; color: var(--muted); }
 
   /* Contents of a lesson, above it */
   .toc { display: grid; gap: 10px; max-width: 70ch; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }

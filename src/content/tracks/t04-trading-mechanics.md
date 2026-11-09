@@ -20,7 +20,7 @@ docs:
   - { title: Self-trade prevention, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/trading/self-trade-prevention" }
   - { title: Entry price and pnl, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/trading/entry-price-and-pnl" }
 outside:
-  - { title: Monitor TP/SL trigger orders, url: "https://www.quicknode.com/guides/hyperliquid/monitor-tpsl-trigger-orders-stream-hyperliquid", by: QuickNode }
+  - { title: Monitor TP/SL trigger orders, url: "https://www.quicknode.com/guides/hyperliquid/monitor-tpsl-trigger-orders-stream-hyperliquid", by: QuickNode, note: "Take-profit and stop-loss trigger orders streamed over QuickNode's gRPC feed, with a sample heatmap app." }
 build:
   - { label: Funding and mark price, kind: lab, status: live, href: "/labs/funding/" }
   - { label: Margin and liquidation price, kind: workbench }
