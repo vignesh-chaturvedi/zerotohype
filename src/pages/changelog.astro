@@ -3,16 +3,7 @@ import Base from "../layouts/Base.astro";
 import entries from "../data/changelog.json";
 import meta from "../data/changelog-meta.json";
 import { freshness } from "../lib/freshness";
-
-type Entry = { time: string; network: string; area: string; summary: string };
-
-const escape = (s: string) =>
-  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-// Summaries use two bits of Markdown: `code` and [links](https://...).
-const inline = (s: string) =>
-  escape(s)
-    .replace(/`([^`]+)`/g, "<code>$1</code>")
-    .replace(/\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g, '<a href="$2">$1</a>');
+import { entryId, inlineHtml as inline, type Entry } from "../lib/changelog";
 
 const day = (iso: string) =>
   new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
@@ -40,6 +31,7 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
     <p class="pill run-note" data-checked={meta.lastRun} data-fresh="0.5,1" data-state={freshness(Date.parse(meta.lastRun), 0.5, 1)}>
       <span class="live-dot"></span>Tracking since {since} · last checked <b><time datetime={meta.lastRun}>{lastRun} UTC</time></b><span class="ago" data-ago></span>
     </p>
+    <p class="follow"><a href="/changelog/rss.xml">Follow it by RSS</a>: each change arrives as it's found.</p>
   </header>
 
   <section class="now" aria-labelledby="now-title">
@@ -71,7 +63,7 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
           <h3>{date}<span data-count>{items.length} {items.length === 1 ? "change" : "changes"}</span></h3>
           <ul>
             {items.map((e) => (
-              <li data-net={e.network}>
+              <li data-net={e.network} id={entryId(e)}>
                 <span class="meta"><span class={`net ${e.network}`}>{e.network}</span>{e.area !== e.network && <span class="area">{e.area}</span>}</span>
                 <span class="text" set:html={inline(e.summary)} />
               </li>
@@ -117,7 +109,10 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
     });
     let saved: string | null = null;
     try { saved = localStorage.getItem(KEY); } catch {}
-    if (saved && saved !== "all" && bar.querySelector(`button[data-net="${saved}"]`)) show(saved);
+    // A link to one change (from the feed) shows everything, so the change it points at isn't filtered out.
+    const target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+    const hidesTarget = target?.dataset.net && saved !== target.dataset.net;
+    if (saved && saved !== "all" && !hidesTarget && bar.querySelector(`button[data-net="${saved}"]`)) show(saved);
   }
 </script>
 
@@ -142,6 +137,9 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
   .net, .area { font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .net.mainnet { color: var(--accent); }
   .text { overflow-wrap: anywhere; }
+  .day li { scroll-margin-top: 84px; }
+  .day li:target { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .follow { font-size: 0.875rem; color: var(--muted); }
   .filter { display: flex; flex-wrap: wrap; gap: 6px; }
   .filter button { padding: 8px 12px; border: 1px solid var(--rule-strong); border-radius: 999px; background: var(--surface); color: var(--ink-2); font: 500 0.75rem/1 var(--data); letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
   .filter button:hover { border-color: var(--ink-2); color: var(--ink); }

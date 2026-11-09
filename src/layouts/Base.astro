@@ -64,6 +64,7 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={new URL(path, Astro.site)} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Hyperliquid API changelog (Zero to HYPE)" href="/changelog/rss.xml" />
     <script is:inline>
       // A theme the reader picked wins; otherwise the site follows the system's light or dark setting,
       // and is dark when there is none. Applied before the page paints.
