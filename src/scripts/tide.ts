@@ -39,7 +39,21 @@ function run(stage: HTMLElement, canvas: HTMLCanvasElement) {
   };
   const play = () => send({ type: "play", on: visible && !document.hidden });
 
-  new ResizeObserver(() => send({ type: "size", w: stage.clientWidth, h: stage.clientHeight, dpr: devicePixelRatio || 1 })).observe(stage);
+  // The ridges stay below the intro paragraph, which reaches past the middle of the stage on short
+  // phones, and above the caption at the bottom, which wraps to two lines there.
+  const copy = stage.querySelector<HTMLElement>(".stage-copy");
+  const lede = stage.querySelector<HTMLElement>(".lede");
+  const foot = stage.querySelector<HTMLElement>(".stage-foot");
+  const sendSize = () => {
+    const box = stage.getBoundingClientRect();
+    send({
+      type: "size", w: stage.clientWidth, h: stage.clientHeight, dpr: devicePixelRatio || 1,
+      ceiling: lede ? lede.getBoundingClientRect().bottom - box.top + 8 : 0,
+      floor: foot ? box.bottom - foot.getBoundingClientRect().top : 0,
+    });
+  };
+  const resized = new ResizeObserver(sendSize);
+  for (const el of [stage, copy, foot]) if (el) resized.observe(el);
   new MutationObserver(sendColors).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; play(); }).observe(stage);
   document.addEventListener("visibilitychange", play);
