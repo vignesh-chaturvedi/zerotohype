@@ -266,6 +266,9 @@ function setup(svg: SVGSVGElement) {
     }
   }
 
+  // Drawings inside [data-motion-manual] run only when the page dispatches a "motion" event on them.
+  svg.addEventListener("motion", (e) => setLive(Boolean((e as CustomEvent<boolean>).detail)));
+  if (svg.closest("[data-motion-manual]")) return;
   if (noHover) {
     new IntersectionObserver(([entry]) => setLive(entry.isIntersecting), { threshold: 0.6 }).observe(host as Element);
   } else {

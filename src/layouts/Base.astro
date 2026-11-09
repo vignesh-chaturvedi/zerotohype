@@ -9,6 +9,7 @@ import "@fontsource/martian-mono/400.css";
 import "@fontsource/martian-mono/500.css";
 import "../styles/global.css";
 import settlements from "../../public/data/hip4-settlements.json";
+import { trackLook } from "../lib/track-look";
 
 interface Props {
   title: string;
@@ -16,6 +17,9 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+// Each page's share card is drawn after the build by scripts/og-cards.mjs, named after the page's path.
+const ogSlug = Astro.url.pathname.replace(/^\/|\/$/g, "").replace(/\//g, "-") || "home";
+const ogImage = new URL(`/og/${ogSlug === "404" ? "home" : ogSlug}.png`, Astro.site).href;
 const fullTitle = title === "Zero to HYPE" ? title : `${title} · Zero to HYPE`;
 const path = Astro.url.pathname;
 const nav = [
@@ -26,6 +30,7 @@ const nav = [
 ];
 const repo = "https://github.com/vignesh-chaturvedi/zerotohype";
 const marketCount = settlements.markets.length;
+const stripColors = Object.values(trackLook).map((l) => l.color);
 ---
 
 <!doctype html>
@@ -38,12 +43,20 @@ const marketCount = settlements.markets.length;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#f5f3ee" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#12110f" media="(prefers-color-scheme: dark)" />
+    <meta property="og:url" content={new URL(path, Astro.site).href} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${title}: a card from Zero to HYPE`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="theme-color" content="#0c0c0b" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={new URL(path, Astro.site)} />
     <script is:inline>
-      // Apply a saved light or dark choice before the page paints; otherwise follow the system.
+      // The site is dark unless the reader picked light; apply that choice before the page paints.
       try {
         const saved = localStorage.getItem("theme");
         if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
@@ -73,6 +86,11 @@ const marketCount = settlements.markets.length;
           ))}
         </nav>
         <div class="actions">
+          <button class="search-btn" type="button" data-search-open aria-label="Search the site" aria-keyshortcuts="Meta+K Control+K /">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6" /><path d="m13 13 4.2 4.2" /></svg>
+            <span class="search-word">Search</span>
+            <kbd>⌘K</kbd>
+          </button>
           <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
             <svg class="i-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 12.3A7 7 0 0 1 7.7 3.5a7 7 0 1 0 8.8 8.8Z" /></svg>
             <svg class="i-sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.6" /><path d="M10 1.8v2.1M10 16.1v2.1M1.8 10h2.1M16.1 10h2.1M4.2 4.2l1.5 1.5M14.3 14.3l1.5 1.5M4.2 15.8l1.5-1.5M14.3 5.7l1.5-1.5" /></svg>
@@ -85,9 +103,19 @@ const marketCount = settlements.markets.length;
         </div>
       </div>
     </header>
+    <slot name="stage" />
     <main id="main" class="wrap page">
       <slot />
     </main>
+    <dialog id="search" class="search" aria-label="Search the site">
+      <form method="dialog" class="search-bar" role="search" onsubmit="return false">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6" /><path d="m13 13 4.2 4.2" /></svg>
+        <input type="search" placeholder="Search tracks, labs and the changelog" autocomplete="off" spellcheck="false" aria-label="Search" aria-controls="search-results" />
+        <button type="button" class="esc" onclick="this.closest('dialog').close()">Esc</button>
+      </form>
+      <div id="search-results" class="search-results" role="listbox" aria-label="Results"></div>
+      <p class="search-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move <kbd>↵</kbd> open</span><span>Runs in your browser</span></p>
+    </dialog>
     <footer class="site-foot">
       <div class="wrap foot">
         <div class="foot-brand">
@@ -113,15 +141,18 @@ const marketCount = settlements.markets.length;
           Facts are checked against the live API, and each lesson shows when.
         </p>
       </div>
+      <div class="strip" aria-hidden="true">{stripColors.map((c) => <span style={`--c: ${c}`} />)}</div>
+      <p class="bleed" aria-hidden="true">Zero to <span>HYPE</span></p>
     </footer>
     <script>
       import "../scripts/diagram-motion.ts";
+      import "../scripts/search.ts";
+      import "../scripts/progress.ts";
 
       // Light/dark switch: flips whatever is showing now and remembers the choice.
       const root = document.documentElement;
       const toggle = document.getElementById("theme-toggle");
-      const systemDark = matchMedia("(prefers-color-scheme: dark)");
-      const current = () => root.dataset.theme ?? (systemDark.matches ? "dark" : "light");
+      const current = () => (root.dataset.theme === "light" ? "light" : "dark");
       const label = () => {
         const next = current() === "dark" ? "light" : "dark";
         toggle?.setAttribute("aria-label", `Switch to ${next} mode`);
@@ -135,83 +166,94 @@ const marketCount = settlements.markets.length;
         try { localStorage.setItem("theme", next); } catch {}
         label();
       });
-      systemDark.addEventListener("change", label);
       label();
     </script>
   </body>
 </html>
 
 <style>
-  .skip { position: absolute; left: 12px; top: -60px; z-index: 30; padding: 10px 14px; border-radius: 10px; background: var(--primary); color: var(--on-primary); }
+  .skip { position: absolute; left: 12px; top: -60px; z-index: 30; padding: 10px 14px; border-radius: 8px; background: var(--primary); color: var(--on-primary); }
   .skip:focus { top: 12px; }
 
   .livebar {
-    display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
-    padding: 8px max(20px, env(safe-area-inset-right, 0px)) 8px max(20px, env(safe-area-inset-left, 0px));
-    background: var(--sunk); color: var(--ink-2); text-decoration: none; font-size: 13.5px; text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;
+    padding: 7px max(20px, env(safe-area-inset-right, 0px)) 7px max(20px, env(safe-area-inset-left, 0px));
+    background: var(--bg); color: var(--ink-2); text-decoration: none; font: 400 12px/1.5 var(--data); letter-spacing: 0.02em; text-align: center;
     border-bottom: 1px solid var(--rule);
   }
-  .livebar:hover .livebar-text { text-decoration: underline; text-underline-offset: 3px; }
+  .livebar:hover .livebar-text { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
   @media (max-width: 560px) {
-    .livebar { flex-wrap: nowrap; justify-content: flex-start; font-size: 12.5px; }
+    .livebar { flex-wrap: nowrap; justify-content: flex-start; font-size: 11.5px; }
     .livebar-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   }
-  .live {
-    display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px 3px 6px; border-radius: 6px;
-    font: 500 10px/1 var(--data); letter-spacing: 0.12em; text-transform: uppercase; color: var(--live);
-    background: color-mix(in srgb, var(--live) 12%, var(--surface)); border: 1px solid color-mix(in srgb, var(--live) 30%, transparent);
-  }
+  .live { display: inline-flex; align-items: center; gap: 6px; font: 500 10px/1 var(--data); letter-spacing: 0.14em; text-transform: uppercase; color: var(--live); }
 
   header.site {
     position: sticky; top: 0; z-index: 20;
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: saturate(1.3) blur(14px); -webkit-backdrop-filter: saturate(1.3) blur(14px);
     border-bottom: 1px solid var(--rule);
   }
-  .bar { display: flex; align-items: center; gap: 12px 24px; padding-block: 12px; flex-wrap: wrap; }
+  .bar { display: flex; align-items: center; gap: 12px 26px; padding-block: 12px; flex-wrap: wrap; }
   .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
   .glyph { width: 28px; height: 28px; flex: none; }
   .glyph rect { fill: var(--primary); }
   .g-zero { fill: none; stroke: var(--on-primary); stroke-width: 2.4; }
   .g-arrow { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
   .word { font: 600 1.08rem/1 var(--display); letter-spacing: -0.02em; }
-  .hype { font: 500 0.82rem/1 var(--data); letter-spacing: 0.02em; padding: 4px 6px; margin-left: 2px; border-radius: 6px; background: var(--ink); color: var(--bg); vertical-align: 1px; }
-  nav { display: flex; gap: 2px; flex-wrap: wrap; }
-  nav a { font-size: 14.5px; color: var(--muted); text-decoration: none; padding: 7px 11px; border-radius: 9px; transition: background 150ms var(--ease), color 150ms var(--ease); }
-  nav a:hover { color: var(--ink); background: var(--sunk); }
-  nav a[aria-current="page"] { color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--rule); }
+  .hype { font: 500 0.82rem/1 var(--data); letter-spacing: 0.02em; padding: 4px 6px; margin-left: 2px; border-radius: 4px; background: var(--ink); color: var(--bg); vertical-align: 1px; }
+  nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  nav a { position: relative; font-size: 14.5px; color: var(--muted); text-decoration: none; padding: 7px 10px; transition: color 150ms var(--ease); }
+  nav a:hover { color: var(--ink); }
+  nav a[aria-current="page"] { color: var(--ink); }
+  nav a[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -13px; height: 2px; background: var(--accent); }
   .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-  .theme-toggle {
-    display: inline-grid; place-items: center; width: 38px; height: 36px; padding: 0; border-radius: 10px; cursor: pointer;
-    color: var(--ink); background: var(--surface); border: 1px solid var(--rule-strong); transition: box-shadow 150ms var(--ease);
+  .search-btn, .theme-toggle, .gh {
+    display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 8px; cursor: pointer;
+    font: 500 14px/1 var(--body); color: var(--ink-2); background: transparent; border: 1px solid var(--rule-strong); text-decoration: none;
+    transition: border-color 150ms var(--ease), color 150ms var(--ease);
   }
-  .theme-toggle:hover { box-shadow: var(--shadow); }
+  .search-btn:hover, .theme-toggle:hover, .gh:hover { border-color: var(--ink); color: var(--ink); }
+  .search-btn { min-width: 168px; color: var(--muted); }
+  .search-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+  .search-btn kbd { margin-left: auto; font: 500 10.5px/1 var(--data); padding: 4px 6px; border-radius: 4px; border: 1px solid var(--rule-strong); color: var(--muted); }
+  .theme-toggle { width: 38px; padding: 0; justify-content: center; color: var(--ink); }
   .theme-toggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   .theme-toggle .i-moon { fill: currentColor; stroke: none; }
-  .gh, .start { display: inline-flex; align-items: center; gap: 7px; font: 600 14px/1 var(--body); text-decoration: none; padding: 9px 13px; border-radius: 10px; }
-  .gh { color: var(--ink); border: 1px solid var(--rule-strong); background: var(--surface); }
+  .gh { color: var(--ink); font-weight: 600; }
   .gh svg { width: 15px; height: 15px; fill: currentColor; }
-  .start { color: var(--on-primary); background: var(--primary); border: 1px solid var(--primary); }
-  .gh:hover, .start:hover { box-shadow: var(--shadow); }
+  .start { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px; font: 600 14px/1 var(--body); text-decoration: none; border-radius: 8px; color: var(--on-primary); background: var(--primary); }
+  .start:hover { box-shadow: var(--shadow); }
+  @media (max-width: 1060px) { .search-btn { min-width: 0; } .search-btn kbd { display: none; } }
   @media (max-width: 760px) {
     .bar { gap: 10px; }
-    nav { order: 3; width: 100%; margin-inline: -8px; }
-    nav a { padding: 6px 8px; }
-    .gh span { display: none; }
+    nav { order: 3; width: 100%; margin-inline: -10px; }
+    nav a { padding: 6px 10px; }
+    nav a[aria-current="page"]::after { bottom: -9px; }
+    .gh, .search-word { display: none; }
+    .search-btn { width: 38px; padding: 0; justify-content: center; }
   }
 
-  .page { padding-block: 48px 96px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+  .page { padding-block: 56px 96px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 72px; }
 
-  .site-foot { border-top: 1px solid var(--rule); background: var(--surface); }
-  .foot { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px 48px; padding-block: 48px 36px; }
+  .site-foot { position: relative; overflow: hidden; border-top: 1px solid var(--rule); background: var(--bg); }
+  .foot { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px 48px; padding-block: 56px 28px; }
   .foot-brand { display: grid; gap: 10px; align-content: start; }
-  .foot-mark { font: 500 clamp(2rem, 5vw, 3.2rem)/1 var(--display); letter-spacing: -0.045em; }
-  .foot-mark span { font: 400 0.8em/1 var(--data); letter-spacing: -0.06em; color: var(--accent); }
+  .foot-mark { font: 600 1.25rem/1 var(--display); letter-spacing: -0.02em; }
+  .foot-mark span { font: 400 0.85em/1 var(--data); color: var(--accent); }
   .foot-note { color: var(--muted); max-width: 44ch; }
   .foot-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .foot-cols div { display: grid; gap: 8px; align-content: start; }
   .foot-cols a { color: var(--ink-2); text-decoration: none; font-size: 15px; }
   .foot-cols a:hover { color: var(--accent); }
   .legal { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); max-width: 90ch; }
+  .strip { display: flex; height: 4px; }
+  .strip span { flex: 1; background: color-mix(in srgb, var(--c) 85%, var(--bg)); }
+  .bleed {
+    margin: 0; padding-inline: max(12px, env(safe-area-inset-left, 0px)); white-space: nowrap; text-align: center;
+    font: 600 clamp(3.4rem, 16.4vw, 15.5rem)/0.8 var(--display); letter-spacing: -0.065em; color: var(--ink);
+    transform: translateY(0.14em); user-select: none;
+  }
+  .bleed span { font: 400 0.86em/0.8 var(--data); letter-spacing: -0.11em; color: var(--accent); }
   @media (max-width: 760px) { .foot { grid-template-columns: minmax(0, 1fr); } }
 </style>
