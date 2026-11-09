@@ -67,7 +67,7 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <a class="livebar" href="/labs/settlement/">
-      <span class="live"><span class="live-dot"></span>Live</span>
+      <span class="flag">New</span>
       <span class="livebar-text">Settlement explorer: replay {marketCount} real HIP-4 settlements</span>
       <span aria-hidden="true">→</span>
     </a>
@@ -187,7 +187,7 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
     .livebar { flex-wrap: nowrap; justify-content: flex-start; font-size: 11.5px; }
     .livebar-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   }
-  .live { display: inline-flex; align-items: center; gap: 6px; font: 500 10px/1 var(--data); letter-spacing: 0.14em; text-transform: uppercase; color: var(--live); }
+  .flag { display: inline-flex; align-items: center; font: 500 10px/1 var(--data); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
 
   header.site {
     position: sticky; top: 0; z-index: 20;
