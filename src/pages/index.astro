@@ -336,8 +336,16 @@ const labs = [
   /* word-spacing pulls the monospace no-break space in "perp DEX" down to a normal word gap. */
   .stage h1 em { font-style: normal; font-family: var(--data); font-weight: 400; letter-spacing: -0.1em; word-spacing: -0.4em; color: var(--accent); }
   .stage .lede { text-align: center; max-width: 54ch; color: var(--ink-2); }
-  .ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .ctas { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  /* A soft pool of the page colour behind the buttons, so the ridges fade out under them. */
+  .ctas::before {
+    content: ""; position: absolute; inset: -32px -72px; z-index: -1; pointer-events: none;
+    background: radial-gradient(closest-side, var(--bg) 50%, transparent);
+  }
+  .ctas .btn.ghost { background: color-mix(in srgb, var(--bg) 72%, transparent); }
   .stage-foot { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-block: 0 16px; font: 400 11.5px/1.5 var(--data); color: var(--muted); }
+  /* The captions sit over the ridges too, so they get the same soft backing as the canvas labels. */
+  .stage-foot > span { padding: 2px 6px; margin: -2px -6px; border-radius: 4px; background: color-mix(in srgb, var(--bg) 82%, transparent); }
   .cap::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 9px; border-radius: 50%; background: var(--muted); vertical-align: 1px; }
   .cap[data-state="live"]::before { background: var(--bid); box-shadow: 0 0 0 3px color-mix(in srgb, var(--bid) 25%, transparent); }
   .cap[data-state="simulated"]::before { background: var(--mvp); }

@@ -12,7 +12,8 @@ const FOCAL = 7; // perspective: bigger is flatter
 
 export type Colors = { bg: string; bid: string; ask: string; ink: string };
 export type Msg =
-  | { type: "size"; w: number; h: number; dpr: number }
+  // ceiling: where the text above ends; floor: space kept clear at the bottom (both in px)
+  | { type: "size"; w: number; h: number; dpr: number; ceiling: number; floor: number }
   | { type: "colors"; colors: Colors; mono: string }
   | { type: "push"; book?: Book; fill?: boolean } // a new ridge at the front; without a book, a simulated one
   | { type: "pointer"; at: { x: number; y: number } | null }
@@ -42,7 +43,7 @@ export function createScene(canvas: HTMLCanvasElement | OffscreenCanvas, reduce:
   let depthRef = 0;
   let pushedAt = 0;
   let pointer: { x: number; y: number } | null = null;
-  let w = 0, h = 0, dpr = 1;
+  let w = 0, h = 0, dpr = 1, ceiling = 0, floor = 0;
   let running = false;
   let frameId = 0;
   let dirty = true; // set when something besides the slide changes the picture
@@ -119,7 +120,8 @@ export function createScene(canvas: HTMLCanvasElement | OffscreenCanvas, reduce:
   // Screen geometry of a ridge at depth `d` (0 = front).
   const geo = (d: number) => {
     const s = FOCAL / (FOCAL + d);
-    const front = h * 0.95, horizon = h * 0.52;
+    const horizon = Math.max(h * 0.52, Math.min(ceiling, h * 0.7));
+    const front = Math.max(horizon + 40, Math.min(h * 0.95, h - floor - 6));
     return { s, base: horizon + (front - horizon) * s, half: w * 0.72 * s, amp: h * 0.42 * s };
   };
   const height = (v: number) => Math.min(1.25, Math.sqrt(v / (depthRef || 1)));
@@ -188,9 +190,7 @@ export function createScene(canvas: HTMLCanvasElement | OffscreenCanvas, reduce:
     ctx.textBaseline = "alphabetic";
     const valley = g.base - g.amp * height(r.cum[(K - 1) / 2]);
     const label = `${COIN} ${r.mid.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
-    ctx.fillStyle = C.ink;
-    ctx.textAlign = "center";
-    ctx.fillText(label, cx, valley - 14);
+    plate(label, cx, valley - 14, "center", C.ink);
     ctx.fillRect(cx - 0.5, valley - 8, 1, 6);
     // Side labels ride the front ridge, a little in from each edge.
     const at = (x: number) => {
@@ -198,12 +198,8 @@ export function createScene(canvas: HTMLCanvasElement | OffscreenCanvas, reduce:
       return g.base - g.amp * height(r.cum[Math.round(((u + 1) / 2) * (K - 1))]);
     };
     const inset = Math.min(64, w * 0.08);
-    ctx.fillStyle = C.bid;
-    ctx.textAlign = "left";
-    ctx.fillText("BIDS", inset, at(inset) - 12);
-    ctx.fillStyle = C.ask;
-    ctx.textAlign = "right";
-    ctx.fillText("ASKS", w - inset, at(w - inset) - 12);
+    plate("BIDS", inset, at(inset) - 12, "left", C.bid);
+    plate("ASKS", w - inset, at(w - inset) - 12, "right", C.ask);
     if (pointer) {
       const u = (pointer.x - cx) / g.half;
       if (Math.abs(u) <= 1 && Math.abs(u) > 0.01) {
@@ -224,10 +220,23 @@ export function createScene(canvas: HTMLCanvasElement | OffscreenCanvas, reduce:
         ctx.arc(pointer.x, y, 3.5, 0, Math.PI * 2);
         ctx.fill();
         const text = `${r.cum[k].toFixed(2)} ${COIN} ${bid ? "bid" : "offered"} within $${dist.toFixed(0)}`;
-        ctx.textAlign = pointer.x > w - 240 ? "right" : "left";
-        ctx.fillText(text, pointer.x + (pointer.x > w - 240 ? -10 : 10), y - 10);
+        const flip = pointer.x > w - 240;
+        plate(text, pointer.x + (flip ? -10 : 10), y - 10, flip ? "right" : "left", bid ? C.bid : C.ask);
       }
     }
+  }
+
+  // A label on a small plate of the page colour, so ridge lines don't run through it.
+  function plate(text: string, x: number, y: number, align: CanvasTextAlign, color: string) {
+    const width = ctx.measureText(text).width;
+    const left = align === "center" ? x - width / 2 : align === "right" ? x - width : x;
+    ctx.globalAlpha = 0.82;
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(left - 5, y - 10, width + 10, 14);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = color;
+    ctx.textAlign = align;
+    ctx.fillText(text, x, y);
   }
 
   function frame(now: number) {
@@ -252,6 +261,8 @@ export function createScene(canvas: HTMLCanvasElement | OffscreenCanvas, reduce:
       case "size":
         w = msg.w;
         h = msg.h;
+        ceiling = msg.ceiling || 0;
+        floor = msg.floor || 0;
         dpr = Math.min(msg.dpr || 1, 2);
         canvas.width = Math.round(w * dpr);
         canvas.height = Math.round(h * dpr);
