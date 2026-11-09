@@ -304,8 +304,27 @@ const labs = [
       r.addEventListener("pointerenter", () => { hovered = i; aim(i); });
       r.addEventListener("focus", () => aim(i));
     });
+    // Near the end of the list the sticky panel runs out of room and would slide under the header.
+    // Below the list, beside the next section's heading, the column is empty, so the panel is nudged
+    // down into that space (up to 240 px) and stays in view a little longer.
+    const preview = index.querySelector<HTMLElement>(".preview");
+    const header = document.querySelector<HTMLElement>("header.site");
+    let shift = 0;
+    function keepInView() {
+      if (!preview) return;
+      const top = preview.getBoundingClientRect().top - shift;
+      const min = (header?.getBoundingClientRect().bottom ?? 0) + 16;
+      const next = Math.round(Math.max(0, Math.min(240, min - top)));
+      if (next !== shift) {
+        shift = next;
+        preview.style.translate = shift ? `0 ${shift}px` : "";
+      }
+    }
+
     index.addEventListener("pointerleave", () => { hovered = -1; });
-    addEventListener("scroll", () => { hovered = -1; aim(nearest()); }, { passive: true });
+    addEventListener("scroll", () => { hovered = -1; aim(nearest()); keepInView(); }, { passive: true });
+    addEventListener("resize", keepInView, { passive: true });
+    keepInView();
 
     rows[0].classList.add("is-active");
     paint();
