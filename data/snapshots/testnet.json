@@ -3768,6 +3768,24 @@
         "setOracle": [
           "0x6ad051e4a9884cb7b2b6a533840dfcae29f40e39",
           "0x8940d2bdb2ab14aaebf33c0619b08940fb60b5ad"
+        ],
+        "haltTrading": [
+          "0x70ee93a940e0963c4e8c2d0f268ba20a13487466"
+        ],
+        "setMarginTableIds": [
+          "0x70ee93a940e0963c4e8c2d0f268ba20a13487466"
+        ],
+        "setOpenInterestCaps": [
+          "0x70ee93a940e0963c4e8c2d0f268ba20a13487466"
+        ],
+        "setFundingMultipliers": [
+          "0x70ee93a940e0963c4e8c2d0f268ba20a13487466"
+        ],
+        "setMarginModes": [
+          "0x70ee93a940e0963c4e8c2d0f268ba20a13487466"
+        ],
+        "setFundingInterestRates": [
+          "0x70ee93a940e0963c4e8c2d0f268ba20a13487466"
         ]
       }
     },
@@ -3842,6 +3860,11 @@
       "fullName": "Mew",
       "oracleUpdater": null,
       "grants": {}
+    },
+    "vmsj": {
+      "fullName": "Valantis multisig SDK test",
+      "oracleUpdater": null,
+      "grants": {}
     }
   },
   "venues": {
@@ -3883,7 +3906,6 @@
     "st": 1,
     "lo": 6,
     "abac": 7,
-    "pewt": 11,
     "beat": 8,
     "adf": 2,
     "ae": 16,
@@ -3902,6 +3924,7 @@
     "mig": 20,
     "meow": 1,
     "qnh": 1,
+    "pewt": 11,
     "ap": 2,
     "zz": 9,
     "zzz": 1,

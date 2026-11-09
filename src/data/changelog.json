@@ -1,5 +1,47 @@
 [
   {
+    "time": "2026-11-09T22:17:11.932Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`goy`: `haltTrading` granted to 0x70ee…7466"
+  },
+  {
+    "time": "2026-11-09T22:17:11.932Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`goy`: `setMarginTableIds` granted to 0x70ee…7466"
+  },
+  {
+    "time": "2026-11-09T22:17:11.932Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`goy`: `setOpenInterestCaps` granted to 0x70ee…7466"
+  },
+  {
+    "time": "2026-11-09T22:17:11.932Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`goy`: `setFundingMultipliers` granted to 0x70ee…7466"
+  },
+  {
+    "time": "2026-11-09T22:17:11.932Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`goy`: `setMarginModes` granted to 0x70ee…7466"
+  },
+  {
+    "time": "2026-11-09T22:17:11.932Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`goy`: `setFundingInterestRates` granted to 0x70ee…7466"
+  },
+  {
+    "time": "2026-11-09T22:17:11.932Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `vmsj` (Valantis multisig SDK test)"
+  },
+  {
     "time": "2026-11-08T13:17:20.107Z",
     "network": "testnet",
     "area": "HIP-4",
