@@ -4,6 +4,7 @@ import Base from "../../layouts/Base.astro";
 import TrackCover from "../../components/TrackCover.astro";
 import { lookOf } from "../../lib/track-look";
 import { freshness } from "../../lib/freshness";
+import { editedSince } from "../../lib/source-changes";
 
 export async function getStaticPaths() {
   const tracks = (await getCollection("tracks")).sort((a, b) => a.data.order - b.data.order);
@@ -21,6 +22,10 @@ const kindLabel = { lab: "Lab", workbench: "Workbench", project: "Project", guid
 const verified = t.verified?.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const stages = [...new Set(all.map((a) => a.stage))];
 const position = all.findIndex((a) => a.id === track.id) + 1;
+// Cited docs pages that the changelog bot saw edited after the lesson was checked.
+const changed = t.verified ? editedSince(t.docs, t.verified) : [];
+const list = (xs: string[]) => (xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}`);
+const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" })))].reverse());
 ---
 
 <Base title={`${t.code} ${t.title}`} description={t.summary}>
@@ -78,6 +83,15 @@ const position = all.findIndex((a) => a.id === track.id) + 1;
             <span class="done-label">Mark as done</span>
           </button>
         </p>
+        {changed.length > 0 && (
+          <p class="source-note" data-pagefind-ignore>
+            Since this was checked, the docs changed {changed.length === 1 ? "a page" : `${changed.length} pages`} it relies on:{" "}
+            {changed.map((c, i) => (
+              <>{i > 0 && (i === changed.length - 1 ? " and " : ", ")}<a href={c.url}>{c.title}</a></>
+            ))}{" "}
+            ({editDays}). Until it's re-checked, compare with {changed.length === 1 ? "that page" : "those pages"}; <a href="/changelog/">the changelog</a> lists every edit.
+          </p>
+        )}
       </header>
 
       <div class="reading">
@@ -175,6 +189,11 @@ const position = all.findIndex((a) => a.id === track.id) + 1;
   .head { display: grid; gap: 14px; }
   .head h1 { font-size: clamp(2.4rem, 5.6vw, 4.2rem); font-weight: 600; letter-spacing: -0.055em; line-height: 0.98; }
   .status { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  /* Shown when the changelog bot saw a cited docs page change after the lesson was checked. */
+  .source-note {
+    max-width: 72ch; margin: 0; padding: 10px 14px; border-radius: 12px; font-size: 0.875rem; line-height: 1.55; color: var(--ink-2);
+    border: 1px solid color-mix(in srgb, var(--mvp) 45%, var(--rule)); background: color-mix(in srgb, var(--mvp) 9%, var(--surface));
+  }
 
   .reading { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
   .reading section { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
