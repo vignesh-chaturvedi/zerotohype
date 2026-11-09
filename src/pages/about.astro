@@ -1,8 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
+
+const gh = "https://github.com";
+const repo = `${gh}/vignesh-chaturvedi/zerotohype`;
+/** Merged pull requests by the author in a repository, as GitHub lists them. */
+const merged = (r: string) => `${gh}/${r}/pulls?q=is%3Apr+is%3Amerged+author%3Avignesh-chaturvedi`;
 ---
 
-<Base title="About" description="What Zero to HYPE is, who writes it, and how its facts are checked.">
+<Base title="About" description="What Zero to HYPE is, who writes it, how its facts are checked, and what it does and doesn't track.">
   <div style="display: contents" data-pagefind-body data-pagefind-meta="kind:About">
   <header class="page-head">
     <p class="eyebrow">About</p>
@@ -15,25 +20,76 @@ import Base from "../layouts/Base.astro";
       leave out: worked formulas, labs you can run in the browser, and notes from running real
       services against the API.
     </p>
+
     <h2>How facts are checked</h2>
     <p>
-      Hyperliquid changes its API often and documents some of it late. Every lesson says when it
-      was last checked against the live API, and the <a href="/changelog/">changelog</a> records
-      what changed in the API each day.
+      Hyperliquid changes its API often and documents some of it late, so the site keeps track of
+      what it says and when it last checked.
     </p>
+    <ul>
+      <li>
+        <strong>Every lesson shows the date</strong> its facts were last checked against the live
+        API. The dot beside it turns from green to amber after 14 days, and to red after 30.
+      </li>
+      <li>
+        <strong>A bot watches the API and the docs.</strong> Every 6 hours it compares mainnet,
+        testnet and the docs with what it saw last, and records the differences in the{" "}
+        <a href="/changelog/">changelog</a>, which you can also <a href="/changelog/rss.xml">follow by RSS</a>.
+      </li>
+      <li>
+        <strong>A lesson says when its sources change.</strong> If a docs page it relies on is edited
+        after the lesson was checked, a note at the top says so until it's checked again.
+      </li>
+      <li>
+        <strong>Claims about signing and errors are tested on testnet</strong>, with keys made for
+        the purpose that hold nothing and can't change anything. Scripts in the{" "}
+        <a href={repo}>repository</a> run those tests again, and every SDK example was run the same way.
+      </li>
+      <li>
+        <strong>Settlements are recomputed, not quoted.</strong> The{" "}
+        <a href="/labs/settlement/">settlement explorer</a> works out real HIP-4 results from prices
+        hyperkeeper recorded, and shows where its answer and the venue's settlement differ.
+      </li>
+    </ul>
+
     <h2>Who writes it</h2>
     <p>
-      <a href="https://github.com/vignesh-chaturvedi">Vignesh Chaturvedi</a>, a contributor to <a
-        href="https://github.com/infinitefield/hypersdk">hypersdk</a> and the author of <a
-        href="https://github.com/vignesh-chaturvedi/hyperkeeper">hyperkeeper</a>, an open-source
-      operations tool for HIP-3 and HIP-4 deployers.
+      <a href={`${gh}/vignesh-chaturvedi`}>Vignesh Chaturvedi</a>. On Hyperliquid, that's{" "}
+      <a href={merged("infinitefield/hypersdk")}>pull requests merged into hypersdk</a>, the Rust
+      SDK, adding HIP-3 deployer settings, HIP-3* and HIP-4 actions and native trailing stops, and
+      fixing how addresses are signed; <a href={merged("infinitefield/yawc")}>fixes to yawc</a>, the
+      WebSocket library it uses; and <a href={`${gh}/vignesh-chaturvedi/hyperkeeper`}>hyperkeeper</a>,
+      an open-source operations tool for HIP-3 and HIP-4 deployers.
     </p>
+    <p>
+      Elsewhere, there's merged work in <a href={merged("anza-xyz/agave")}>Agave</a>, the Solana
+      validator, in <a href={merged("rust-lang/libc")}>rust-lang/libc</a>, and in{" "}
+      <a href={merged("obi1kenobi/cargo-semver-checks")}>cargo-semver-checks</a>.
+    </p>
+
+    <h2>Corrections</h2>
+    <p>
+      Every lesson has a link to edit it on GitHub. To report something wrong or out of date,{" "}
+      <a href={`${repo}/issues/new`}>open an issue</a>; it's the quickest way to get it fixed, and
+      the fix shows up in the site's history.
+    </p>
+
+    <h2>What the site stores</h2>
+    <p>
+      The site sets no cookies. Visits are counted by Cloudflare Web Analytics, which uses none
+      either. Your theme, your progress through the roadmap, your changelog filter and your code
+      language are kept in your own browser, only once you choose them, and are never sent
+      anywhere. The labs and the live figures call Hyperliquid's public API straight from your
+      browser.
+    </p>
+
     <h2>Independent</h2>
     <p>
       Zero to HYPE is not affiliated with or endorsed by Hyperliquid. Labs only ever use testnet
       and keys generated in your browser; never paste a real private key into any site,
       including this one.
     </p>
+
     <h2>Licences</h2>
     <p>Code is MIT-licensed. Lessons and other content are CC BY 4.0: reuse them with credit.</p>
   </article>
