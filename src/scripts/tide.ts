@@ -24,9 +24,17 @@ function run(stage: HTMLElement, canvas: HTMLCanvasElement) {
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const css = getComputedStyle(stage);
   const color = (name: string) => css.getPropertyValue(name).trim();
-  const C = { bg: color("--bg"), bid: color("--bid"), ask: color("--ask"), ink: color("--ink"), muted: color("--muted") };
+  const C = { bg: "", bid: "", ask: "", ink: "", muted: "" };
+  let haze = "";
+  // Colours come from the theme tokens, and are read again whenever the light/dark switch flips.
+  function readColors() {
+    for (const k of Object.keys(C) as (keyof typeof C)[]) C[k] = color(`--${k}`);
+    const hex = C.ink.replace("#", "");
+    const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) || 0);
+    haze = `rgba(${r}, ${g}, ${b}, 0.035)`;
+  }
+  readColors();
   const mono = color("--data") || "monospace";
-  const haze = "rgba(242, 239, 232, 0.035)";
 
   let ridges: Ridge[] = [];
   let latest: Book | null = null;
@@ -218,6 +226,7 @@ function run(stage: HTMLElement, canvas: HTMLCanvasElement) {
   }
 
   new ResizeObserver(resize).observe(stage);
+  new MutationObserver(() => { readColors(); draw(performance.now()); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; play(visible && !document.hidden); }).observe(stage);
   document.addEventListener("visibilitychange", () => play(visible && !document.hidden));
   stage.addEventListener("pointermove", (e) => {

@@ -251,9 +251,9 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
   .strip span { flex: 1; background: color-mix(in srgb, var(--c) 85%, var(--bg)); }
   .bleed {
     margin: 0; padding-inline: max(12px, env(safe-area-inset-left, 0px)); white-space: nowrap; text-align: center;
-    font: 600 clamp(3.4rem, 16.4vw, 15.5rem)/0.8 var(--display); letter-spacing: -0.065em; color: var(--ink);
-    transform: translateY(0.14em); user-select: none;
+    font: 600 clamp(3.4rem, 16vw, 15rem)/0.9 var(--display); letter-spacing: -0.065em; color: var(--ink);
+    padding-block: 0.08em 0.1em; user-select: none;
   }
-  .bleed span { font: 400 0.86em/0.8 var(--data); letter-spacing: -0.11em; color: var(--accent); }
+  .bleed span { font: 400 0.86em/0.9 var(--data); letter-spacing: -0.11em; color: var(--accent); }
   @media (max-width: 760px) { .foot { grid-template-columns: minmax(0, 1fr); } }
 </style>
