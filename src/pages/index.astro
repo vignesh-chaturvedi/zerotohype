@@ -49,6 +49,15 @@ const labs = [
   { n: "02", code: "T4", href: "/labs/funding/", title: "Funding and mark price", note: "Mainnet · read-only", what: "Live oracle, mark and impact prices for any perp, with the premium and the hour's funding worked out next to the API's own number." },
   { n: "03", code: "T8", href: "/labs/settlement/", title: "Settlement explorer", note: `${markets.length} real settlements`, what: "Replay HIP-4 settlements from the prices hyperkeeper recorded, and see which average each venue really uses." },
 ];
+
+// Shorter routes through the roadmap, by what the reader is building.
+const byCode = new Map(tracks.map((t) => [t.data.code, { id: t.id, code: t.data.code, title: t.data.title }]));
+const paths = [
+  { name: "A trading bot", codes: ["T1", "T2", "T3", "T4"], what: "Read the exchange, sign orders, and know how positions are priced, margined and funded." },
+  { name: "An app that earns from its order flow", codes: ["T1", "T3", "T5"], what: "Place orders for your users and take a builder fee on each fill." },
+  { name: "Your own market", codes: ["T1", "T3", "T6", "T7", "T8"], what: "Launch a token, run a HIP-3 perp DEX or settle HIP-4 outcome markets." },
+  { name: "Contracts on HyperEVM", codes: ["T1", "T9"], what: "Read HyperCore from Solidity and act on it through CoreWriter." },
+].map((p) => ({ ...p, steps: p.codes.map((c) => byCode.get(c)!) }));
 ---
 
 <Base title="Zero to HYPE" description="A free, open-source roadmap for building on Hyperliquid: every topic mapped to the official docs and the best tutorials, with labs that run in your browser.">
@@ -92,12 +101,31 @@ const labs = [
       <h2 id="roadmap-title">Ten tracks, in the order you'll need them.</h2>
       <p class="muted">
         {count(docCount, "official page")} and {count(outsideCount, "outside guide")}, sorted into tracks. Each one says what
-        to read first, what's worth reading next and what to build. {lessonCount} have full lessons.
+        to read first, what's worth reading next and what to build. {lessonCount} of {tracks.length} have full lessons;
+        the other {tracks.length - lessonCount} are reading lists for now. You need HTTP and a little Python or TypeScript;
+        Solidity only comes in at T9.
       </p>
       <div class="progress" data-progress>
         <span class="progress-bar"><span></span></span>
         <span class="progress-text"><b data-progress-text>0 of {tracks.length} done</b> · Tick a track off on its page. It's saved in this browser only.</span>
       </div>
+    </div>
+
+    <div class="paths" aria-labelledby="paths-title">
+      <h3 id="paths-title" class="eyebrow">Shorter routes, by what you're building</h3>
+      <ul>
+        {paths.map((p) => (
+          <li class="path">
+            <p class="path-name">{p.name}</p>
+            <p class="path-what">{p.what}</p>
+            <p class="path-codes">
+              {p.steps.map((s, i) => (
+                <span class="step">{i > 0 && <span aria-hidden="true">→</span>}<a href={`/tracks/${s.id}/`} aria-label={`${s.code} ${s.title}`}>{s.code}</a></span>
+              ))}
+            </p>
+          </li>
+        ))}
+      </ul>
     </div>
 
     <div class="index">
@@ -397,6 +425,19 @@ const labs = [
 
   /* Roadmap index */
   .roadmap { display: grid; gap: 40px; }
+  /* Shorter routes through the roadmap */
+  .paths { display: grid; gap: 14px; }
+  .paths ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .path { display: grid; grid-template-rows: auto 1fr auto; gap: 8px; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 14px; background: var(--surface); }
+  .path-name { font: 600 1.02rem/1.25 var(--display); letter-spacing: -0.015em; }
+  .path-what { font-size: 0.875rem; line-height: 1.5; color: var(--ink-2); }
+  .path-codes { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 4px; font: 500 0.8125rem/1 var(--data); color: var(--muted); }
+  /* Each arrow stays with the code after it, so a wrapped row never ends on an arrow. */
+  .path-codes .step { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .path-codes a { padding: 6px 8px; border-radius: 6px; background: var(--sunk); color: var(--ink); text-decoration: none; }
+  .path-codes a:hover { background: var(--ink); color: var(--bg); }
+  @media (max-width: 980px) { .paths ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .paths ul { grid-template-columns: minmax(0, 1fr); } }
   .index { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 64px; align-items: start; }
   .groups { display: grid; gap: 44px; }
   .group-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; padding-bottom: 12px; border-bottom: 1px solid var(--rule-strong); }
