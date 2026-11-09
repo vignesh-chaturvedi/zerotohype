@@ -232,33 +232,81 @@ const labs = [
   import "../scripts/tide.ts";
   import "../scripts/ticker.ts";
 
-  // The roadmap index: the drawing on the right follows the row you point at, or, while scrolling,
-  // the row in the middle of the screen.
+  // The roadmap index: the drawing on the right follows the row in the middle of the screen while
+  // scrolling, or the row under the pointer. Instead of swapping at once, the panel eases towards
+  // that row like a reel: the next drawing slides up and fades in as the last one leaves.
   const rows = [...document.querySelectorAll<HTMLAnchorElement>(".row[data-code]")];
-  const panes = new Map([...document.querySelectorAll<HTMLElement>(".pv[data-code]")].map((p) => [p.dataset.code!, p]));
-  let current = "";
-  function show(code: string) {
-    if (code === current) return;
-    const prev = panes.get(current);
-    prev?.classList.remove("on");
-    prev?.querySelector("svg[data-kind]")?.dispatchEvent(new CustomEvent("motion", { detail: false }));
-    current = code;
-    const next = panes.get(code);
-    next?.classList.add("on");
-    next?.querySelector("svg[data-kind]")?.dispatchEvent(new CustomEvent("motion", { detail: true }));
-    for (const r of rows) r.classList.toggle("is-active", r.dataset.code === code);
-  }
-  if (matchMedia("(min-width: 981px)").matches && rows.length) {
-    show(rows[0].dataset.code!);
-    for (const r of rows) {
-      r.addEventListener("pointerenter", () => show(r.dataset.code!));
-      r.addEventListener("focus", () => show(r.dataset.code!));
+  const byCode = new Map([...document.querySelectorAll<HTMLElement>(".pv[data-code]")].map((p) => [p.dataset.code!, p]));
+  const panes = rows.map((r) => byCode.get(r.dataset.code!)!).filter(Boolean);
+  const index = document.querySelector<HTMLElement>(".index");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (index && matchMedia("(min-width: 981px)").matches && panes.length === rows.length) {
+    let target = 0, current = 0, hovered = -1, live = -1, raf = 0, last = 0;
+
+    const motion = (i: number, on: boolean) =>
+      panes[i]?.querySelector("svg[data-kind]")?.dispatchEvent(new CustomEvent("motion", { detail: on }));
+
+    function paint() {
+      panes.forEach((p, i) => {
+        const d = i - current, a = Math.abs(d);
+        if (a >= 1) {
+          p.style.visibility = "hidden";
+          p.style.opacity = "0";
+          return;
+        }
+        p.style.visibility = "visible";
+        p.style.opacity = String(Math.max(0, 1 - a * 1.3));
+        p.style.transform = `translateY(${(d * 36).toFixed(2)}px) scale(${(1 - a * 0.04).toFixed(4)})`;
+        p.style.zIndex = String(10 - Math.round(a * 5));
+      });
+      const near = Math.round(current);
+      if (near !== live) {
+        motion(live, false);
+        motion(near, true);
+        live = near;
+      }
     }
-    const io = new IntersectionObserver(
-      (entries) => { for (const e of entries) if (e.isIntersecting) show((e.target as HTMLElement).dataset.code!); },
-      { rootMargin: "-48% 0px -48% 0px" },
-    );
-    rows.forEach((r) => io.observe(r));
+
+    function tick(now: number) {
+      const dt = last ? Math.min(64, now - last) : 16;
+      last = now;
+      current += (target - current) * (1 - Math.exp(-dt / 170));
+      if (Math.abs(target - current) < 0.003) current = target;
+      paint();
+      if (current === target) { raf = 0; last = 0; }
+      else raf = requestAnimationFrame(tick);
+    }
+
+    function aim(i: number) {
+      if (i === target) return;
+      target = i;
+      rows.forEach((r, j) => r.classList.toggle("is-active", j === i));
+      if (still) { current = target; paint(); return; }
+      if (!raf) raf = requestAnimationFrame(tick);
+    }
+
+    // The row whose middle is closest to the middle of the screen.
+    function nearest() {
+      const mid = innerHeight / 2;
+      let best = 0, gap = Infinity;
+      rows.forEach((r, i) => {
+        const b = r.getBoundingClientRect();
+        const d = Math.abs(b.top + b.height / 2 - mid);
+        if (d < gap) { gap = d; best = i; }
+      });
+      return best;
+    }
+
+    rows.forEach((r, i) => {
+      r.addEventListener("pointerenter", () => { hovered = i; aim(i); });
+      r.addEventListener("focus", () => aim(i));
+    });
+    index.addEventListener("pointerleave", () => { hovered = -1; });
+    addEventListener("scroll", () => { hovered = -1; aim(nearest()); }, { passive: true });
+
+    rows[0].classList.add("is-active");
+    paint();
   }
 </script>
 
@@ -341,8 +389,9 @@ const labs = [
   .row-thumb { display: none; }
 
   .preview { position: sticky; top: 92px; display: grid; }
-  .pv { grid-area: 1 / 1; display: grid; gap: 18px; align-content: start; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity 320ms var(--ease), transform 480ms var(--ease), visibility 0s linear 320ms; }
-  .pv.on, .pv:global(.on) { opacity: 1; visibility: visible; transform: none; transition: opacity 320ms var(--ease), transform 480ms var(--ease); }
+  /* Opacity and position are driven from the script below, frame by frame, so no CSS transitions. */
+  .pv { position: relative; grid-area: 1 / 1; display: grid; gap: 18px; align-content: start; opacity: 0; visibility: hidden; transform-origin: 50% 35%; will-change: opacity, transform; }
+  .pv.on { opacity: 1; visibility: visible; }
   .pv :global(.cover) { aspect-ratio: 16 / 11; }
   .pv-body { display: grid; gap: 12px; }
   .pv-title { display: flex; gap: 12px; align-items: baseline; font: 600 1.3rem/1.15 var(--display); letter-spacing: -0.02em; }
