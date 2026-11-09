@@ -150,7 +150,8 @@ img { max-width: 100%; }
 /* Page heading block used by inner pages */
 .page-head { display: grid; gap: 14px; padding-block: 8px 4px; }
 .page-head h1 { font-size: clamp(2.4rem, 5.6vw, 4rem); letter-spacing: -0.05em; line-height: 1; }
-.page-head h1 em { font-style: normal; font-family: var(--data); font-weight: 400; letter-spacing: -0.09em; color: var(--accent); }
+/* word-spacing pulls the wide monospace space down to a normal word gap, as in the home page's heading. */
+.page-head h1 em { font-style: normal; font-family: var(--data); font-weight: 400; letter-spacing: -0.09em; word-spacing: -0.4em; color: var(--accent); }
 
 /* Lesson prose: Markdown rendered from the content collections. */
 .prose { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; max-width: 70ch; font-size: 1.0625rem; line-height: 1.75; }
