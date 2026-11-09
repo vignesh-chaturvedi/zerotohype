@@ -12,7 +12,7 @@ const bugs = [
 ---
 
 <Base title="Sign without money" description="Sign a Hyperliquid action with a throwaway key and let the exchange tell you whether your encoding is right. Testnet only, no funds.">
-  <div class="lab" data-pagefind-body data-pagefind-meta="kind:Lab">
+  <div class="lab split" data-pagefind-body data-pagefind-meta="kind:Lab">
     <header class="lab-head">
       <p class="eyebrow">Lab · T3 Signing and sending</p>
       <h1>Sign without money</h1>
@@ -29,7 +29,7 @@ const bugs = [
       </p>
     </header>
 
-    <section class="panel" aria-labelledby="setup-title">
+    <section class="panel pick" aria-labelledby="setup-title">
       <h2 id="setup-title">Choose what to send</h2>
       <fieldset class="choices">
         <legend>Introduce a mistake, or sign it correctly</legend>
@@ -43,7 +43,7 @@ const bugs = [
       <button class="run" id="run" type="button">Sign and send to testnet</button>
     </section>
 
-    <section class="panel" aria-labelledby="out-title" aria-live="polite">
+    <section class="panel result" aria-labelledby="out-title" aria-live="polite">
       <h2 id="out-title">What happened</h2>
       <ol class="steps-out">
         <li><span class="label">A throwaway key</span><output class="value" id="out-key">Generated when you press the button.</output></li>
