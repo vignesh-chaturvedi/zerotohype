@@ -47,7 +47,7 @@ const coins = ["BTC", "ETH", "HYPE", "SOL", "XRP", "DOGE", "SUI", "ENA", "LINK",
 const labs = [
   { n: "01", code: "T3", href: "/labs/sign-without-money/", title: "Sign without money", note: "Testnet · throwaway key", what: "Sign a cancel with a key made in your browser. The exchange's error names the address it recovered, so you know whether your encoding is right." },
   { n: "02", code: "T4", href: "/labs/funding/", title: "Funding and mark price", note: "Mainnet · read-only", what: "Live oracle, mark and impact prices for any perp, with the premium and the hour's funding worked out next to the API's own number." },
-  { n: "03", code: "T8", href: "/labs/settlement/", title: "Settlement explorer", note: `${markets.length} real settlements`, what: "Replay HIP-4 settlements from the prices hyperkeeper recorded, and see which average each venue really uses." },
+  { n: "03", code: "T8", href: "/labs/settlement/", title: "Settlement explorer", note: `${markets.length} real settlements`, what: "Replay real HIP-4 settlements from prices recorded by hyperkeeper, an open-source tool for market deployers, and see which average each venue really uses." },
 ];
 
 // Shorter routes through the roadmap, by what the reader is building.
@@ -58,6 +58,7 @@ const paths = [
   { name: "Your own market", codes: ["T1", "T3", "T6", "T7", "T8"], what: "Launch a token, run a HIP-3 perp DEX or settle HIP-4 outcome markets." },
   { name: "Contracts on HyperEVM", codes: ["T1", "T9"], what: "Read HyperCore from Solidity and act on it through CoreWriter." },
 ].map((p) => ({ ...p, steps: p.codes.map((c) => byCode.get(c)!) }));
+const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => b.status !== "live").length;
 ---
 
 <Base title="Zero to HYPE" description="A free, open-source roadmap for building on Hyperliquid: every topic mapped to the official docs and the best tutorials, with labs that run in your browser.">
@@ -165,9 +166,10 @@ const paths = [
               <p class="pv-sum">{t.data.summary}</p>
               {t.data.build.length > 0 && (
                 <ul class="pv-build">
-                  {t.data.build.slice(0, 4).map((b) => (
-                    <li class={b.status === "live" ? "live" : undefined}>{kindLabel[b.kind]}: {b.label}{b.status === "live" ? <b> · live</b> : <span> · coming</span>}</li>
+                  {t.data.build.filter((b) => b.status === "live").map((b) => (
+                    <li class="live">{kindLabel[b.kind]}: {b.label}<b> · live</b></li>
                   ))}
+                  {plannedCount(t) > 0 && <li class="planned">{plannedCount(t)} more planned</li>}
                 </ul>
               )}
               <p class="pv-meta">{count(t.data.docs.length, "official page")} · {count(t.data.outside.length, "outside guide")}</p>
@@ -215,7 +217,12 @@ const paths = [
         </li>
       ))}
     </ol>
-    <p class="spark-note muted">Lab 03's chart is Skew outcome {hero.outcome}: the volume-weighted average said {says(vwap)}, the time-weighted one said {says(twap)}, and the venue settled {hero.actualYes ? "Yes" : "No"}.</p>
+    <p class="finding">
+      <b>A finding from the recordings.</b> Markets that say "TWAP" don't always settle on a time-weighted average. From 13 Oct
+      to 6 Nov, a volume-weighted average of BTC trades matched all 1,121 of Skew's settlements; a time-weighted one missed five.
+      Lab 03's chart is Skew outcome {hero.outcome}{says(twap) !== (hero.actualYes ? "Yes" : "No") ? ", one of those five" : ""}:
+      the time-weighted average said {says(twap)}, the volume-weighted one said {says(vwap)}, and Skew settled {hero.actualYes ? "Yes" : "No"}.
+    </p>
   </section>
 
   <section class="stay" aria-labelledby="stay-title">
@@ -484,6 +491,7 @@ const paths = [
   .pv-build li.live { color: var(--ink); font-weight: 600; }
   .pv-build b { font: 500 0.75rem/1 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ok); }
   .pv-build span { color: var(--muted); font-weight: 400; }
+  .pv-build li.planned { color: var(--muted); }
   .pv-meta { font: 400 0.75rem/1.4 var(--data); color: var(--muted); }
 
   /* Labs */
@@ -512,7 +520,8 @@ const paths = [
   .tile-title { font: 600 1.55rem/1.05 var(--display); letter-spacing: -0.035em; }
   .tile-what { font-size: 0.90625rem; line-height: 1.55; color: var(--ink-2); }
   .tile-go { font: 500 0.75rem/1 var(--data); letter-spacing: 0.04em; color: var(--c-ink); }
-  .spark-note { font-size: 0.84375rem; }
+  .finding { max-width: 80ch; padding: 14px 18px; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; background: var(--surface); font-size: 0.9375rem; line-height: 1.6; color: var(--ink-2); }
+  .finding b { color: var(--ink); }
 
   /* Changelog preview */
   .stay { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; align-items: start; }
