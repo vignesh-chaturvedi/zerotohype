@@ -333,7 +333,8 @@ const labs = [
   .stage-copy { align-self: start; display: grid; justify-items: center; text-align: center; gap: 22px; padding-top: clamp(32px, 6.5vh, 84px); }
   .kicker { color: var(--ink-2); }
   .stage h1 { font-size: clamp(2.9rem, 7.4vw, 6.5rem); line-height: 0.94; letter-spacing: -0.058em; font-weight: 600; max-width: 12.5em; }
-  .stage h1 em { font-style: normal; font-family: var(--data); font-weight: 400; letter-spacing: -0.1em; color: var(--accent); }
+  /* word-spacing pulls the monospace no-break space in "perp DEX" down to a normal word gap. */
+  .stage h1 em { font-style: normal; font-family: var(--data); font-weight: 400; letter-spacing: -0.1em; word-spacing: -0.4em; color: var(--accent); }
   .stage .lede { text-align: center; max-width: 54ch; color: var(--ink-2); }
   .ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
   .stage-foot { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-block: 0 16px; font: 400 11.5px/1.5 var(--data); color: var(--muted); }
