@@ -30,6 +30,15 @@ function paint() {
     const label = btn.querySelector(".done-label");
     if (label) label.textContent = on ? "Done" : "Mark as done";
   }
+  // Once anything is ticked, the header's Start link points at the first track not yet done.
+  for (const start of document.querySelectorAll<HTMLAnchorElement>("a.start[data-tracks]")) {
+    const next = start.dataset.tracks!.split(",").map((s) => s.split(":")).find(([id]) => !done.has(id));
+    const label = start.querySelector("[data-start-label]");
+    if (done.size && next && label) {
+      start.href = `/tracks/${next[0]}/`;
+      label.textContent = `Continue ${next[1]}`;
+    }
+  }
   const ids = new Set(rows.map((r) => r.dataset.doneId));
   const n = [...done].filter((id) => ids.has(id)).length;
   for (const box of document.querySelectorAll<HTMLElement>("[data-progress]")) {
