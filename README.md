@@ -1,6 +1,6 @@
 # Zero to HYPE
 
-A free, open-source roadmap for building on Hyperliquid: every topic mapped to the official docs and the best tutorials, labs that run in the browser against testnet, and a daily changelog of what the API changed.
+A free, open-source roadmap for building on Hyperliquid: every topic mapped to the official docs and the best tutorials, labs that run in the browser against the live API, and a changelog of what the API changed, checked every 6 hours.
 
 Independent project, not affiliated with Hyperliquid.
 

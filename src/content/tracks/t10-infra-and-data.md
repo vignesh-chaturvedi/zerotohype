@@ -17,4 +17,4 @@ build:
   - { label: The explorer API, kind: guide }
 ---
 
-This track is for anyone who needs data the public API doesn't serve: full history, every fill, or another address's transactions and errors. A full lesson follows after launch.
+This track is for anyone who needs data the public API doesn't serve: full history, every fill, or another address's transactions and errors. Until its full lesson is written, this track is a reading list.
