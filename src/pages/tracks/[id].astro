@@ -104,7 +104,7 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
           <p class="eyebrow"><span class="n">01</span> Read first</p>
           <p class="muted">The official docs for this track.</p>
           <ul>
-            {t.docs.map((d) => <li><a href={d.url}>{d.title}</a>{d.note && <span class="note">{d.note}</span>}</li>)}
+            {t.docs.map((d) => <li><a href={d.url}>{d.title}</a>{d.note && <>{" "}<span class="note">{d.note}</span></>}</li>)}
           </ul>
         </section>
         {t.outside.length > 0 && (
@@ -113,7 +113,7 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
             <p class="muted">Tutorials and write-ups worth your time.</p>
             <ul>
               {t.outside.map((d) => (
-                <li><a href={d.url}>{d.title}</a>{d.by && <span class="by">{d.by}</span>}{d.note && <span class="note">{d.note}</span>}</li>
+                <li><a href={d.url}>{d.title}</a>{d.by && <>{" "}<span class="by">{d.by}</span></>}{d.note && <>{" "}<span class="note">{d.note}</span></>}</li>
               ))}
             </ul>
           </section>
@@ -125,7 +125,7 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
             <ul>
               {[...t.build].sort((a, b) => Number(a.status !== "live") - Number(b.status !== "live")).map((b) => (
                 <li>
-                  {b.href && b.status === "live" ? <a href={b.href}>{kindLabel[b.kind]}: {b.label}</a> : <span>{kindLabel[b.kind]}: {b.label}</span>}
+                  {b.href && b.status === "live" ? <a href={b.href}>{kindLabel[b.kind]}: {b.label}</a> : <span>{kindLabel[b.kind]}: {b.label}</span>}{" "}
                   {b.status === "planned" ? <span class="tag">Coming</span> : <span class="tag ok">Live</span>}
                 </li>
               ))}
