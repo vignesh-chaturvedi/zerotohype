@@ -93,6 +93,12 @@ img { max-width: 100%; }
 .pill b { color: var(--ink); font-weight: 500; }
 .pill .live-dot { display: inline-block; margin-right: 8px; vertical-align: 1px; }
 .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 3px color-mix(in srgb, var(--live) 22%, transparent); flex: none; }
+/* A "checked" date's dot shows its age (see freshness.ts): green while fresh, amber as it ages, red once stale. */
+.pill[data-state] .live-dot { --dot: var(--muted); background: var(--dot); box-shadow: 0 0 0 3px color-mix(in srgb, var(--dot) 22%, transparent); }
+.pill[data-state="fresh"] .live-dot { --dot: var(--ok); }
+.pill[data-state="aging"] .live-dot { --dot: var(--mvp); }
+.pill[data-state="stale"] .live-dot { --dot: var(--live); }
+.pill .ago { color: var(--muted); }
 .tag { font: 500 10px/1 var(--data); letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 8px; border-radius: 6px; background: var(--sunk); color: var(--muted); white-space: nowrap; }
 .tag.mvp { color: var(--mvp); background: color-mix(in srgb, var(--mvp) 12%, var(--surface)); }
 .tag.ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, var(--surface)); }

@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import TrackCover from "../../components/TrackCover.astro";
 import { lookOf } from "../../lib/track-look";
+import { freshness } from "../../lib/freshness";
 
 export async function getStaticPaths() {
   const tracks = (await getCollection("tracks")).sort((a, b) => a.data.order - b.data.order);
@@ -67,7 +68,11 @@ const position = all.findIndex((a) => a.id === track.id) + 1;
         <p class="lede">{t.summary}</p>
         <p class="status">
           {t.depth === "lesson" ? <span class="tag ok">Lesson</span> : <span class="tag">Reading list</span>}
-          {verified ? <span class="pill"><span class="live-dot" />Checked against the live API · <b>{verified}</b></span> : null}
+          {t.verified ? (
+            <span class="pill" data-checked={t.verified.toISOString()} data-state={freshness(t.verified.getTime())}>
+              <span class="live-dot" />Checked against the live API · <b><time datetime={t.verified.toISOString().slice(0, 10)}>{verified}</time></b><span class="ago" data-ago />
+            </span>
+          ) : null}
           <button class="done-btn" type="button" data-done-toggle={track.id} aria-pressed="false" data-pagefind-ignore>
             <span class="tick"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.6 6.3 5 8.6 9.6 3.6" /></svg></span>
             <span class="done-label">Mark as done</span>

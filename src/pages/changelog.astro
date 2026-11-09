@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import entries from "../data/changelog.json";
 import meta from "../data/changelog-meta.json";
+import { freshness } from "../lib/freshness";
 
 type Entry = { time: string; network: string; area: string; summary: string };
 
@@ -35,7 +36,9 @@ const c = meta.counts;
       checks mainnet, testnet and the docs every 6 hours and records what changed: new perps and
       HIP-3 DEXs, permission grants, HIP-4 venues and templates, and edited docs pages.
     </p>
-    <p class="pill run-note"><span class="live-dot"></span>Tracking since {since} · last checked <b>{lastRun} UTC</b></p>
+    <p class="pill run-note" data-checked={meta.lastRun} data-fresh="0.5,1" data-state={freshness(Date.parse(meta.lastRun), 0.5, 1)}>
+      <span class="live-dot"></span>Tracking since {since} · last checked <b><time datetime={meta.lastRun}>{lastRun} UTC</time></b><span class="ago" data-ago></span>
+    </p>
   </header>
 
   <section class="now" aria-labelledby="now-title">
