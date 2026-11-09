@@ -116,7 +116,8 @@ const labs = [
                     </span>
                     <span class="row-side">
                       <span class={`row-depth ${t.data.depth}`}>{t.data.depth === "lesson" ? "Lesson" : "Reading list"}</span>
-                      <span class="row-done" title="Done"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.6 6.3 5 8.6 9.6 3.6" /></svg><span class="visually-hidden">Done</span></span>
+                      <span class="row-done" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.6 6.3 5 8.6 9.6 3.6" /></svg></span>
+                      <span class="visually-hidden row-done-text">(done)</span>
                     </span>
                     <span class="row-thumb"><TrackCover code={t.data.code} variant="thumb" /></span>
                   </a>
@@ -392,6 +393,9 @@ const labs = [
   .row-done svg { width: 12px; height: 12px; fill: none; stroke: var(--bg); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
   .row:global(.is-done) .row-done { background: var(--ok); border-color: var(--ok); }
   .row:global(.is-done) .row-done svg { opacity: 1; }
+  /* Only ticked rows say "(done)" to screen readers. */
+  .row-done-text { display: none; }
+  .row:global(.is-done) .row-done-text { display: block; }
   .row-thumb { display: none; }
 
   .preview { position: sticky; top: 92px; display: grid; }
