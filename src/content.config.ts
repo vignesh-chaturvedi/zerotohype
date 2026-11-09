@@ -7,6 +7,8 @@ const link = z.object({
   url: z.string().url(),
   /** Who published it, when it isn't the official docs. */
   by: z.string().optional(),
+  /** One line on what the page gives you, shown under the link. */
+  note: z.string().optional(),
 });
 
 /** One track of the roadmap: what to read, what to build, and the lesson itself. */

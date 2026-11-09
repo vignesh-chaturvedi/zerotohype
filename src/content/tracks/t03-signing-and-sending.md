@@ -14,7 +14,7 @@ docs:
   - { title: Priority fees, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/priority-fees" }
   - { title: Optimizing latency, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/optimizing-latency" }
 outside:
-  - { title: Agent wallets and the nonce state machine, url: "https://chainstack.com/hyperliquid-agent-wallets-nonce-state-machine/", by: Chainstack }
+  - { title: Agent wallets and the nonce state machine, url: "https://chainstack.com/hyperliquid-agent-wallets-nonce-state-machine/", by: Chainstack, note: "The two signing schemes, msgpack and the nonce window, with code that signs and recovers both kinds of action." }
 build:
   - { label: Sign without money, kind: lab, status: live, href: "/labs/sign-without-money/" }
   - { label: Signed action from scratch, kind: project }

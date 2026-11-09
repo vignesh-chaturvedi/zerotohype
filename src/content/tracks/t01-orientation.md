@@ -12,9 +12,9 @@ docs:
   - { title: Nonces and API wallets, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/nonces-and-api-wallets" }
   - { title: How to use the HyperEVM, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/onboarding/how-to-use-the-hyperevm" }
 outside:
-  - { title: The Hyperliquid developer stack, url: "https://www.quicknode.com/blog/hyperliquid-developer-stack", by: QuickNode }
-  - { title: Agent wallets and the nonce state machine, url: "https://chainstack.com/hyperliquid-agent-wallets-nonce-state-machine/", by: Chainstack }
-  - { title: Developer guide to Hyperliquid and HyperEVM (video), url: "https://www.youtube.com/watch?v=ZESEkAKiJrg", by: Alchemy }
+  - { title: The Hyperliquid developer stack, url: "https://www.quicknode.com/blog/hyperliquid-developer-stack", by: QuickNode, note: "An overview of the stack, from HyperBFT to HyperCore and HyperEVM, and the ways to connect to each." }
+  - { title: Agent wallets and the nonce state machine, url: "https://chainstack.com/hyperliquid-agent-wallets-nonce-state-machine/", by: Chainstack, note: "How an API wallet signs for its account and how its nonces work, with complete examples." }
+  - { title: Developer guide to Hyperliquid and HyperEVM (video), url: "https://www.youtube.com/watch?v=ZESEkAKiJrg", by: Alchemy, note: "A video tour of HyperCore and HyperEVM for developers getting started." }
 build:
   - { label: Get testnet funds and place one order, kind: guide }
 ---

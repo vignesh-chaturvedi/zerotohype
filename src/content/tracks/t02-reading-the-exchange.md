@@ -16,9 +16,9 @@ docs:
   - { title: Rate limits and user limits, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/rate-limits-and-user-limits" }
   - { title: Historical data, url: "https://hyperliquid.gitbook.io/hyperliquid-docs/historical-data" }
 outside:
-  - { title: Build a real-time portfolio tracker, url: "https://www.quicknode.com/guides/hyperliquid/build-portfolio-tracker-using-hypercore-data", by: QuickNode }
-  - { title: Order book levels L1 to L4, url: "https://www.quicknode.com/guides/hyperliquid/hyperliquid-order-book-depth-l1-l2-l3-l4", by: QuickNode }
-  - { title: Query balances for many wallets, url: "https://www.quicknode.com/guides/hyperliquid/query-balances-for-multiple-wallets", by: QuickNode }
+  - { title: Build a real-time portfolio tracker, url: "https://www.quicknode.com/guides/hyperliquid/build-portfolio-tracker-using-hypercore-data", by: QuickNode, note: "A live portfolio tracker built on HyperCore data, from its architecture to running it." }
+  - { title: Order book levels L1 to L4, url: "https://www.quicknode.com/guides/hyperliquid/hyperliquid-order-book-depth-l1-l2-l3-l4", by: QuickNode, note: "The four resolutions of the order book, which stream gives each, and how to read them in JavaScript." }
+  - { title: Query balances for many wallets, url: "https://www.quicknode.com/guides/hyperliquid/query-balances-for-multiple-wallets", by: QuickNode, note: "Balances for many wallets at once with batched requests, and which method suits which job." }
 build:
   - { label: Live order book in the browser, kind: lab }
   - { label: Tick and lot rounding, kind: workbench }
