@@ -419,7 +419,10 @@ const labs = [
   .row-depth.lesson { color: var(--ok); }
   .row-done { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--rule-strong); display: grid; place-items: center; flex: none; transition: background 200ms var(--ease), border-color 200ms var(--ease); }
   .row-done svg { width: 12px; height: 12px; fill: none; stroke: var(--bg); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
-  .row:global(.is-done) .row-done { background: var(--ok); border-color: var(--ok); }
+  /* Tracks are ticked off on their own pages, so the list shows a tick only once one is done, and no
+     empty box that looks like it could be ticked here. */
+  .row-done { visibility: hidden; }
+  .row:global(.is-done) .row-done { visibility: visible; background: var(--ok); border-color: var(--ok); }
   .row:global(.is-done) .row-done svg { opacity: 1; }
   /* Only ticked rows say "(done)" to screen readers. */
   .row-done-text { display: none; }
