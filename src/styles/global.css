@@ -152,6 +152,16 @@ img { max-width: 100%; }
 .page-head h1 { font-size: clamp(2.4rem, 5.6vw, 4rem); letter-spacing: -0.05em; line-height: 1; }
 /* word-spacing pulls the wide monospace space down to a normal word gap, as in the home page's heading. */
 .page-head h1 em { font-style: normal; font-family: var(--data); font-weight: 400; letter-spacing: -0.09em; word-spacing: -0.4em; color: var(--accent); }
+/* Shown when the changelog bot saw a docs page that a page relies on change after its facts were checked. */
+.source-note {
+  max-width: 72ch; margin: 0; padding: 10px 14px; border-radius: 12px; font-size: 0.875rem; line-height: 1.55; color: var(--ink-2);
+  border: 1px solid color-mix(in srgb, var(--mvp) 45%, var(--rule)); background: color-mix(in srgb, var(--mvp) 9%, var(--surface));
+}
+/* Contents of a long page, above it */
+.toc { display: grid; gap: 10px; max-width: 70ch; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+.toc ol { margin: 0; padding-left: 1.4em; columns: 2 16rem; column-gap: 28px; font-size: 0.9375rem; line-height: 1.5; }
+.toc li { break-inside: avoid; padding: 3px 0; }
+.toc li::marker { color: var(--muted); font: 500 0.75rem var(--data); }
 
 /* Lesson prose: Markdown rendered from the content collections. */
 .prose { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; max-width: 70ch; font-size: 1.0625rem; line-height: 1.75; }

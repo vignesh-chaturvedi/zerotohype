@@ -216,11 +216,6 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
   .head { display: grid; gap: 14px; }
   .head h1 { font-size: clamp(2.4rem, 5.6vw, 4.2rem); font-weight: 600; letter-spacing: -0.055em; line-height: 0.98; }
   .status { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  /* Shown when the changelog bot saw a cited docs page change after the lesson was checked. */
-  .source-note {
-    max-width: 72ch; margin: 0; padding: 10px 14px; border-radius: 12px; font-size: 0.875rem; line-height: 1.55; color: var(--ink-2);
-    border: 1px solid color-mix(in srgb, var(--mvp) 45%, var(--rule)); background: color-mix(in srgb, var(--mvp) 9%, var(--surface));
-  }
 
   .reading { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
   .reading section { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
@@ -233,11 +228,6 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
   .by { color: var(--muted); font-size: 0.78125rem; }
   .reading .note { flex-basis: 100%; font-size: 0.84375rem; line-height: 1.45; color: var(--muted); }
 
-  /* Contents of a lesson, above it */
-  .toc { display: grid; gap: 10px; max-width: 70ch; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
-  .toc ol { margin: 0; padding-left: 1.4em; columns: 2 16rem; column-gap: 28px; font-size: 0.9375rem; line-height: 1.5; }
-  .toc li { break-inside: avoid; padding: 3px 0; }
-  .toc li::marker { color: var(--muted); font: 500 0.75rem var(--data); }
   /* What to do once the lesson is read */
   .try-next { display: grid; gap: 10px; max-width: 70ch; padding: 18px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--c) 55%, var(--rule)); background: color-mix(in srgb, var(--c) calc(var(--cover-amt) * 0.35), var(--surface)); }
   .try-next a { font: 600 1.05rem/1.3 var(--display); letter-spacing: -0.01em; }

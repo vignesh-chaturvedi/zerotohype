@@ -29,4 +29,4 @@ The site is static and runs on Cloudflare Workers with static assets. Connect th
 
 ## Labs and data
 
-The labs in `src/pages/labs/` run in the browser and call Hyperliquid's API directly; they never ask for a real key. The settlement explorer reads `public/data/hip4-settlements.json`, built from [hyperkeeper](https://github.com/vignesh-chaturvedi/hyperkeeper)'s logs by `scripts/build-hip4-dataset.ts`. `scripts/probe-signing.ts` and `scripts/probe-bugs.ts` check the signing recipe against testnet.
+The labs in `src/pages/labs/` run in the browser and call Hyperliquid's API directly; they never ask for a real key. The settlement explorer reads `public/data/hip4-settlements.json`, built from [hyperkeeper](https://github.com/vignesh-chaturvedi/hyperkeeper)'s logs by `scripts/build-hip4-dataset.ts`. `scripts/probe-signing.ts` and `scripts/probe-bugs.ts` check the signing recipe against testnet, and `scripts/probe-errors.ts` checks the error replies quoted on `/errors/`.
