@@ -86,10 +86,10 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
           ))}
         </nav>
         <div class="actions">
-          <button class="search-btn" type="button" data-search-open aria-label="Search the site" aria-keyshortcuts="Meta+K Control+K /">
+          <button class="search-btn" type="button" data-search-open aria-keyshortcuts="Meta+K Control+K /">
             <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6" /><path d="m13 13 4.2 4.2" /></svg>
             <span class="search-word">Search</span>
-            <kbd>⌘K</kbd>
+            <kbd aria-hidden="true">⌘K</kbd>
           </button>
           <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
             <svg class="i-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 12.3A7 7 0 0 1 7.7 3.5a7 7 0 1 0 8.8 8.8Z" /></svg>
@@ -235,7 +235,9 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
     nav { order: 3; width: 100%; margin-inline: -10px; }
     nav a { padding: 6px 10px; }
     nav a[aria-current="page"]::after { bottom: -9px; }
-    .gh, .search-word { display: none; }
+    .gh { display: none; }
+    /* Hidden from sight but not from screen readers: it is the search button's name. */
+    .search-word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .search-btn { width: 38px; padding: 0; justify-content: center; }
   }
 
