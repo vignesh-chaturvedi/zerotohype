@@ -62,11 +62,14 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
     <link rel="canonical" href={new URL(path, Astro.site)} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <script is:inline>
-      // The site is dark unless the reader picked light; apply that choice before the page paints.
-      try {
-        const saved = localStorage.getItem("theme");
-        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
-      } catch {}
+      // A theme the reader picked wins; otherwise the site follows the system's light or dark setting,
+      // and is dark when there is none. Applied before the page paints.
+      (() => {
+        let saved = null;
+        try { saved = localStorage.getItem("theme"); } catch {}
+        const light = saved === "light" || saved === "dark" ? saved === "light" : matchMedia("(prefers-color-scheme: light)").matches;
+        if (light) document.documentElement.dataset.theme = "light";
+      })();
     </script>
   </head>
   <body>
@@ -171,6 +174,15 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
         const next = current() === "dark" ? "light" : "dark";
         root.dataset.theme = next;
         try { localStorage.setItem("theme", next); } catch {}
+        label();
+      });
+      // Until the reader picks a theme, follow the system when it switches between light and dark.
+      matchMedia("(prefers-color-scheme: light)").addEventListener("change", (e) => {
+        let saved = null;
+        try { saved = localStorage.getItem("theme"); } catch {}
+        if (saved === "light" || saved === "dark") return;
+        if (e.matches) root.dataset.theme = "light";
+        else delete root.dataset.theme;
         label();
       });
       label();
