@@ -72,7 +72,7 @@ The docs suggest batching orders and cancels every 0.1 s, with one atomic counte
 
 ## Your first order
 
-With testnet USDC and an API wallet, place and cancel one order with an SDK before writing your own signing code. Using the official Python SDK:
+With testnet USDC and an API wallet, place and cancel one order with an SDK before writing your own signing code. Here it is with the official Python SDK, [@nktkas/hyperliquid](https://github.com/nktkas/hyperliquid) for TypeScript, and [hypersdk](https://github.com/infinitefield/hypersdk) for Rust:
 
 ```python
 from eth_account import Account
@@ -85,5 +85,60 @@ res = ex.order("ETH", True, 0.02, 1000, {"limit": {"tif": "Gtc"}})  # $20, far b
 oid = res["response"]["data"]["statuses"][0]["resting"]["oid"]
 ex.cancel("ETH", oid)
 ```
+
+```ts
+import { ExchangeClient, HttpTransport, InfoClient } from "@nktkas/hyperliquid";
+import { privateKeyToAccount } from "viem/accounts";
+
+const transport = new HttpTransport({ isTestnet: true });
+const wallet = privateKeyToAccount("0x..."); // an API wallet key, testnet only
+const exchange = new ExchangeClient({ transport, wallet });
+
+const { universe } = await new InfoClient({ transport }).meta();
+const eth = universe.findIndex((asset) => asset.name === "ETH");
+const res = await exchange.order({
+  orders: [{ a: eth, b: true, p: "1000", s: "0.02", r: false, t: { limit: { tif: "Gtc" } } }], // $20, far below market
+  grouping: "na",
+});
+const status = res.response.data.statuses[0];
+if (typeof status === "object" && "resting" in status) {
+  await exchange.cancel({ cancels: [{ a: eth, o: status.resting.oid }] });
+}
+```
+
+```rust
+use hypersdk::hypercore::{
+    self, BatchCancel, Cancel, Cloid, NonceHandler, OrderResponseStatus, PrivateKeySigner,
+    types::{BatchOrder, OrderGrouping, OrderRequest, OrderTypePlacement, TimeInForce},
+};
+use rust_decimal::dec;
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    let agent: PrivateKeySigner = "0x...".parse()?; // an API wallet key, testnet only
+    let client = hypercore::testnet();
+    let eth = client.perps().await?.into_iter().find(|p| p.name == "ETH").expect("ETH is listed");
+    let nonce = NonceHandler::default();
+
+    let order = OrderRequest {
+        asset: eth.index,
+        is_buy: true,
+        limit_px: dec!(1000), // $20, far below market
+        sz: dec!(0.02),
+        reduce_only: false,
+        order_type: OrderTypePlacement::Limit { tif: TimeInForce::Gtc },
+        cloid: Cloid::random(),
+    };
+    let batch = BatchOrder { orders: vec![order], grouping: OrderGrouping::Na, builder: None };
+    let statuses = client.place(&agent, batch, nonce.next(), None, None).await?;
+    if let OrderResponseStatus::Resting { oid, .. } = &statuses[0] {
+        let cancel = BatchCancel { cancels: vec![Cancel { asset: eth.index, oid: *oid }], fast: false };
+        client.cancel(&agent, cancel, nonce.next(), None, None).await?;
+    }
+    Ok(())
+}
+```
+
+We ran all three on testnet on Nov 9, 2026, with hyperliquid-python-sdk 0.24.0, @nktkas/hyperliquid 0.33.3 and hypersdk 0.3.0, each signing with a brand-new key. The exchange recovered that key every time, so each one encodes and signs the order correctly.
 
 When that works, [T2](/tracks/t02-reading-the-exchange/) covers reading data properly and [T3](/tracks/t03-signing-and-sending/) covers what the SDK just did for you.
