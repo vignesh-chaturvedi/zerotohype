@@ -1,0 +1,486 @@
+---
+import { Code } from "astro:components";
+import Base from "../layouts/Base.astro";
+import ErrorCard, { type Props as Err } from "../components/ErrorCard.astro";
+import { freshness } from "../lib/freshness";
+import { inlineMd } from "../lib/inline-md";
+import { editedSince } from "../lib/source-changes";
+
+const D = "https://hyperliquid.gitbook.io/hyperliquid-docs";
+const API = `${D}/for-developers/api`;
+/** When scripts/probe-errors.ts last confirmed every reply marked Tested, on testnet. */
+const tested = new Date("2026-11-09T00:00:00Z");
+const testedText = tested.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+const sources = [
+  { title: "Error responses", url: `${API}/error-responses` },
+  { title: "Exchange endpoint", url: `${API}/exchange-endpoint` },
+  { title: "Info endpoint", url: `${API}/info-endpoint` },
+  { title: "Rate limits and user limits", url: `${API}/rate-limits-and-user-limits` },
+  { title: "Nonces and API wallets", url: `${API}/nonces-and-api-wallets` },
+];
+// Docs pages above that the changelog bot saw edited after the replies were tested.
+const changed = editedSince(sources, tested);
+
+const http: Err[] = [
+  {
+    id: "http-400", label: "HTTP 400", tested: true,
+    text: "Failed to parse the request body as JSON",
+    means: ["The body isn't valid JSON. Build it with `JSON.stringify`, or your language's encoder, rather than by hand."],
+  },
+  {
+    id: "http-415", label: "HTTP 415", tested: true,
+    text: "Expected request with `Content-Type: application/json`",
+    means: ["The request has no `Content-Type: application/json` header. `/info` needs it as much as `/exchange` does."],
+  },
+  {
+    id: "http-422", label: "HTTP 422", tested: true,
+    text: "Failed to deserialize the JSON body into the target type",
+    means: [
+      "The JSON is valid but not in the shape the API expects, and the reply doesn't say which field is wrong. We get it for an unknown `type`, a missing `nonce`, a `nonce` sent as a string, a price sent as a number, and an address shorter than 42 characters.",
+      "Compare your request with the docs field by field. Prices and sizes are strings, such as `\"68000.5\"`; nonces are numbers.",
+    ],
+  },
+];
+
+const whole: Err[] = [
+  {
+    id: "unable-to-recover-signer", label: "Any action", tested: true,
+    text: "Unable to recover signer.",
+    means: ["No address can be recovered from the signature, because it isn't a valid one. We get it with a `v` of 29. Send `v` as 27 or 28 (0 and 1 work too), and `r` and `s` as hex, with or without `0x`."],
+  },
+  {
+    id: "does-not-exist", label: "L1 actions", tested: true,
+    text: "User or API Wallet 0x… does not exist.",
+    means: [
+      "The address that signed isn't an account or one of its API wallets. It's the address the exchange recovered from your signature, so first check whether it's yours.",
+      "**If it isn't yours,** the exchange hashed different bytes from the ones you signed. [T3](/tracks/t03-signing-and-sending/#a-wrong-signature-doesnt-say-whats-wrong) lists the usual causes, and the [Sign without money](/labs/sign-without-money/) lab tests your encoding.",
+      "**If it is,** that key has no account behind it. An account needs a deposit first. An API wallet, the docs say, can be removed when it's replaced (approving a new unnamed API wallet replaces the old unnamed one, and approving a name replaces the wallet that had it), when it expires, and when the account that approved it has no funds left. Approve a new key rather than an old one again: the docs warn that a removed wallet's nonces can be pruned, which lets its old signed actions be replayed.",
+    ],
+  },
+  {
+    id: "must-deposit", label: "User-signed actions", tested: true,
+    text: "Must deposit before performing actions. User: 0x…",
+    means: [
+      "The same check for user-signed actions, such as transfers, withdrawals and approving an API wallet or a builder fee. Read the address the same way.",
+      "**If it isn't yours,** the typed data you signed differs from what the exchange built from your request. **If it is,** the account needs a deposit before it can do anything.",
+    ],
+  },
+  {
+    id: "mainnet-and-testnet", label: "User-signed actions", tested: true,
+    text: "Mainnet and testnet require different signature.",
+    means: [
+      "The action's `hyperliquidChain` names the other network. Use `\"Testnet\"` on testnet and `\"Mainnet\"` on mainnet.",
+      "L1 actions carry the network differently, as the `source` in the signed message (`\"a\"` for mainnet, `\"b\"` for testnet). Getting that wrong has no error of its own: the exchange recovers another address and says it [doesn't exist](#does-not-exist).",
+    ],
+  },
+  {
+    id: "nonce-mismatch", label: "User-signed actions", tested: true,
+    text: "Nonce mismatch.",
+    means: ["The nonce inside the action differs from the request's `nonce`. Transfers and withdrawals call it `time`, approvals call it `nonce`; either way it must be the same number."],
+  },
+];
+
+const orders: Err[] = [
+  {
+    id: "tick", label: "Tick",
+    text: "Price must be divisible by tick size.",
+    means: ["The price is more precise than the asset allows: at most 5 significant figures, and at most 6 decimals minus the asset's `szDecimals` (8 minus, for spot). Whole-number prices are always allowed. [T2](/tracks/t02-reading-the-exchange/#prices-and-sizes-have-strict-precision) has examples."],
+  },
+  {
+    id: "min-trade-ntl", label: "MinTradeNtl",
+    text: "Order must have minimum value of $10.",
+    means: ["The order is worth less than $10, its price times its size. Make it bigger."],
+  },
+  {
+    id: "min-trade-spot-ntl", label: "MinTradeSpotNtl",
+    text: "Order must have minimum value of 10 {quote_token}.",
+    means: ["The same minimum for spot, counted in the pair's quote token: 10 USDC on a USDC pair. In the reply, `{quote_token}` is the token's name."],
+  },
+  {
+    id: "perp-margin", label: "PerpMargin",
+    text: "Insufficient margin to place order.",
+    means: ["Your free collateral doesn't cover the margin this order needs at your leverage. Make the order smaller, add collateral or change the leverage."],
+  },
+  {
+    id: "reduce-only", label: "ReduceOnly",
+    text: "Reduce only order would increase position.",
+    means: ["A reduce-only order would make your position bigger, or there's no position for it to reduce. Check its side against the position before you send it."],
+  },
+  {
+    id: "bad-alo-px", label: "BadAloPx",
+    text: "Post only order would have immediately matched, bbo was {bbo}.",
+    means: ["A post-only (ALO) order would have traded at once, so it was rejected rather than take liquidity. The message gives the best bid and offer at that moment: price a buy below the best offer, and a sell above the best bid."],
+  },
+  {
+    id: "ioc-cancel", label: "IocCancel",
+    text: "Order could not immediately match against any resting orders.",
+    means: ["An immediate-or-cancel order found nothing to trade with at its price or better. A market order is an IOC order priced through the book, and the Python SDK prices it 5% past the mid by default. Widen the price, or use GTC if the order should rest."],
+  },
+  {
+    id: "bad-trigger-px", label: "BadTriggerPx",
+    text: "Invalid TP/SL price.",
+    means: ["The take-profit or stop-loss can't go in at that trigger price. One cause the docs mention: a trigger the price has already passed, so the order would execute at once. TP/SL orders trigger on the mark price, so compare with the mark: for a long, a take-profit above it and a stop-loss below."],
+  },
+  {
+    id: "market-order-no-liquidity", label: "MarketOrderNoLiquidity",
+    text: "No liquidity available for market order.",
+    means: ["There was nothing on the book for a market order to fill against. Expect it on thin or newly listed markets, and check the book first."],
+  },
+  {
+    id: "position-increase-at-open-interest-cap", label: "PositionIncreaseAtOpenInterestCap",
+    text: "Order would increase open interest while open interest is capped",
+    means: [`The asset is at its open interest cap, and this order would add to open interest. The info request [\`perpsAtOpenInterestCap\`](${API}/info-endpoint/perpetuals#query-perps-at-open-interest-caps) lists the assets at their cap.`],
+  },
+  {
+    id: "position-flip-at-open-interest-cap", label: "PositionFlipAtOpenInterestCap",
+    text: "Order would increase open interest while open interest is capped",
+    means: ["The same cap, for an order that would flip your position to the other side. The text is the same as above, so the reply can't tell you which of the two it was."],
+  },
+  {
+    id: "too-aggressive-at-open-interest-cap", label: "TooAggressiveAtOpenInterestCap",
+    text: "Order rejected due to price more aggressive than oracle while at open interest cap",
+    means: ["While the asset is at its open interest cap, an order priced beyond the oracle price (a buy above it, or a sell below it) is rejected. Price it at the oracle or behind it."],
+  },
+  {
+    id: "open-interest-increase", label: "OpenInterestIncrease",
+    text: "Order would increase open interest too quickly",
+    means: ["Open interest in the asset is rising faster than the exchange allows. Retry a little later, or send smaller orders."],
+  },
+  {
+    id: "insufficient-spot-balance", label: "InsufficientSpotBalance",
+    text: "(Spot-only) Order has insufficient spot balance to trade",
+    means: [`You don't hold enough of what the spot order spends: the token, for a sell, or the quote token, for a buy. In the standard account mode, spot and perp balances are separate, so USDC in your perp balance doesn't count; unified and portfolio margin accounts [keep one balance per asset](${D}/trading/account-abstraction-modes).`],
+  },
+  {
+    id: "oracle", label: "Oracle",
+    text: "Order price too far from oracle",
+    means: ["The limit price is too far from the oracle price. Bring it closer."],
+  },
+  {
+    id: "perp-max-position", label: "PerpMaxPosition",
+    text: "Order would cause position to exceed margin tier limit at current leverage",
+    means: [`Bigger positions are allowed less leverage, under the asset's [margin tiers](${D}/trading/margin-tiers). At your current leverage, this order would take the position past its tier's limit. Lower the leverage or the size.`],
+  },
+];
+
+const cancels: Err[] = [
+  {
+    id: "missing-order", label: "MissingOrder",
+    text: "Order was never placed, already canceled, or filled.",
+    means: ["The order you're cancelling isn't open. It may have filled or been cancelled just before; otherwise check the `oid` or `cloid`, and the asset."],
+  },
+  {
+    id: "twap-missing", label: "TWAP cancel",
+    text: "TWAP was never placed, already canceled, or filled.",
+    means: ["The same for a TWAP. TWAP replies carry one `status` rather than a list of `statuses`, so the error is at `response.data.status.error`."],
+  },
+  {
+    id: "twap-duration", label: "TWAP order",
+    text: "Invalid TWAP duration: 1 min(s)",
+    means: ["The TWAP's length, in minutes, isn't allowed. The docs show it for 1 minute, in the same single-`status` shape."],
+  },
+];
+
+/** Why an order that was resting is gone, as `orderStatus` and order history report it. */
+const gone: [string, string][] = [
+  ["marginCanceled", "There wasn't enough margin to fill it."],
+  ["vaultWithdrawalCanceled", "Vaults only: a depositor withdrew from the vault."],
+  ["openInterestCapCanceled", "It was priced too aggressively while open interest was at its cap."],
+  ["selfTradeCanceled", "Self-trade prevention: it would have traded with another order of yours."],
+  ["reduceOnlyCanceled", "A reduce-only order that no longer reduced the position."],
+  ["siblingFilledCanceled", "TP/SL only: the other order of its pair filled."],
+  ["delistedCanceled", "The asset was delisted."],
+  ["liquidatedCanceled", "The account was liquidated."],
+  ["scheduledCancel", "Your dead man's switch: the time set with `scheduleCancel` passed."],
+];
+
+const sections = [
+  ["shapes", "Where an error shows up"],
+  ["http", "Before the exchange reads it"],
+  ["account", "Signature and account"],
+  ["orders", "Orders"],
+  ["cancels", "Cancels and TWAPs"],
+  ["batch", "One error for a whole batch"],
+  ["gone", "Why a resting order went away"],
+  ["limits", "Limits that look like errors"],
+];
+
+const handler = `/** Each order's error, or null where the exchange took the order. */
+async function orderErrors(res: Response, sent: number) {
+  // 400, 415 and 422 replies are plain text, not JSON.
+  if (!res.ok) throw new Error(\`\${res.status}: \${await res.text()}\`);
+  const reply = await res.json();
+  // The whole action was turned down: no order in it was looked at.
+  if (reply.status === "err") return Array(sent).fill(reply.response);
+  const errors: (string | null)[] = reply.response.data.statuses.map(
+    (s: { error?: string }) => s.error ?? null,
+  );
+  // A rule the whole batch breaks may come back once, not per order.
+  return errors.length === sent ? errors : Array(sent).fill(errors[0]);
+}`;
+
+const okReply = `{
+  "status": "ok",
+  "response": {
+    "type": "order",
+    "data": {
+      "statuses": [
+        { "resting": { "oid": 77738308 } },
+        { "error": "Order must have minimum value of $10." }
+      ]
+    }
+  }
+}`;
+---
+<Base title="Hyperliquid API errors" description="The errors the Hyperliquid API returns, with their exact text, where each shows up in the reply, what it means and what to do about it.">
+  <div style="display: contents" data-pagefind-body data-pagefind-meta="kind:Reference">
+  <header class="page-head">
+    <p class="eyebrow">Reference</p>
+    <h1>When the exchange <em>says no.</em></h1>
+    <p class="lede">
+      The errors the Hyperliquid API returns, with their exact text, what each means and what to
+      do. Those marked Tested we reproduced on testnet from keys with no account. Order errors need
+      a funded account, so their text comes from the official list.
+    </p>
+    <p>
+      <span class="pill" data-checked={tested.toISOString()} data-state={freshness(tested.getTime(), 30, 90)} data-fresh="30,90">
+        <span class="live-dot" />Tested on testnet · <b><time datetime={tested.toISOString().slice(0, 10)}>{testedText}</time></b><span class="ago" data-ago />
+      </span>
+    </p>
+    {changed.length > 0 && (
+      <p class="source-note" data-pagefind-ignore>
+        Since this was tested, the docs changed{" "}
+        {changed.map((c, i) => (
+          <>{i > 0 && (i === changed.length - 1 ? " and " : ", ")}<a href={c.url}>{c.title}</a></>
+        ))}
+        . Until it's checked again, compare with {changed.length === 1 ? "that page" : "those pages"}.
+      </p>
+    )}
+  </header>
+
+  <div class="ref">
+    <nav class="toc" aria-labelledby="toc-title" data-pagefind-ignore>
+      <p class="eyebrow" id="toc-title">On this page</p>
+      <ol>{sections.map(([id, title]) => <li><a href={`#${id}`}>{title}</a></li>)}</ol>
+    </nav>
+
+    <section class="prose" aria-labelledby="shapes">
+      <h2 id="shapes">Where an error shows up</h2>
+      <p>
+        A request is checked in stages, and it stops at the first one it fails. Each stage answers
+        in its own shape, so a client has to look in all four places.
+      </p>
+      <ol class="stages">
+        <li>
+          <span class="stage-n">01</span>{" "}
+          <span><strong>The request.</strong> The body can't be read, so nothing reaches the exchange.</span>
+          <code class="stage-shape">HTTP 400, 415 or 422, as plain text</code>
+        </li>
+        <li>
+          <span class="stage-n">02</span>{" "}
+          <span><strong>The whole action.</strong> The signature, account, network or nonce is wrong, so nothing in the action is looked at.</span>
+          <code class="stage-shape">{'{"status":"err","response":"…"}'}</code>
+        </li>
+        <li>
+          <span class="stage-n">03</span>{" "}
+          <span><strong>The whole batch.</strong> The payload breaks a rule by itself, such as an empty batch, and every order fails for it.</span>
+          <code class="stage-shape">one error for all the orders</code>
+        </li>
+        <li>
+          <span class="stage-n">04</span>{" "}
+          <span><strong>Each order.</strong> One status per order, in the order sent. Some can fail while the rest rest or fill.</span>
+          <code class="stage-shape">{'{"status":"ok", … "statuses":[…]}'}</code>
+        </li>
+      </ol>
+      <p>
+        So <code>"status": "ok"</code> doesn't mean your orders were placed. In this reply, put
+        together from the docs' examples, the first order rested and the second was rejected:
+      </p>
+      <Code code={okReply} lang="json" theme="css-variables" />
+      <p>A client that handles every stage, for a batch of orders:</p>
+      <Code code={handler} lang="ts" theme="css-variables" />
+      <p>
+        If you use <a href="https://github.com/nktkas/hyperliquid">@nktkas/hyperliquid</a>, it
+        throws an <code>ApiRequestError</code> when any order in a batch fails, even if others went
+        through; the error's <code>response</code> holds the whole reply. The Python SDK returns
+        the reply as it is, so check <code>statuses</code> yourself.
+      </p>
+    </section>
+
+    <section class="group" aria-labelledby="http">
+      <div class="prose">
+        <h2 id="http">Before the exchange reads it</h2>
+        <p>These come back with an HTTP error status and a plain-text body, from <code>/info</code> and <code>/exchange</code> alike.</p>
+      </div>
+      <div class="errs">{http.map((e) => <ErrorCard {...e} />)}</div>
+    </section>
+
+    <section class="group" aria-labelledby="account">
+      <div class="prose">
+        <h2 id="account">Signature and account</h2>
+        <p>
+          These turn down the whole action, with <code>"status": "err"</code>. The two that name an
+          address are the ones you'll see most, and the address is the clue.
+        </p>
+      </div>
+      <div class="errs">{whole.map((e) => <ErrorCard {...e} />)}</div>
+      <div class="prose">
+        <h3 id="encoding">What changes the address the exchange recovers</h3>
+        <p>
+          We sent the same action with one difference at a time, each signed by a new key, and
+          noted whether the exchange still named that key:
+        </p>
+        <table>
+          <thead><tr><th scope="col">In what you sign</th><th scope="col">L1 action</th><th scope="col">User-signed action</th></tr></thead>
+          <tbody>
+            <tr><td>A trailing zero, as in <code>"0.0010"</code> or <code>"1.0"</code></td><td>Another address</td><td>Your key</td></tr>
+            <tr><td>A checksummed (mixed-case) address</td><td>Another address</td><td>Your key</td></tr>
+            <tr><td><code>f: false</code> on a cancel, which the docs say to leave out</td><td>Another address</td><td>Not used</td></tr>
+            <tr><td>Signed for the other network</td><td>Another address</td><td><a href="#mainnet-and-testnet">Its own error</a></td></tr>
+          </tbody>
+        </table>
+        <p>
+          For L1 actions, sign exactly what the exchange will rebuild from your JSON: no trailing
+          zeros, lower-case addresses, and no optional field set to false.
+        </p>
+      </div>
+    </section>
+
+    <section class="group" aria-labelledby="orders">
+      <div class="prose">
+        <h2 id="orders">Orders</h2>
+        <p>
+          Each of these comes back as the <code>error</code> of one order in <code>statuses</code>.
+          They need a funded account to trigger, so the text is the official list's. Where a
+          message carries a value, such as <code>{"{bbo}"}</code>, match on the words before it
+          rather than the whole string.
+        </p>
+      </div>
+      <div class="errs">{orders.map((e) => <ErrorCard {...e} />)}</div>
+    </section>
+
+    <section class="group" aria-labelledby="cancels">
+      <div class="prose">
+        <h2 id="cancels">Cancels and TWAPs</h2>
+      </div>
+      <div class="errs">{cancels.map((e) => <ErrorCard {...e} />)}</div>
+    </section>
+
+    <section class="prose" aria-labelledby="batch">
+      <h2 id="batch">One error for a whole batch</h2>
+      <p>
+        Some errors depend only on the payload, so the exchange checks them before it looks at any
+        order: an empty batch, a TP/SL order that isn't reduce-only, an order too far from the
+        reference price, and some tick size checks. Then one error comes back for the whole
+        request instead of one per order, and every order in the batch was rejected for that
+        reason. The function above copies it to each order.
+      </p>
+      <p>
+        A key with no account never gets this far. From one, an empty batch, a TP/SL that wasn't
+        reduce-only, a buy at five times the market price and an asset that doesn't exist all came
+        back as <a href="#does-not-exist"><code>User or API Wallet 0x… does not exist.</code></a>,
+        because the account is checked first. Testing these needs a funded account.
+      </p>
+    </section>
+
+    <section class="prose" aria-labelledby="gone">
+      <h2 id="gone">Why a resting order went away</h2>
+      <p>
+        An order that rested and then vanished has a status that says why. Ask for it with the{" "}
+        <a href={`${API}/info-endpoint#query-order-status-by-oid-or-cloid`}><code>orderStatus</code></a>{" "}
+        info request, by <code>oid</code> or <code>cloid</code>:
+      </p>
+      <table class="statuses">
+        <thead><tr><th scope="col">Status</th><th scope="col">What happened</th></tr></thead>
+        <tbody>
+          {gone.map(([status, what]) => <tr><td><code set:html={status.replace(/(?=[A-Z])/g, "<wbr>")} /></td><td set:html={inlineMd(what)} /></tr>)}
+        </tbody>
+      </table>
+      <p>
+        <code>rejected</code>, and the statuses ending in <code>Rejected</code>, are orders turned
+        down when they were placed. They match the order errors above: <code>tickRejected</code> for
+        Tick, <code>perpMarginRejected</code> for PerpMargin, and so on.
+      </p>
+      <p>
+        <code>{'{"status":"unknownOid"}'}</code> means there's no such order for that address. Ask
+        with the account's address, not the API wallet's: an API wallet only signs, and has no
+        orders of its own.
+      </p>
+    </section>
+
+    <section class="prose" aria-labelledby="limits">
+      <h2 id="limits">Limits that look like errors</h2>
+      <p>
+        Some rejections come from limits rather than from anything wrong with the request.{" "}
+        <a href="/tracks/t02-reading-the-exchange/#stay-inside-the-limits">T2</a> covers the limits
+        per IP address; these are the ones per account.
+      </p>
+      <ul>
+        <li>
+          <strong>Requests.</strong> An address gets 10,000 to start and 1 more for each USDC it
+          trades. Past that it gets 1 request every 10 seconds. Cancels have more room,{" "}
+          <code>min(limit + 100,000, limit × 2)</code>, so you can still cancel. A batch of n
+          orders counts as n, sub-accounts count separately, and info requests don't count.
+        </li>
+        <li>
+          <strong>Open orders.</strong> 1,000, plus 1 for every 5M USDC of volume, up to 5,000.
+          With 1,000 or more open, a new reduce-only or trigger order is rejected.
+        </li>
+        <li>
+          <strong>Nonces.</strong> The exchange keeps the 100 highest nonces for each signer. A new
+          one must be higher than the lowest of those, never used before, and within 2 days before
+          or 1 day after the block's time. Everything one API wallet signs shares its nonces,
+          sub-accounts included, so give each process its own wallet.
+        </li>
+        <li>
+          <strong>Unified and portfolio margin accounts</strong> are limited to 50,000 actions a
+          day. Standard accounts aren't.
+        </li>
+      </ul>
+    </section>
+
+    <footer class="sources" data-pagefind-ignore>
+      <p>
+        From the official docs:{" "}
+        {sources.map((s, i) => <>{i > 0 && " · "}<a href={s.url}>{s.title}</a></>)}. The replies
+        marked Tested come from{" "}
+        <a href="https://github.com/vignesh-chaturvedi/zerotohype/blob/main/scripts/probe-errors.ts">scripts/probe-errors.ts</a>,
+        which sends each request to testnet and checks the reply against this page.
+      </p>
+      <p>
+        Seen an error that isn't here?{" "}
+        <a href="https://github.com/vignesh-chaturvedi/zerotohype/issues/new">Open an issue</a> with the reply and what you sent.
+      </p>
+    </footer>
+  </div>
+  </div>
+</Base>
+
+<script>
+  import "../scripts/code-blocks.ts";
+</script>
+
+<style>
+  /* The reference below the heading: its own column, with less space between sections than the page's. */
+  .ref { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+  .ref .prose :global(h2) { margin-top: 0; }
+  .group { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+
+  /* The four stages a request passes through */
+  .stages { list-style: none; padding: 0; gap: 0; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); overflow: hidden; }
+  .stages li { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 6px 12px; padding: 14px 16px; border-bottom: 1px solid var(--rule); font-size: 0.9375rem; line-height: 1.55; }
+  .stages li:last-child { border-bottom: 0; }
+  .stage-n { grid-row: span 2; font: 500 0.75rem/1.9 var(--data); color: var(--accent); }
+  .stage-shape { justify-self: start; }
+
+  /* One card per error, in a single column as wide as the prose (70ch at the prose's font size) */
+  .errs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; max-width: 70ch; font-size: 1.0625rem; }
+
+  /* Status names break only between their words, and not at all where there's room: Chrome breaks
+     at a <wbr> even inside white-space: nowrap, so wide screens hide them instead. */
+  .statuses code { overflow-wrap: normal; }
+  @media (min-width: 700px) { .statuses :global(wbr) { display: none; } }
+
+  .sources { display: grid; gap: 10px; max-width: 70ch; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 0.875rem; line-height: 1.6; color: var(--muted); }
+  .sources p { margin: 0; }
+</style>

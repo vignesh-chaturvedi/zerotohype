@@ -1,0 +1,40 @@
+---
+import { inlineMd } from "../lib/inline-md";
+
+/** One error on /errors/. `label` is the docs' name for the error, or the kind of request that gets it. */
+export interface Props {
+  id: string;
+  label: string;
+  /** The reply's exact text. */
+  text: string;
+  /** What it means and what to do, a paragraph each, in inline Markdown. */
+  means: string[];
+  /** Reproduced on testnet by scripts/probe-errors.ts, rather than taken from the docs. */
+  tested?: boolean;
+}
+const { id, label, text, means, tested } = Astro.props;
+---
+
+<article class="err">
+  <p class="top">
+    <a class="label" href={`#${id}`}>{label}</a>{" "}
+    {tested ? <span class="tag ok">Tested</span> : <span class="tag">From the docs</span>}
+  </p>
+  <h3 id={id}><samp>{text}</samp></h3>
+  {means.map((m) => <p set:html={inlineMd(m)} />)}
+</article>
+
+<style>
+  .err { display: grid; gap: 10px; align-content: start; min-width: 0; padding: 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+  /* The id is on the heading, so that search results can link to it; linking to it lights up the
+     whole card, and scrolls far enough to show the label above the heading too. */
+  .err:has(h3:target) { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+  .top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+  /* Links to the card itself, so one error can be shared. */
+  .label { padding-block: 5px; margin-block: -5px; font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.04em; color: var(--muted); text-decoration: none; overflow-wrap: anywhere; }
+  .label:hover { color: var(--accent); text-decoration: underline; }
+  h3 { margin: 0; font: 500 0.9375rem/1.5 var(--data); letter-spacing: -0.01em; color: var(--ink); overflow-wrap: anywhere; scroll-margin-top: calc(var(--head-h) + 70px); }
+  samp { font: inherit; }
+  p { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--ink-2); }
+  @media (max-width: 560px) { .err { padding: 16px; } }
+</style>

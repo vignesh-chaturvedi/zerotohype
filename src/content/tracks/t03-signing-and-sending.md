@@ -89,6 +89,8 @@ When the signature is fine, an order can still be rejected. Batched orders and c
 
 Some errors depend only on the payload, such as an empty batch. Those come back once for the whole batch, so a batch of 20 orders can return a single error.
 
+The [API errors](/errors/) reference has the rest, with what each one means and what to do about it.
+
 ## New accounts pay to activate
 
 The first transfer into a brand-new HyperCore account costs 1 unit of the quote token (1 USDC, for example), whatever asset is sent. An account that has never been activated can't send CoreWriter actions from the HyperEVM, which catches contract developers out.
