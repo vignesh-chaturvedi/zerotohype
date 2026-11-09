@@ -225,7 +225,8 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
   .g-zero { fill: none; stroke: var(--on-primary); stroke-width: 2.4; }
   .g-arrow { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
   .word { font: 600 1.08rem/1 var(--display); letter-spacing: -0.02em; }
-  .hype { font: 500 0.82rem/1 var(--data); letter-spacing: 0.02em; padding: 4px 6px; margin-left: 2px; border-radius: 4px; background: var(--ink); color: var(--bg); vertical-align: 1px; }
+  /* "HYPE" in orange mono, as in the footer, the big wordmark and the share cards. */
+  .hype { font: 500 0.85em/1 var(--data); letter-spacing: 0.02em; margin-left: 2px; color: var(--accent); }
   nav { display: flex; gap: 4px; flex-wrap: wrap; }
   nav a { position: relative; font-size: 0.90625rem; color: var(--muted); text-decoration: none; padding: 7px 10px; transition: color 150ms var(--ease); }
   nav a:hover { color: var(--ink); }
