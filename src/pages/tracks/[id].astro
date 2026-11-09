@@ -26,6 +26,10 @@ const position = all.findIndex((a) => a.id === track.id) + 1;
   <div class="layout" style={`--c: ${lookOf(t.code).color}`}>
     <aside class="side" aria-label="Roadmap">
       <p class="eyebrow">The roadmap</p>
+      <p class="side-key" aria-hidden="true">
+        <span><span class="side-dot lesson"></span>Lesson</span>
+        <span><span class="side-dot"></span>Reading list</span>
+      </p>
       {stages.map((stage) => (
         <div class="side-group">
           <p class="side-stage">{stage}</p>
@@ -145,6 +149,9 @@ const position = all.findIndex((a) => a.id === track.id) + 1;
   .side-code { font: 400 11.5px/1 var(--data); color: var(--muted); }
   .side-dot { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--muted); }
   .side-dot.lesson { background: var(--ok); border-color: var(--ok); }
+  /* What the two dots mean; screen readers get it from each link's name instead. */
+  .side-key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: -8px; font-size: 12px; color: var(--muted); }
+  .side-key > span { display: inline-flex; align-items: center; gap: 6px; }
   .side-tick { display: none; width: 15px; height: 15px; border-radius: 50%; background: var(--ok); place-items: center; }
   .side-tick svg { width: 10px; height: 10px; fill: none; stroke: var(--bg); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
   .side a:global(.is-done) .side-tick { display: grid; }
