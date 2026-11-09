@@ -31,7 +31,7 @@
 .steps-out { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: step; }
 .steps-out > li { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 4px 12px; counter-increment: step; }
 .steps-out > li::before {
-  content: counter(step, decimal-leading-zero); font: 500 0.6875rem/1 var(--data); color: var(--muted); grid-row: 1 / span 2;
+  content: counter(step, decimal-leading-zero); font: 500 0.75rem/1 var(--data); color: var(--muted); grid-row: 1 / span 2;
   width: 2.2rem; height: 1.7rem; display: grid; place-items: center; border: 1px solid var(--rule-strong); border-radius: 8px;
 }
 .steps-out .label { font-weight: 600; }
@@ -43,7 +43,7 @@
 .verdict strong { display: block; margin-bottom: 4px; }
 .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
 .stat { background: var(--surface); padding: 13px 15px; display: grid; gap: 4px; }
-.stat span { font: 500 0.625rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.stat span { font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .stat b { font: 500 0.9375rem/1.2 var(--data); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; max-width: 340px; }
 .field label { font-weight: 600; font-size: 0.875rem; }

@@ -362,7 +362,7 @@ const labs = [
     background: radial-gradient(closest-side, var(--bg) 50%, transparent);
   }
   .ctas .btn.ghost { background: color-mix(in srgb, var(--bg) 72%, transparent); }
-  .stage-foot { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-block: 0 16px; font: 400 0.71875rem/1.5 var(--data); color: var(--muted); }
+  .stage-foot { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-block: 0 16px; font: 400 0.75rem/1.5 var(--data); color: var(--muted); }
   /* The captions sit over the ridges too, so they get the same soft backing as the canvas labels. */
   .stage-foot > span { padding: 2px 6px; margin: -2px -6px; border-radius: 4px; background: color-mix(in srgb, var(--bg) 82%, transparent); }
   .cap::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 9px; border-radius: 50%; background: var(--muted); vertical-align: 1px; }
@@ -372,7 +372,7 @@ const labs = [
 
   /* Price tape */
   .tape { display: flex; align-items: stretch; border-bottom: 1px solid var(--rule); font: 400 0.75rem/1 var(--data); }
-  .tape-label { flex: none; display: flex; align-items: center; gap: 9px; padding: 0 18px 0 max(20px, env(safe-area-inset-left, 0px)); border-right: 1px solid var(--rule); font-size: 0.65625rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .tape-label { flex: none; display: flex; align-items: center; gap: 9px; padding: 0 18px 0 max(20px, env(safe-area-inset-left, 0px)); border-right: 1px solid var(--rule); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
   .tape-label .live-dot { background: var(--bid); box-shadow: 0 0 0 3px color-mix(in srgb, var(--bid) 22%, transparent); }
   .tape-view { flex: 1; min-width: 0; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
   .tape-track { display: flex; width: max-content; animation: tape 80s linear infinite; }
@@ -415,7 +415,7 @@ const labs = [
   .row:global(.is-active) .row-title, .row:hover .row-title { color: var(--c-ink); transform: translateX(6px); }
   .row-sum { display: none; margin-top: 6px; font-size: 0.90625rem; line-height: 1.5; color: var(--muted); }
   .row-side { display: flex; align-items: center; gap: 14px; }
-  .row-depth { font: 500 0.625rem/1 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .row-depth { font: 500 0.75rem/1 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
   .row-depth.lesson { color: var(--ok); }
   .row-done { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--rule-strong); display: grid; place-items: center; flex: none; transition: background 200ms var(--ease), border-color 200ms var(--ease); }
   .row-done svg { width: 12px; height: 12px; fill: none; stroke: var(--bg); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
@@ -441,9 +441,9 @@ const labs = [
   .pv-build { list-style: none; margin: 0; padding: 14px 0 0; display: grid; gap: 6px; font-size: 0.875rem; color: var(--ink-2); border-top: 1px solid var(--rule); }
   .pv-build li::before { content: "+ "; color: var(--muted); }
   .pv-build li.live { color: var(--ink); font-weight: 600; }
-  .pv-build b { font: 500 0.625rem/1 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ok); }
+  .pv-build b { font: 500 0.75rem/1 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ok); }
   .pv-build span { color: var(--muted); font-weight: 400; }
-  .pv-meta { font: 400 0.71875rem/1.4 var(--data); color: var(--muted); }
+  .pv-meta { font: 400 0.75rem/1.4 var(--data); color: var(--muted); }
 
   /* Labs */
   .labs { display: grid; gap: 32px; }
@@ -459,7 +459,7 @@ const labs = [
   .tile-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .tile-n { font: 400 2.6rem/0.85 var(--data); letter-spacing: -0.09em; color: var(--c-ink); }
   /* The drawing takes up any spare height, so the titles and text below line up across the three tiles. */
-  .recipe, .formula { margin: 0; padding: 12px 14px 12px 30px; border-radius: 8px; background: var(--sunk); font: 400 0.71875rem/1.65 var(--data); color: var(--ink-2); align-self: stretch; }
+  .recipe, .formula { margin: 0; padding: 12px 14px 12px 30px; border-radius: 8px; background: var(--sunk); font: 400 0.75rem/1.65 var(--data); color: var(--ink-2); align-self: stretch; }
   .formula { padding-left: 14px; display: flex; flex-direction: column; justify-content: center; }
   .recipe code { background: none; padding: 0; font-size: inherit; color: var(--ink); }
   .recipe .reply { list-style: none; margin: 6px 0 0 -16px; color: var(--muted); }
@@ -470,7 +470,7 @@ const labs = [
   .spark .trace { stroke: var(--ink); stroke-width: 1.4; fill: none; stroke-linejoin: round; }
   .tile-title { font: 600 1.55rem/1.05 var(--display); letter-spacing: -0.035em; }
   .tile-what { font-size: 0.90625rem; line-height: 1.55; color: var(--ink-2); }
-  .tile-go { font: 500 0.71875rem/1 var(--data); letter-spacing: 0.04em; color: var(--c-ink); }
+  .tile-go { font: 500 0.75rem/1 var(--data); letter-spacing: 0.04em; color: var(--c-ink); }
   .spark-note { font-size: 0.84375rem; }
 
   /* Changelog preview */
@@ -485,7 +485,7 @@ const labs = [
   .feed-list { list-style: none; margin: 0; padding: 0; }
   .feed-list li { display: grid; gap: 4px; padding: 13px 16px; border-bottom: 1px solid var(--rule); }
   .feed-list li:last-child { border-bottom: 0; }
-  .feed-meta { display: flex; gap: 12px; font: 500 0.625rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .feed-meta { display: flex; gap: 12px; font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .feed-meta .mainnet { color: var(--accent); }
   .feed-text { font-size: 0.90625rem; overflow-wrap: anywhere; color: var(--ink-2); }
 
