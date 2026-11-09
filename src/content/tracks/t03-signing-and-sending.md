@@ -71,7 +71,7 @@ That unhelpful error is also the best test you have. Generate a brand-new key, s
 - **It names your new key's address:** your encoding and signing match the exchange's, byte for byte.
 - **It names any other address:** something in the payload differs. Change one thing at a time until it matches.
 
-No funds are involved and nothing can take effect. [hyperkeeper](https://github.com/vignesh-chaturvedi/hyperkeeper) runs this check every time it starts, and the Sign without money lab will let you try it in the browser.
+No funds are involved and nothing can take effect. [hyperkeeper](https://github.com/vignesh-chaturvedi/hyperkeeper) runs this check every time it starts, and the [Sign without money](/labs/sign-without-money/) lab lets you try it in the browser.
 
 ## Errors that aren't about signing
 

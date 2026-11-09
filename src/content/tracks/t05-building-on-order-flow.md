@@ -20,4 +20,4 @@ build:
   - { label: Testnet market maker, kind: project }
 ---
 
-This track gathers what you need to make money from the order flow your app sends. Builder codes pay you a fee on every fill you route; sub-accounts and vaults let you run strategies on others' capital. A full lesson follows after launch.
+This track gathers what you need to make money from the order flow your app sends. Builder codes pay you a fee on every fill you route; sub-accounts and vaults let you run strategies on others' capital. Until its full lesson is written, this track is a reading list.

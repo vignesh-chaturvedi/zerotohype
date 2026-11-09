@@ -22,4 +22,4 @@ build:
   - { label: CoreWriter vault with Foundry, kind: project }
 ---
 
-This track is for Solidity developers. HyperEVM contracts read HyperCore state through precompiles and act on it through the CoreWriter system contract, with timing rules that differ from a normal EVM chain. A full lesson follows after launch.
+This track is for Solidity developers. HyperEVM contracts read HyperCore state through precompiles and act on it through the CoreWriter system contract, with timing rules that differ from a normal EVM chain. Until its full lesson is written, this track is a reading list.

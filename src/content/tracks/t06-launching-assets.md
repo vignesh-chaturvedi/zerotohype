@@ -15,4 +15,4 @@ build:
   - { label: Hyperliquidity price ladder, kind: workbench }
 ---
 
-This track covers launching a token on HyperCore. HIP-1 defines the token and its deploy auction; HIP-2 gives it an automatic market from day one. No good outside tutorial exists yet, so this is one of the gaps the site will fill after launch.
+This track covers launching a token on HyperCore. HIP-1 defines the token and its deploy auction; HIP-2 gives it an automatic market from day one. No good outside tutorial exists yet, so this is one of the gaps a full lesson here will fill; until then, start with the official docs.
