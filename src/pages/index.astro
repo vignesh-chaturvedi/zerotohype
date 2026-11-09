@@ -178,7 +178,7 @@ const labs = [
                 <li class="reply">“User or API Wallet <b>0x…</b> does not exist.”</li>
               </ol>
             ) : (
-              <span class="formula" aria-hidden="true">premium = (impact − oracle) / oracle<br />funding / h = clamp(premium + interest) / 8</span>
+              <span class="formula" aria-hidden="true"><span>premium = (impact − oracle) / oracle</span><span>funding / h = clamp(premium + interest) / 8</span></span>
             )}
             <span class="tile-title">{lab.title}</span>
             <span class="tile-what">{lab.what}</span>
@@ -420,7 +420,7 @@ const labs = [
   .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .tile {
     --c-ink: color-mix(in srgb, var(--c) var(--cover-ink-tint), var(--cover-ink));
-    position: relative; height: 100%; display: grid; grid-template-rows: auto auto 1fr auto auto; gap: 16px; padding: 22px; border-radius: 12px; overflow: hidden;
+    position: relative; height: 100%; display: grid; grid-template-rows: auto 1fr auto auto auto; gap: 16px; padding: 22px; border-radius: 12px; overflow: hidden;
     color: var(--ink); text-decoration: none; background: var(--surface); border: 1px solid var(--rule);
     transition: transform 240ms var(--ease), border-color 240ms var(--ease);
   }
@@ -428,8 +428,9 @@ const labs = [
   .tile:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c) 55%, var(--rule)); }
   .tile-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .tile-n { font: 400 2.6rem/0.85 var(--data); letter-spacing: -0.09em; color: var(--c-ink); }
-  .recipe, .formula { margin: 0; padding: 12px 14px 12px 30px; border-radius: 8px; background: var(--sunk); font: 400 11.5px/1.65 var(--data); color: var(--ink-2); align-self: start; }
-  .formula { padding-left: 14px; }
+  /* The drawing takes up any spare height, so the titles and text below line up across the three tiles. */
+  .recipe, .formula { margin: 0; padding: 12px 14px 12px 30px; border-radius: 8px; background: var(--sunk); font: 400 11.5px/1.65 var(--data); color: var(--ink-2); align-self: stretch; }
+  .formula { padding-left: 14px; display: flex; flex-direction: column; justify-content: center; }
   .recipe code { background: none; padding: 0; font-size: inherit; color: var(--ink); }
   .recipe .reply { list-style: none; margin: 6px 0 0 -16px; color: var(--muted); }
   .recipe .reply b { color: var(--accent); font-weight: 500; }
