@@ -1,0 +1,100 @@
+---
+import Base from "../layouts/Base.astro";
+import { terms, termId } from "../data/glossary";
+import { inlineMd } from "../lib/inline-md";
+
+// Alphabetical, ignoring case, then grouped by first letter.
+const sorted = [...terms].sort((a, b) => a.term.localeCompare(b.term, "en", { sensitivity: "base" }));
+const groups = new Map<string, typeof terms>();
+for (const t of sorted) {
+  const letter = t.term[0].toUpperCase();
+  groups.set(letter, [...(groups.get(letter) ?? []), t]);
+}
+---
+
+<Base title="Hyperliquid glossary" description={`${terms.length} Hyperliquid terms in plain words, from activation fee to WHYPE, each linked to where it's explained properly.`}>
+  <div style="display: contents" data-pagefind-body data-pagefind-meta="kind:Reference">
+  <header class="page-head">
+    <p class="eyebrow">Reference</p>
+    <h1>The terms, in <em>plain words.</em></h1>
+    <p class="lede">
+      The words you'll meet building on Hyperliquid, each in a sentence or two, with a link to
+      where a lesson or the docs explain it properly.
+    </p>
+  </header>
+
+  <div class="glossary">
+    <nav class="letters" aria-label="Jump to a letter" data-pagefind-ignore>
+      {[...groups.keys()].map((l) => <a href={`#letter-${l.toLowerCase()}`}>{l}</a>)}
+    </nav>
+
+    {[...groups].map(([letter, list]) => (
+      <section class="group" aria-labelledby={`letter-${letter.toLowerCase()}`}>
+        <h2 class="letter" id={`letter-${letter.toLowerCase()}`} data-pagefind-ignore>{letter}</h2>
+        <div class="terms">
+          {list.map((t) => (
+            <div class="term">
+              <div class="name">
+                <h3 id={termId(t.term)}>{t.term}</h3>
+                {t.aka && <p class="aka">{t.aka.join(" · ")}</p>}
+              </div>
+              <div class="body">
+                <p set:html={inlineMd(t.def)} />
+                {t.see && (
+                  <p class="see" data-pagefind-ignore>
+                    {t.see.map(([label, href]) => <a href={href}>{label}</a>)}
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <p class="missing" data-pagefind-ignore>
+      A term missing, or explained wrong?{" "}
+      <a href="https://github.com/vignesh-chaturvedi/zerotohype/issues/new">Open an issue</a> and say which.
+    </p>
+  </div>
+  </div>
+</Base>
+
+<style>
+  .glossary { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; max-width: 920px; }
+
+  /* A–Z, each letter a link to its group */
+  .letters { display: flex; flex-wrap: wrap; gap: 6px; }
+  .letters a {
+    display: grid; place-items: center; min-width: 36px; height: 36px; padding: 0 8px; border-radius: 8px;
+    border: 1px solid var(--rule); background: var(--surface); color: var(--ink-2);
+    font: 500 0.875rem/1 var(--data); text-decoration: none; transition: border-color 150ms var(--ease), color 150ms var(--ease);
+  }
+  .letters a:hover { border-color: var(--accent); color: var(--accent); }
+
+  .group { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 0 20px; align-items: start; }
+  .letter { position: sticky; top: calc(var(--head-h) + 16px); margin: 0; font: 400 2.4rem/1 var(--data); color: var(--accent); scroll-margin-top: calc(var(--head-h) + 16px); }
+  .terms { display: grid; }
+
+  /* One row per term: the name on the left, what it means on the right */
+  /* Each term has a rule above it, so the gap between two letters has one line, not two. */
+  .term { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: 6px 24px; padding: 16px 0; border-top: 1px solid var(--rule); }
+  .term h3 { margin: 0; font: 600 1.0625rem/1.35 var(--display); letter-spacing: -0.01em; overflow-wrap: anywhere; scroll-margin-top: calc(var(--head-h) + 20px); }
+  .term h3:target { color: var(--accent); }
+  .term:has(h3:target) { background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%); }
+  .aka { margin: 4px 0 0; font: 400 0.8125rem/1.45 var(--body); color: var(--muted); }
+  .body { display: grid; gap: 8px; min-width: 0; }
+  .body p { margin: 0; font-size: 0.96875rem; line-height: 1.6; color: var(--ink-2); max-width: 64ch; }
+  .body .see { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.8125rem; }
+  .see a { color: var(--muted); text-underline-offset: 3px; }
+  .see a:hover { color: var(--accent); }
+  .see a::after { content: " →" / ""; } /* decorative: screen readers skip it */
+
+  .missing { margin: 0; font-size: 0.875rem; color: var(--muted); }
+
+  @media (max-width: 760px) {
+    .group { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .letter { position: static; font-size: 1.8rem; }
+    .term { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
