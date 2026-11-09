@@ -123,13 +123,16 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
             <p class="eyebrow"><span class="n">{t.outside.length > 0 ? "03" : "02"}</span> Build</p>
             <p class="muted">Hands-on work for this track.</p>
             <ul>
-              {t.build.map((b) => (
+              {[...t.build].sort((a, b) => Number(a.status !== "live") - Number(b.status !== "live")).map((b) => (
                 <li>
                   {b.href && b.status === "live" ? <a href={b.href}>{kindLabel[b.kind]}: {b.label}</a> : <span>{kindLabel[b.kind]}: {b.label}</span>}
                   {b.status === "planned" ? <span class="tag">Coming</span> : <span class="tag ok">Live</span>}
                 </li>
               ))}
             </ul>
+            {t.build.some((b) => b.status === "planned") && (
+              <p class="muted" data-pagefind-ignore>Want one of these sooner? <a href="https://github.com/vignesh-chaturvedi/zerotohype/issues">Say so on GitHub</a>.</p>
+            )}
           </section>
         )}
       </div>
