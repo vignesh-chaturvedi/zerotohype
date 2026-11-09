@@ -109,7 +109,7 @@ const labs = [
               {tracks.filter((t) => t.data.stage === stage).map((t) => (
                 <li>
                   <a class="row" href={`/tracks/${t.id}/`} data-code={t.data.code} data-done-id={t.id} style={`--c: ${lookOf(t.data.code).color}`}>
-                    <span class="row-code">{t.data.code.replace("T", "T" + (t.data.code.length === 2 ? "0" : ""))}</span>
+                    <span class="row-code">{t.data.code}</span>
                     <span class="row-main">
                       <span class="row-title">{t.data.title}</span>
                       <span class="row-sum">{t.data.summary}</span>
