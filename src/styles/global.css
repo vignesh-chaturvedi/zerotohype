@@ -1,6 +1,26 @@
 /* Zero to HYPE: a night-time trading floor. Dark by default, with the warm paper look kept as the
    light theme. Grotesk for headings, mono for codes and numbers, a colour and a line drawing per
    track. Bids are mint and asks are orange, and the orange doubles as the accent for links. */
+
+/* Until the web fonts arrive, text is set in Arial or Courier New scaled to the same metrics, so it
+   wraps the same way and nothing jumps when they swap in. The numbers come from the font files
+   (Capsize); Liberation Sans and Mono are the metric-compatible stand-ins on Linux. */
+@font-face {
+  font-family: "Public Sans Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
+  ascent-override: 90.5905%; descent-override: 21.4557%; line-gap-override: 0%; size-adjust: 104.8675%;
+}
+@font-face {
+  font-family: "Schibsted Grotesk Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
+  ascent-override: 90.6099%; descent-override: 23.921%; line-gap-override: 0%; size-adjust: 107.7766%;
+}
+@font-face {
+  font-family: "Martian Mono Fallback";
+  src: local("Courier New"), local("CourierNewPSMT"), local("Liberation Mono"), local("LiberationMono");
+  ascent-override: 85.7282%; descent-override: 17.1456%; size-adjust: 116.6477%;
+}
+
 :root {
   --bg: #0c0c0b;
   --surface: #141412;
@@ -26,9 +46,9 @@
   --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -14px rgb(0 0 0 / 0.7);
   --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.45), 0 24px 44px -18px rgb(0 0 0 / 0.8);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --data: "Martian Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --display: "Schibsted Grotesk", "Schibsted Grotesk Fallback", "Helvetica Neue", Arial, sans-serif;
+  --body: "Public Sans", "Public Sans Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --data: "Martian Mono", "Martian Mono Fallback", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   color-scheme: dark;
 }
 :root[data-theme="light"] {

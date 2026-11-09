@@ -8,6 +8,9 @@ import "@fontsource/public-sans/600.css";
 import "@fontsource/martian-mono/400.css";
 import "@fontsource/martian-mono/500.css";
 import "../styles/global.css";
+// The body and heading faces are on every page above the fold, so they are fetched before the CSS asks.
+import bodyFont from "@fontsource/public-sans/files/public-sans-latin-400-normal.woff2?url";
+import headingFont from "@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-600-normal.woff2?url";
 import settlements from "../../public/data/hip4-settlements.json";
 import { trackLook } from "../lib/track-look";
 
@@ -53,6 +56,8 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#0c0c0b" />
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={new URL(path, Astro.site)} />
     <link rel="sitemap" href="/sitemap-index.xml" />
