@@ -1245,10 +1245,10 @@
     }
   },
   "venues": {
-    "out": 199,
+    "fox": 7,
+    "out": 190,
     "txyz": 25,
     "skew": 66,
-    "fox": 7,
     "protocol": 8
   },
   "templates": {

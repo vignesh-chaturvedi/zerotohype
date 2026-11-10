@@ -1,5 +1,17 @@
 [
   {
+    "time": "2026-11-10T07:11:41.491Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Optimizing latency](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/optimizing-latency)"
+  },
+  {
+    "time": "2026-11-10T07:11:41.491Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Priority fees](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/priority-fees)"
+  },
+  {
     "time": "2026-11-09T22:17:11.932Z",
     "network": "testnet",
     "area": "HIP-3",
