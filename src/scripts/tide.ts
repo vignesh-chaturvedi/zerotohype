@@ -49,16 +49,22 @@ function run(stage: HTMLElement, canvas: HTMLCanvasElement) {
   });
 
   // The ridges stay below the intro paragraph, which reaches past the middle of the stage on short
-  // phones, and above the caption at the bottom, which wraps to two lines there.
+  // phones, and above the caption at the bottom, which wraps to two lines there. Where the buttons
+  // under the intro span most of the width (on phones), they stay below the buttons too.
   const copy = stage.querySelector<HTMLElement>(".stage-copy");
   const lede = stage.querySelector<HTMLElement>(".lede");
+  const ctas = stage.querySelector<HTMLElement>(".ctas");
   const foot = stage.querySelector<HTMLElement>(".stage-foot");
   const sendSize = () => {
     const box = stage.getBoundingClientRect();
+    const intro = lede?.getBoundingClientRect();
+    const buttons = ctas?.getBoundingClientRect();
+    const above = buttons && buttons.width > box.width * 0.6 ? buttons : intro;
     send({
       type: "size", w: stage.clientWidth, h: stage.clientHeight, dpr: devicePixelRatio || 1,
-      ceiling: lede ? lede.getBoundingClientRect().bottom - box.top + 8 : 0,
+      ceiling: above ? above.bottom - box.top + 8 : 0,
       floor: foot ? box.bottom - foot.getBoundingClientRect().top : 0,
+      cover: intro ? intro.width / (box.width || 1) : 0,
     });
   };
   const resized = new ResizeObserver(sendSize);
