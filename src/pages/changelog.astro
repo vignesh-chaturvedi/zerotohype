@@ -151,6 +151,9 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
   .filter button { padding: 8px 12px; border: 1px solid var(--rule-strong); border-radius: 999px; background: var(--surface); color: var(--ink-2); font: 500 0.75rem/1 var(--data); letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
   .filter button:hover { border-color: var(--ink-2); color: var(--ink); }
   .filter button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+  /* In high contrast mode the pressed filter takes the system's highlight colours; it opts out of the
+     mode's own colouring, which would draw a backplate behind its text in the same colour as the text. */
+  @media (forced-colors: active) { .filter button[aria-pressed="true"] { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; } }
   .filter[hidden], .day[hidden], .day li[hidden], .empty[hidden] { display: none; }
   @media (max-width: 760px) {
     .day { grid-template-columns: minmax(0, 1fr); }
