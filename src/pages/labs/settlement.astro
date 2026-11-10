@@ -49,7 +49,7 @@ import "../../styles/lab.css";
 
     <section class="panel" aria-labelledby="avg-title">
       <h2 id="avg-title">Three ways to average</h2>
-      <div class="tbl-wrap">
+      <div class="table-scroll">
         <table class="avg">
           <thead><tr><th>Average</th><th>Value</th><th>From threshold</th><th>Says</th><th>Matches venue</th></tr></thead>
           <tbody id="avg-rows"><tr><td colspan="5">–</td></tr></tbody>
@@ -70,7 +70,6 @@ import "../../styles/lab.css";
 </Base>
 
 <style>
-  .tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; }
   table.avg { border-collapse: collapse; width: 100%; font-size: 0.90625rem; }
   .avg th, .avg td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
   .avg tr:last-child td { border-bottom: 0; }
