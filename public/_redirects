@@ -1,0 +1,2 @@
+# Some tools look for /sitemap.xml first; the sitemap Astro writes is /sitemap-index.xml (named in robots.txt).
+/sitemap.xml /sitemap-index.xml 301

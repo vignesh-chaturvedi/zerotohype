@@ -3,6 +3,7 @@ order: 4
 stage: Trading
 code: T4
 title: Trading mechanics
+seoTitle: "Hyperliquid funding, margin and liquidation formulas"
 summary: How the clearinghouse prices, margins, funds and liquidates positions. Most of it is formulas, so most of it becomes workbenches.
 depth: lesson
 verified: 2026-10-22

@@ -19,6 +19,8 @@ const tracks = defineCollection({
     code: z.string(),
     stage: z.enum(["Foundations", "Trading", "Deploying markets", "Contracts and infra"]),
     title: z.string(),
+    /** The page's <title>, in the words people search for; the track's own title stays its heading. */
+    seoTitle: z.string().max(64).optional(),
     summary: z.string(),
     /** `lesson` tracks have a full write-up; `links` tracks list their reading for now. */
     depth: z.enum(["lesson", "links"]),

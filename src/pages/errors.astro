@@ -5,12 +5,15 @@ import ErrorCard, { type Props as Err } from "../components/ErrorCard.astro";
 import { freshness } from "../lib/freshness";
 import { inlineMd } from "../lib/inline-md";
 import { editedSince } from "../lib/source-changes";
+import { page } from "../lib/structured-data";
 
 const D = "https://hyperliquid.gitbook.io/hyperliquid-docs";
 const API = `${D}/for-developers/api`;
 /** When scripts/probe-errors.ts last confirmed every reply marked Tested, on testnet. */
 const tested = new Date("2026-11-09T00:00:00Z");
 const testedText = tested.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+const description = "The errors the Hyperliquid API returns, with their exact text, where each shows up in the reply, what it means and what to do about it.";
+const data = [page("TechArticle", "/errors/", { name: "Hyperliquid API errors", headline: "Hyperliquid API errors and what they mean", description, modified: tested })];
 const sources = [
   { title: "Error responses", url: `${API}/error-responses` },
   { title: "Exchange endpoint", url: `${API}/exchange-endpoint` },
@@ -232,7 +235,7 @@ const okReply = `{
   }
 }`;
 ---
-<Base title="Hyperliquid API errors" description="The errors the Hyperliquid API returns, with their exact text, where each shows up in the reply, what it means and what to do about it.">
+<Base title="Hyperliquid API errors and what they mean" heading="When the exchange says no." trail={[["API errors", "/errors/"]]} data={data} modified={tested} description={description}>
   <div style="display: contents" data-pagefind-body data-pagefind-meta="kind:Reference">
   <header class="page-head">
     <p class="eyebrow">Reference</p>

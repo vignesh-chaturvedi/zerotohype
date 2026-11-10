@@ -3,6 +3,7 @@ order: 8
 stage: Deploying markets
 code: T8
 title: Outcome markets
+seoTitle: "Hyperliquid HIP-4 outcome markets: how settlement works"
 summary: HIP-4 templates, how markets settle, and what "TWAP" means at each venue. No tutorial covers settlement yet.
 depth: lesson
 verified: 2026-10-22

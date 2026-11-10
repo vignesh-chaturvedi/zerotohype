@@ -3,6 +3,7 @@ order: 9
 stage: Contracts and infra
 code: T9
 title: HyperEVM
+seoTitle: "HyperEVM for Solidity devs: precompiles and CoreWriter"
 summary: Smart contracts that read HyperCore through precompiles and act on it through CoreWriter, and the timing rules between the two layers.
 depth: links
 docs:
