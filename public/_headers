@@ -8,3 +8,10 @@
 # Astro puts a content hash in every file name under /_astro/, so these can be cached for good.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
+
+# The Markdown version of each track (/tracks/<id>.md) and the text files for assistants (/llms.txt),
+# with their character set, so quotes and arrows in them come out right.
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+/*.txt
+  Content-Type: text/plain; charset=utf-8

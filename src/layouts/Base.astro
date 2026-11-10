@@ -28,11 +28,13 @@ interface Props {
   data?: Node[];
   /** When an article's facts were last checked: it's shared as an article modified then. */
   modified?: Date;
+  /** A Markdown version of the page, for pasting into an assistant. */
+  markdown?: string;
   /** Keeps the page out of search results. */
   noindex?: boolean;
 }
 
-const { title, description, heading = title, trail, data = [], modified, noindex = false } = Astro.props;
+const { title, description, heading = title, trail, data = [], modified, markdown, noindex = false } = Astro.props;
 // The tracks in order, as "id:code" pairs, so the header's Start link can become "Continue T4" (progress.ts).
 const trackOrder = (await getCollection("tracks")).sort((a, b) => a.data.order - b.data.order).map((t) => `${t.id}:${t.data.code}`).join(",");
 const path = Astro.url.pathname;
@@ -87,6 +89,8 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
     <link rel="canonical" href={new URL(path, Astro.site)} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title="Hyperliquid API changelog (Zero to HYPE)" href="/changelog/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="New and re-checked lessons (Zero to HYPE)" href="/tracks/rss.xml" />
+    {markdown && <link rel="alternate" type="text/markdown" href={markdown} />}
     <script type="application/ld+json" is:inline set:html={graph} />
     <script is:inline>
       // A theme the reader picked wins; otherwise the site follows the system's light or dark setting,
