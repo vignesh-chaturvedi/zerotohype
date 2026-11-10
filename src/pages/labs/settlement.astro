@@ -104,6 +104,7 @@ import "../../styles/lab.css";
 
 <script>
   import { plainMean, timeWeighted, volumeWeighted, type Sample } from "../../lib/twap";
+  import "../../scripts/lab-bar.ts";
 
   type Market = {
     outcome: number; group: string; venue: string; coin: string; kind: "Mark" | "Trade" | "Candle1m"; rule: "above" | "touch";

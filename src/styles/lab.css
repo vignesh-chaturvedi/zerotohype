@@ -16,18 +16,19 @@
 .panel h2 { font-size: 1.25rem; letter-spacing: -0.02em; font-weight: 600; }
 /* The one control every panel below depends on, in a slim bar that stays under the header while you scroll. */
 .panel.controls {
-  position: sticky; top: 72px; z-index: 5;
+  position: sticky; top: calc(var(--head-h) + 11px); z-index: 5;
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; padding: 12px 18px; border-radius: 14px;
 }
 .panel.controls .field { grid-template-columns: auto minmax(0, 260px); align-items: center; gap: 12px; max-width: none; }
 .panel.controls .small { flex: 1 1 260px; margin: 0; }
 @media (max-width: 700px) { .panel.controls { position: static; } }
-/* Side by side on wide screens: what you choose on the left, kept in view, and what happened on the right. */
+/* Side by side on wide screens: what you choose on the left, kept in view, and what happened on the right.
+   The pair has a box of its own, so the left panel stops at the end of the pair instead of sliding over
+   the panels after it. */
+.split { display: grid; gap: 22px; min-width: 0; }
 @media (min-width: 1100px) {
-  .lab.split { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; }
-  .lab.split > * { grid-column: 1 / -1; }
-  .lab.split > .pick { grid-column: 1; position: sticky; top: 84px; }
-  .lab.split > .result { grid-column: 2; }
+  .split { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; }
+  .split > .pick { position: sticky; top: calc(var(--head-h) + 22px); }
 }
 /* A lab's secondary buttons: replay, pause. */
 .lab-btn { font: 600 0.84375rem/1 var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 10px; padding: 9px 13px; min-height: 36px; cursor: pointer; }
