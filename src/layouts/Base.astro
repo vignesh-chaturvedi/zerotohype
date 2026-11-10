@@ -246,6 +246,7 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
   nav a:hover { color: var(--ink); }
   nav a[aria-current="page"] { color: var(--ink); }
   nav a[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -13px; height: 2px; background: var(--accent); }
+  @media (forced-colors: active) { nav a[aria-current="page"]::after { background: Highlight; } }
   .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
   .search-btn, .theme-toggle, .gh {
     display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 8px; cursor: pointer;

@@ -507,6 +507,11 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
   /* Only ticked rows say "(done)" to screen readers. */
   .row-done-text { display: none; }
   .row:global(.is-done) .row-done-text { display: block; }
+  /* High contrast mode drops the green fill, so a done tick gets the system's highlight colour. */
+  @media (forced-colors: active) {
+    .row:global(.is-done) .row-done { background: Highlight; border-color: Highlight; }
+    .row-done svg { stroke: HighlightText; }
+  }
   .row-thumb { display: none; }
 
   .preview { position: sticky; top: 92px; display: grid; }

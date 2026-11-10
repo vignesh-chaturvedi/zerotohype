@@ -266,3 +266,15 @@ svg[data-kind] .xh-text { font: 500 8.5px var(--data); letter-spacing: 0.06em; f
 .done-btn[aria-pressed="true"] { border-color: color-mix(in srgb, var(--ok) 60%, var(--rule)); background: color-mix(in srgb, var(--ok) 12%, transparent); }
 .done-btn[aria-pressed="true"] .tick { background: var(--ok); border-color: var(--ok); }
 .done-btn[aria-pressed="true"] .tick svg { opacity: 1; }
+
+/* Windows high contrast (forced colours) drops backgrounds and shadows. A state shown only by those gets
+   a mark in the system's highlight colour instead, and matches in search results keep the system's own
+   highlight, without which they'd be drawn in the background colour. */
+@media (forced-colors: active) {
+  .code-bar [role="tab"][aria-selected="true"] { text-decoration: underline 2px Highlight; text-underline-offset: 5px; }
+  .hit[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
+  .hit-excerpt mark { background: Mark; color: MarkText; }
+  .done-btn[aria-pressed="true"] { border-color: Highlight; }
+  .done-btn[aria-pressed="true"] .tick { background: Highlight; border-color: Highlight; }
+  .done-btn[aria-pressed="true"] .tick svg { stroke: HighlightText; }
+}
