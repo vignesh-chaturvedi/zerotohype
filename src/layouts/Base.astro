@@ -215,9 +215,10 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
     border-bottom: 1px solid var(--rule);
   }
   .livebar:hover .livebar-text { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  /* On phones the text wraps to a second line instead of being cut off. */
   @media (max-width: 560px) {
-    .livebar { flex-wrap: nowrap; justify-content: flex-start; font-size: 0.75rem; }
-    .livebar-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .livebar { flex-wrap: nowrap; justify-content: flex-start; text-align: left; font-size: 0.75rem; }
+    .livebar-text { min-width: 0; }
   }
   .flag { display: inline-flex; align-items: center; font: 500 0.75rem/1 var(--data); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
 

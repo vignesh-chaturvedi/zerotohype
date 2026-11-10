@@ -234,6 +234,14 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
   .reading li { overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
   .by { color: var(--muted); font-size: 0.78125rem; }
   .reading .note { flex-basis: 100%; font-size: 0.84375rem; line-height: 1.45; color: var(--muted); }
+  /* On touch screens each link is a 44px-tall target: padding makes up the height, and the gaps it
+     replaces go. A note is pulled back up under its link, which stays on top so its whole target works. */
+  @media (pointer: coarse) {
+    .reading ul { gap: 0; }
+    .reading li { row-gap: 0; }
+    .reading li > a { position: relative; z-index: 1; padding-block: 11.5px; }
+    .reading li:has(.note) > a { margin-bottom: -8px; }
+  }
 
   /* What to do once the lesson is read */
   .try-next { display: grid; gap: 10px; max-width: 70ch; padding: 18px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--c) 55%, var(--rule)); background: color-mix(in srgb, var(--c) calc(var(--cover-amt) * 0.35), var(--surface)); }
