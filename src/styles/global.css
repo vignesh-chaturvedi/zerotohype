@@ -112,6 +112,8 @@ pre code { background: none; padding: 0; font-size: inherit; }
 .code-bar [role="tab"] { padding: 6px 10px; border: 0; border-radius: 6px; background: none; color: var(--muted); font: inherit; letter-spacing: inherit; cursor: pointer; }
 .code-bar [role="tab"]:hover { color: var(--ink); }
 .code-bar [role="tab"][aria-selected="true"] { color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--rule-strong); }
+/* Bigger on touch screens, where a fingertip needs more than the 24px the bar's buttons have. */
+@media (pointer: coarse) { .code-bar [role="tab"], .code-copy { min-height: 36px; padding-inline: 12px; } }
 img { max-width: 100%; }
 
 .wrap {
@@ -168,6 +170,8 @@ img { max-width: 100%; }
 .toc { display: grid; gap: 10px; max-width: 70ch; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
 .toc ol { margin: 0; padding-left: 1.4em; columns: 2 16rem; column-gap: 28px; font-size: 0.9375rem; line-height: 1.5; }
 .toc li { break-inside: avoid; padding: 3px 0; }
+/* On touch screens each contents link is a 44px-tall target. */
+@media (pointer: coarse) { .toc li { padding: 0; } .toc a { display: block; padding-block: 10.75px; } }
 .toc li::marker { color: var(--muted); font: 500 0.75rem var(--data); }
 
 /* Lesson prose: Markdown rendered from the content collections. */
@@ -186,6 +190,9 @@ img { max-width: 100%; }
 .prose th, .prose td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
 .prose tr:last-child td { border-bottom: 0; }
 .prose th { font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--sunk); }
+/* The first column names each row (an error, a field, an action), and a name doesn't break mid-word on a
+   phone; longer values in the other columns, such as URLs, still break wherever they must. */
+.prose td:first-child code { overflow-wrap: break-word; }
 .prose blockquote { margin: 0; padding: 14px 18px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 12px 12px 0; color: var(--ink); }
 
 /* Diagram motion (src/scripts/diagram-motion.ts): dots that travel the lines while a drawing is
