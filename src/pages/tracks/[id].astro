@@ -35,7 +35,7 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
 
 <Base title={`${t.code} ${t.title}`} description={t.summary}>
   <div class="layout" style={`--c: ${lookOf(t.code).color}`}>
-    <aside class="side" aria-label="Roadmap">
+    <nav class="side" aria-label="Roadmap">
       <p class="eyebrow">The roadmap</p>
       <p class="side-key" aria-hidden="true">
         <span><span class="side-dot lesson"></span>Lesson</span>
@@ -58,7 +58,7 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
           </ol>
         </div>
       ))}
-    </aside>
+    </nav>
 
     <div class="main" data-pagefind-body data-pagefind-meta={`kind:Track ${t.code} · ${t.stage}`}>
       <details class="mobile-map" data-pagefind-ignore>

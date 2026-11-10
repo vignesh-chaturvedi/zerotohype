@@ -78,11 +78,13 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <a class="livebar" href="/labs/settlement/">
-      <span class="flag">New</span>
-      <span class="livebar-text">Settlement explorer: replay {marketCount} real HIP-4 settlements</span>
-      <span aria-hidden="true">→</span>
-    </a>
+    <aside aria-label="What's new">
+      <a class="livebar" href="/labs/settlement/">
+        <span class="flag">New</span>
+        <span class="livebar-text">Settlement explorer: replay {marketCount} real HIP-4 settlements</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </aside>
     <header class="site">
       <div class="wrap bar">
         <a class="brand" href="/" aria-label="Zero to HYPE, home">
@@ -116,9 +118,11 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
         </div>
       </div>
     </header>
-    <slot name="stage" />
-    <main id="main" class="wrap page">
-      <slot />
+    <main id="main">
+      <slot name="stage" />
+      <div class="wrap page">
+        <slot />
+      </div>
     </main>
     <dialog id="search" class="search" aria-label="Search the site">
       <form method="dialog" class="search-bar" role="search" onsubmit="return false">
