@@ -40,7 +40,7 @@ import "../../styles/lab.css";
     <section class="panel" aria-labelledby="chart-title">
       <div class="chart-head">
         <h2 id="chart-title">Prices in the window</h2>
-        <button type="button" class="replay" id="replay">Replay the window <span aria-hidden="true">↻</span></button>
+        <button type="button" class="lab-btn" id="replay">Replay the window <span aria-hidden="true">↻</span></button>
       </div>
       <div class="chart" id="chart" role="img" aria-label="Recorded prices across the settlement window, with the threshold as a dashed line and the running averages as lines"></div>
       <p class="legend" id="legend"></p>
@@ -76,8 +76,6 @@ import "../../styles/lab.css";
   .avg th { font-size: 0.78125rem; color: var(--muted); background: var(--sunk); }
   .avg td.n { font-family: var(--data); font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
   .chart-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .replay { font: 600 0.84375rem/1 var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 10px; padding: 9px 13px; cursor: pointer; }
-  .replay:hover { box-shadow: var(--shadow); }
   .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 400 0.75rem/1.4 var(--data); color: var(--muted); margin: 0; }
   .legend :global(i) { display: inline-block; width: 18px; height: 0; border-top: 2px solid; vertical-align: middle; margin-right: 7px; }
   .legend :global(.k-twap) { border-color: var(--ink); }

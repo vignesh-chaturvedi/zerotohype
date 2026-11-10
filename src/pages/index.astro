@@ -77,14 +77,21 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
           <a class="btn ghost" href="/labs/">Try a lab</a>
         </div>
       </div>
-      <p class="wrap stage-foot">
+      <div class="wrap stage-foot">
         <span class="cap" data-tide-caption data-state="waiting">Connecting to the BTC order book…</span>
-        <span class="hint">Point at a ridge to read the depth</span>
-      </p>
+        <span class="foot-end">
+          <span class="hint">Point at a ridge to read the depth</span>
+          {/* Pauses the ridges, the tape and its prices (motion.ts); shown once the script runs. */}
+          <button type="button" class="motion-btn" data-motion-toggle hidden>
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path class="i-pause" d="M3.8 2.6v6.8M8.2 2.6v6.8" /><path class="i-play" d="M3.4 2.2 10 6l-6.6 3.8Z" /></svg>
+            <span data-motion-label>Pause motion</span>
+          </button>
+        </span>
+      </div>
     </section>
     <div class="tape" data-tape>
       <p class="tape-label"><span class="live-dot"></span>Perp mids</p>
-      <div class="tape-view">
+      <div class="tape-view" data-scroll-area="Perp mid prices">
         <div class="tape-track">
           {[0, 1].map((copy) => (
             <ul aria-hidden={copy === 1 ? "true" : undefined}>
@@ -268,6 +275,9 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
 <script>
   import "../scripts/tide.ts";
   import "../scripts/ticker.ts";
+  import { wireMotionButtons } from "../scripts/motion.ts";
+
+  wireMotionButtons();
 
   // The roadmap index: the drawing on the right follows the row in the middle of the screen while
   // scrolling, or the row under the pointer. Instead of swapping at once, the panel eases towards
@@ -397,9 +407,23 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
     background: radial-gradient(closest-side, var(--bg) 50%, transparent);
   }
   .ctas .btn.ghost { background: color-mix(in srgb, var(--bg) 72%, transparent); }
-  .stage-foot { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-block: 0 16px; font: 400 0.75rem/1.5 var(--data); color: var(--muted); }
+  .stage-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px 24px; flex-wrap: wrap; padding-block: 0 16px; font: 400 0.75rem/1.5 var(--data); color: var(--muted); }
   /* The captions sit over the ridges too, so they get the same soft backing as the canvas labels. */
-  .stage-foot > span { padding: 2px 6px; margin: -2px -6px; border-radius: 4px; background: color-mix(in srgb, var(--bg) 82%, transparent); }
+  .cap, .hint { padding: 2px 6px; margin: -2px -6px; border-radius: 4px; background: color-mix(in srgb, var(--bg) 82%, transparent); }
+  .foot-end { display: inline-flex; align-items: center; gap: 18px; margin-left: auto; }
+  .motion-btn {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 11px; border-radius: 8px; cursor: pointer;
+    font: inherit; color: var(--ink-2); background: color-mix(in srgb, var(--bg) 82%, transparent); border: 1px solid var(--rule-strong);
+    transition: border-color 150ms var(--ease), color 150ms var(--ease);
+  }
+  .motion-btn:hover { color: var(--ink); border-color: var(--ink-2); }
+  .motion-btn[hidden] { display: none; }
+  .motion-btn svg { width: 10px; height: 10px; flex: none; }
+  .motion-btn .i-pause { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .motion-btn .i-play { fill: currentColor; display: none; }
+  .motion-btn[data-state="paused"] .i-pause { display: none; }
+  .motion-btn[data-state="paused"] .i-play { display: inline; }
+  :global(:root[data-motion="paused"]) .cap[data-state="live"]::before { background: var(--muted); box-shadow: none; }
   .cap::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 9px; border-radius: 50%; background: var(--muted); vertical-align: 1px; }
   .cap[data-state="live"]::before { background: var(--bid); box-shadow: 0 0 0 3px color-mix(in srgb, var(--bid) 25%, transparent); }
   .cap[data-state="simulated"]::before { background: var(--mvp); }
@@ -410,7 +434,10 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
   .tape-label { flex: none; display: flex; align-items: center; gap: 9px; padding: 0 18px 0 max(20px, env(safe-area-inset-left, 0px)); border-right: 1px solid var(--rule); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
   .tape-label .live-dot { background: var(--bid); box-shadow: 0 0 0 3px color-mix(in srgb, var(--bid) 22%, transparent); }
   .tape-view { flex: 1; min-width: 0; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
-  .tape-track { display: flex; width: max-content; animation: tape 80s linear infinite; }
+  .tape-track { display: flex; width: max-content; }
+  /* It rolls once prices arrive (ticker.ts adds .is-live), so without JavaScript it stands still, and
+     it stops while the reader has paused the motion. */
+  :global(:root:not([data-motion="paused"])) .tape:global(.is-live) .tape-track { animation: tape 80s linear infinite; }
   .tape:hover .tape-track { animation-play-state: paused; }
   .tape ul { display: flex; list-style: none; margin: 0; padding: 0; }
   .tk { display: flex; gap: 10px; padding: 13px 22px; border-right: 1px solid var(--rule); white-space: nowrap; color: var(--muted); }
@@ -420,7 +447,12 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
   @keyframes tick-up { from { color: var(--bid); } }
   @keyframes tick-down { from { color: var(--ask); } }
   @keyframes tape { to { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) { .tape-view { overflow-x: auto; mask-image: none; } }
+  /* With motion reduced, or paused with the stage's button, the tape stands still and scrolls by hand,
+     with one copy of the list instead of the two that make the loop seamless. */
+  @media (prefers-reduced-motion: reduce) { .tape-view { overflow-x: auto; mask-image: none; } .tape ul + ul { display: none; } }
+  :global(:root[data-motion="paused"]) .tape-view { overflow-x: auto; mask-image: none; }
+  :global(:root[data-motion="paused"]) .tape ul + ul { display: none; }
+  :global(:root[data-motion="paused"]) .tape-label .live-dot { background: var(--muted); box-shadow: none; }
 
   /* Section heads */
   .section-head { display: grid; gap: 14px; max-width: 70ch; }
