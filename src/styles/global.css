@@ -177,7 +177,10 @@ img { max-width: 100%; }
 .prose ul, .prose ol { padding-left: 1.3em; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
 .prose li::marker { color: var(--muted); }
 .prose strong { font-weight: 600; color: var(--ink); }
-.prose table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 0.90625rem; line-height: 1.5; display: block; overflow-x: auto; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+/* Each table sits in a box that scrolls sideways when the table is wider than the page; while it does,
+   scroll-areas.ts puts the box in the Tab order so a keyboard can scroll it. */
+.table-scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+.prose table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 0.90625rem; line-height: 1.5; }
 .prose th, .prose td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
 .prose tr:last-child td { border-bottom: 0; }
 .prose th { font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--sunk); }

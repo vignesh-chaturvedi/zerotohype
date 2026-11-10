@@ -330,6 +330,7 @@ const okReply = `{
           We sent the same action with one difference at a time, each signed by a new key, and
           noted whether the exchange still named that key:
         </p>
+        <div class="table-scroll">
         <table>
           <thead><tr><th scope="col">In what you sign</th><th scope="col">L1 action</th><th scope="col">User-signed action</th></tr></thead>
           <tbody>
@@ -339,6 +340,7 @@ const okReply = `{
             <tr><td>Signed for the other network</td><td>Another address</td><td><a href="#mainnet-and-testnet">Its own error</a></td></tr>
           </tbody>
         </table>
+        </div>
         <p>
           For L1 actions, sign exactly what the exchange will rebuild from your JSON: no trailing
           zeros, lower-case addresses, and no optional field set to false.
@@ -390,12 +392,14 @@ const okReply = `{
         <a href={`${API}/info-endpoint#query-order-status-by-oid-or-cloid`}><code>orderStatus</code></a>{" "}
         info request, by <code>oid</code> or <code>cloid</code>:
       </p>
+      <div class="table-scroll">
       <table class="statuses">
         <thead><tr><th scope="col">Status</th><th scope="col">What happened</th></tr></thead>
         <tbody>
           {gone.map(([status, what]) => <tr><td><code set:html={status.replace(/(?=[A-Z])/g, "<wbr>")} /></td><td set:html={inlineMd(what)} /></tr>)}
         </tbody>
       </table>
+      </div>
       <p>
         <code>rejected</code>, and the statuses ending in <code>Rejected</code>, are orders turned
         down when they were placed. They match the order errors above: <code>tickRejected</code> for

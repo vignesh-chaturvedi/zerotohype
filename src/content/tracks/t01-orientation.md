@@ -30,7 +30,7 @@ Most of this roadmap is about HyperCore, because that's where the trading primit
 
 ## The addresses you'll use
 
-| | Mainnet | Testnet |
+| Service | Mainnet | Testnet |
 |---|---|---|
 | HTTP API | `https://api.hyperliquid.xyz` | `https://api.hyperliquid-testnet.xyz` |
 | WebSocket | `wss://api.hyperliquid.xyz/ws` | `wss://api.hyperliquid-testnet.xyz/ws` |
