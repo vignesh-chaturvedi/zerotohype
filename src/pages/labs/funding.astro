@@ -22,6 +22,7 @@ import "../../styles/lab.css";
         <select id="coin"><option value="BTC">BTC</option></select>
       </div>
       <p class="small" id="updated">Loading live data from api.hyperliquid.xyz…</p>
+      <button type="button" class="lab-btn" id="pause">Pause updates</button>
     </section>
 
     <section class="panel" aria-labelledby="prices-title">
@@ -85,6 +86,14 @@ import "../../styles/lab.css";
   const pct = (x: number, digits = 4) => `${(x * 100).toFixed(digits)}%`;
   const num = (x: number) => x.toLocaleString("en-US", { maximumFractionDigits: 6 });
   let latest: { ctx: Ctx; coin: string } | null = null;
+  // The prices refresh every 5 seconds until the reader pauses them (WCAG 2.2.2).
+  let paused = false;
+  let updatedAt = "";
+  const sayUpdated = () => {
+    $("updated").textContent = paused
+      ? `Paused · showing prices from ${updatedAt}`
+      : `Live from api.hyperliquid.xyz · updated ${updatedAt}`;
+  };
 
   async function load() {
     const res = await fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ type: "metaAndAssetCtxs" }) });
@@ -96,7 +105,8 @@ import "../../styles/lab.css";
     const i = meta.universe.findIndex((u) => u.name === select.value);
     latest = { ctx: ctxs[i], coin: select.value };
     render();
-    $("updated").textContent = `Live from api.hyperliquid.xyz · updated ${new Date().toLocaleTimeString()}`;
+    updatedAt = new Date().toLocaleTimeString();
+    sayUpdated();
   }
 
   function render() {
@@ -163,5 +173,12 @@ import "../../styles/lab.css";
   sizeInput.addEventListener("input", render);
   new ResizeObserver(() => render()).observe($("chart"));
   load();
-  setInterval(() => { if (!document.hidden) load().catch(() => ($("updated").textContent = "Couldn't reach api.hyperliquid.xyz; retrying.")); }, 5000);
+  const pause = $("pause") as HTMLButtonElement;
+  pause.addEventListener("click", () => {
+    paused = !paused;
+    pause.textContent = paused ? "Resume updates" : "Pause updates";
+    if (paused) sayUpdated();
+    else load().catch(() => ($("updated").textContent = "Couldn't reach api.hyperliquid.xyz; retrying."));
+  });
+  setInterval(() => { if (!document.hidden && !paused) load().catch(() => ($("updated").textContent = "Couldn't reach api.hyperliquid.xyz; retrying.")); }, 5000);
 </script>

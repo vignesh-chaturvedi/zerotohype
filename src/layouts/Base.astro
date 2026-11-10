@@ -73,6 +73,8 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
         try { saved = localStorage.getItem("theme"); } catch {}
         const light = saved === "light" || saved === "dark" ? saved === "light" : matchMedia("(prefers-color-scheme: light)").matches;
         if (light) document.documentElement.dataset.theme = "light";
+        // Motion the reader paused stays paused (motion.ts).
+        try { if (localStorage.getItem("zth:motion") === "paused") document.documentElement.dataset.motion = "paused"; } catch {}
       })();
     </script>
   </head>

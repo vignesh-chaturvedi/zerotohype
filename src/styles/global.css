@@ -189,6 +189,10 @@ img { max-width: 100%; }
 /* Diagram motion (src/scripts/diagram-motion.ts): dots that travel the lines while a drawing is
    hovered, and a crosshair that follows the pointer on the chart-like drawings. */
 svg[data-kind] .pts { opacity: 0; transition: opacity 260ms var(--ease); pointer-events: none; }
+/* With motion reduced or paused the dots don't travel, so they aren't shown at all. */
+@media (prefers-reduced-motion: reduce) { svg[data-kind] .pts { display: none; } }
+:root[data-motion="paused"] svg[data-kind] .pts { display: none; }
+:root[data-motion="paused"] .cover svg[data-kind].is-live .mid { animation: none; }
 svg[data-kind].is-live .pts { opacity: 1; }
 svg[data-kind] .pt { fill: currentColor; stroke: var(--cv-bg, var(--surface)); stroke-width: 1.2; }
 svg[data-kind] .xh { opacity: 0; transition: opacity 140ms var(--ease); pointer-events: none; }

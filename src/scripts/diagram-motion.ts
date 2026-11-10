@@ -1,6 +1,9 @@
 // Motion for the track drawings and the hero chart. While a drawing is hovered (or, on touch
-// screens, on screen), dots travel along its lines; the chart-like drawings also get a crosshair
-// that follows the pointer and says what it is over. Nothing runs while nothing is hovered.
+// screens, for five seconds once it's on screen), dots travel along its lines; the chart-like drawings
+// also get a crosshair that follows the pointer and says what it is over. Nothing runs while nothing
+// is hovered, and nothing travels while the reader has paused the motion (motion.ts).
+
+import { isPaused, onMotionChange } from "./motion";
 
 const NS = "http://www.w3.org/2000/svg";
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -251,26 +254,38 @@ function setup(svg: SVGSVGElement) {
     raf = requestAnimationFrame(frame);
   }
 
+  // Starts or stops the loop to match: it runs while the drawing is live, unless motion is reduced or paused.
+  function sync() {
+    cancelAnimationFrame(raf);
+    if (live && !reduceMotion && !isPaused()) {
+      start = 0;
+      raf = requestAnimationFrame(frame);
+      return;
+    }
+    for (const c of cells) c.classList.remove("lit");
+    seal?.classList.remove("lit");
+    if (!pointer) { only(oracleDots, "lit", null); only(rungs, "lit", null); }
+    for (const n of near) n.node.classList.remove("lit");
+  }
   function setLive(on: boolean) {
     if (on === live) return;
     live = on;
     svg.classList.toggle("is-live", on);
-    if (reduceMotion) return;
-    if (on) { start = 0; raf = requestAnimationFrame(frame); }
-    else {
-      cancelAnimationFrame(raf);
-      for (const c of cells) c.classList.remove("lit");
-      seal?.classList.remove("lit");
-      if (!pointer) { only(oracleDots, "lit", null); only(rungs, "lit", null); }
-      for (const n of near) n.node.classList.remove("lit");
-    }
+    sync();
   }
+  onMotionChange(sync);
 
   // Drawings inside [data-motion-manual] run only when the page dispatches a "motion" event on them.
   svg.addEventListener("motion", (e) => setLive(Boolean((e as CustomEvent<boolean>).detail)));
   if (svg.closest("[data-motion-manual]")) return;
   if (noHover) {
-    new IntersectionObserver(([entry]) => setLive(entry.isIntersecting), { threshold: 0.6 }).observe(host as Element);
+    // Nothing on a touch screen asks for the motion, so it stops by itself after five seconds.
+    let rest = 0;
+    new IntersectionObserver(([entry]) => {
+      clearTimeout(rest);
+      setLive(entry.isIntersecting);
+      if (entry.isIntersecting) rest = window.setTimeout(() => setLive(false), 5000);
+    }, { threshold: 0.6 }).observe(host as Element);
   } else {
     host.addEventListener("pointerenter", () => setLive(true));
     host.addEventListener("pointerleave", () => setLive(false));

@@ -7,6 +7,7 @@
 // typing; elsewhere it runs on the main thread.
 
 import { subscribe, onConnection, type Book } from "./hl-feed";
+import { isPaused, onMotionChange } from "./motion";
 import type { Msg } from "./tide-scene";
 
 const COIN = "BTC";
@@ -37,7 +38,15 @@ function run(stage: HTMLElement, canvas: HTMLCanvasElement) {
     caption.textContent = text;
     caption.dataset.state = state;
   };
-  const play = () => send({ type: "play", on: visible && !document.hidden });
+  const liveCaption = () => isPaused()
+    ? `Paused: the ${COIN} order book on Hyperliquid, as it stood when the motion was paused.`
+    : `Live: the ${COIN} order book on Hyperliquid, one snapshot per ridge, newest in front.`;
+  // Paused by the reader (motion.ts): the ridges stop where they are and no new ones arrive.
+  const play = () => send({ type: "play", on: visible && !document.hidden && !isPaused() });
+  onMotionChange(() => {
+    play();
+    if (mode === "live") say(liveCaption(), "live");
+  });
 
   // The ridges stay below the intro paragraph, which reaches past the middle of the stage on short
   // phones, and above the caption at the bottom, which wraps to two lines there.
@@ -69,13 +78,13 @@ function run(stage: HTMLElement, canvas: HTMLCanvasElement) {
       mode = "live";
       send({ type: "push", book, fill: true });
       stage.classList.add("has-tide");
-      say(`Live: the ${COIN} order book on Hyperliquid, one snapshot per ridge, newest in front.`, "live");
+      say(liveCaption(), "live");
       if (reduce) stop();
     }
   });
   onConnection((up) => {
     if (!up && mode === "live") say(`Reconnecting to the ${COIN} order book…`, "waiting");
-    if (up && mode === "live") say(`Live: the ${COIN} order book on Hyperliquid, one snapshot per ridge, newest in front.`, "live");
+    if (up && mode === "live") say(liveCaption(), "live");
   });
   setTimeout(() => {
     if (mode !== "waiting") return;
@@ -87,7 +96,7 @@ function run(stage: HTMLElement, canvas: HTMLCanvasElement) {
 
   if (!reduce) {
     setInterval(() => {
-      if (!visible || document.hidden) return;
+      if (!visible || document.hidden || isPaused()) return;
       if (mode === "live" && latest) send({ type: "push", book: latest });
       else if (mode === "simulated") send({ type: "push" });
     }, STEP);

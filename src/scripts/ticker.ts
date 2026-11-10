@@ -1,7 +1,9 @@
 // The price tape under the homepage stage: live mid prices from Hyperliquid's allMids feed.
-// Each price flashes mint when it ticks up and orange when it ticks down.
+// Each price flashes mint when it ticks up and orange when it ticks down. While the reader has paused
+// the motion (motion.ts), the prices hold still too, and catch up when it resumes.
 
 import { subscribe } from "./hl-feed";
+import { isPaused } from "./motion";
 
 const tape = document.querySelector<HTMLElement>("[data-tape]");
 if (tape) {
@@ -19,7 +21,7 @@ if (tape) {
   };
 
   function paint() {
-    if (!pending) return;
+    if (!pending || isPaused()) return;
     const mids = pending;
     pending = null;
     for (const [coin, els] of cells) {
