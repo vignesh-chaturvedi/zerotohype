@@ -37,11 +37,15 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
   <section class="now" aria-labelledby="now-title">
     <h2 id="now-title" class="eyebrow">Right now</h2>
     <div class="counts">
-      <div class="count-head"><span></span><span>Mainnet</span><span>Testnet</span></div>
-      <div><span>Listed perps on the main DEX</span><b>{c.mainnet.perps}</b><b>{c.testnet.perps}</b></div>
-      <div><span>HIP-3 DEXs</span><b>{c.mainnet.dexs}</b><b>{c.testnet.dexs}</b></div>
-      <div><span>HIP-4 venues with live outcomes</span><b>{c.mainnet.venues}</b><b>{c.testnet.venues}</b></div>
-      <div><span>Outcome templates</span><b>{c.mainnet.templates}</b><b>{c.testnet.templates}</b></div>
+      <table>
+        <thead><tr><th scope="col"><span class="visually-hidden">Count</span></th><th scope="col">Mainnet</th><th scope="col">Testnet</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Listed perps on the main DEX</th><td>{c.mainnet.perps}</td><td>{c.testnet.perps}</td></tr>
+          <tr><th scope="row">HIP-3 DEXs</th><td>{c.mainnet.dexs}</td><td>{c.testnet.dexs}</td></tr>
+          <tr><th scope="row">HIP-4 venues with live outcomes</th><td>{c.mainnet.venues}</td><td>{c.testnet.venues}</td></tr>
+          <tr><th scope="row">Outcome templates</th><td>{c.mainnet.templates}</td><td>{c.testnet.templates}</td></tr>
+        </tbody>
+      </table>
     </div>
     <p class="note">The docs have {c.docs.pages} pages outside the FAQ.</p>
   </section>
@@ -121,11 +125,14 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
   .note { font-size: 0.8125rem; color: var(--muted); }
   .now, .log { display: grid; gap: 16px; }
   .counts { max-width: 680px; border: 1px solid var(--rule); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
-  .counts > div { display: grid; grid-template-columns: minmax(0, 1fr) 6rem 6rem; gap: 12px; align-items: baseline; padding: 12px 18px; border-bottom: 1px solid var(--rule); font-size: 0.9375rem; }
-  .counts > div:last-child { border-bottom: 0; }
-  .counts b { font: 500 1.15rem/1 var(--data); letter-spacing: -0.04em; text-align: right; font-variant-numeric: tabular-nums; }
-  .count-head { background: var(--sunk); font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-  .count-head span:not(:first-child) { text-align: right; }
+  .counts table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  .counts :is(th, td) { padding: 12px 0 12px 12px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: baseline; font-weight: 400; }
+  .counts :is(th, td):first-child { padding-left: 18px; }
+  .counts :is(th, td):last-child { padding-right: 18px; }
+  .counts tbody tr:last-child > * { border-bottom: 0; }
+  .counts td, .counts thead th + th { width: 6rem; text-align: right; }
+  .counts td { font: 500 1.15rem/1 var(--data); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+  .counts thead th { background: var(--sunk); font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
   .log h2 { font-size: clamp(1.6rem, 3.4vw, 2.2rem); }
   .empty { color: var(--muted); max-width: 64ch; }
   .day { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 12px 24px; align-items: start; padding-top: 18px; border-top: 1px solid var(--rule); }
@@ -149,6 +156,9 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
     .day { grid-template-columns: minmax(0, 1fr); }
     .day h3 { position: static; display: flex; gap: 10px; align-items: baseline; }
     .day li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
-    .counts > div { grid-template-columns: minmax(0, 1fr) 4.2rem 4.2rem; padding: 11px 14px; }
+    .counts :is(th, td) { padding-block: 11px; }
+    .counts :is(th, td):first-child { padding-left: 14px; }
+    .counts :is(th, td):last-child { padding-right: 14px; }
+    .counts td, .counts thead th + th { width: 4.2rem; }
   }
 </style>

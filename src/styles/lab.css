@@ -54,7 +54,7 @@
   width: 2.2rem; height: 1.7rem; display: grid; place-items: center; border: 1px solid var(--rule-strong); border-radius: 8px;
 }
 .steps-out .label { font-weight: 600; }
-.steps-out output, .steps-out pre { display: block; min-width: 0; }
+.steps-out .value { display: block; min-width: 0; }
 .value { font-family: var(--data); font-size: 0.78125rem; background: var(--sunk); border-radius: 10px; padding: 10px 12px; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink-2); }
 .verdict { padding: 16px 18px; border-radius: 14px; font-size: 0.9375rem; border: 1px solid var(--rule); background: var(--surface); }
 .verdict.good { border-color: color-mix(in srgb, var(--ok) 50%, var(--rule)); background: color-mix(in srgb, var(--ok) 10%, var(--surface)); }

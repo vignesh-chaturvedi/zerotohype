@@ -42,7 +42,13 @@ import "../../styles/lab.css";
         <h2 id="chart-title">Prices in the window</h2>
         <button type="button" class="lab-btn" id="replay">Replay the window <span aria-hidden="true">↻</span></button>
       </div>
-      <div class="chart" id="chart" role="img" aria-label="Recorded prices across the settlement window, with the threshold as a dashed line and the running averages as lines"></div>
+      {/* The chart is also a slider over the window's time, so the readout under the pointer can be read with the arrow keys. */}
+      <div class="chart" id="chart" tabindex="0" role="slider" aria-label="Moment in the window" aria-describedby="chart-about chart-note" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+      <p class="visually-hidden" id="chart-about">
+        A chart of the recorded prices across the settlement window, with the threshold as a dashed line and the
+        running averages as lines. Use the arrow keys to move through the window and hear the price and the
+        averages at each moment.
+      </p>
       <p class="legend" id="legend"></p>
       <p class="small" id="chart-note">–</p>
     </section>
@@ -155,6 +161,7 @@ import "../../styles/lab.css";
         return `<tr><td>${name}</td><td class="n">${fmt(v)}</td><td class="n">${bp >= 0 ? "+" : ""}${bp.toFixed(2)} bp</td><td>${yes ? "Yes" : "No"}</td><td class="${match ? "yes-match" : "no-match"}">${match ? "Yes" : "No"}</td></tr>`;
       })
       .join("");
+    if (m !== current) cursor = null;
     current = m;
     drawChart(m, length, threshold, animate);
     const n = m.samples.filter((s) => s[0] >= 0 && s[0] < length).length;
@@ -168,6 +175,10 @@ import "../../styles/lab.css";
   let replayRaf = 0;
   let drawnWidth = 0;
   let current: Market | null = null;
+  /** Reading the chart from the keyboard (set by drawChart): the readout at a time, in ms from the window opening. */
+  let reader: { read: (t: number) => string; say: (t: number) => string; hide: () => void; from: number; to: number } | null = null;
+  /** Where the keyboard has moved the readout to, or null before it has. */
+  let cursor: number | null = null;
 
   /** Running averages across the window, evaluated on a grid of times. */
   function runningAverages(m: Market, length: number) {
@@ -292,31 +303,53 @@ import "../../styles/lab.css";
       return Math.abs(pts[lo2][0] - t) <= Math.abs(pts[hi2][0] - t) ? pts[lo2] : pts[hi2];
     };
     const money = (v: number) => v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    svgEl.addEventListener("pointermove", (ev) => {
-      const ctm = svgEl.getScreenCTM();
-      if (!ctm || !pts.length) return;
-      const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(ctm.inverse());
-      const px = Math.min(W - pad.r, Math.max(pad.l, p.x));
-      const t = tAt(px);
-      const s = nearest(t);
-      hxLine.setAttribute("x1", String(px)); hxLine.setAttribute("x2", String(px));
-      ring.setAttribute("cx", String(x(s[0]))); ring.setAttribute("cy", String(y(s[1])));
+    // What the readout says at time t: what was traded (or the mark) then, and each running average so far.
+    const linesAt = (t: number, s: Sample) => {
       const gi = Math.max(0, Math.min(240, Math.round((t / length) * 240)));
       const lines: [string, string][] = [[t < 0 ? `${(-t / 1000).toFixed(1)} s before the window` : `${(t / 1000).toFixed(1)} s into the window`, "dim"]];
       lines.push([m.kind === "Trade" ? `trade ${money(s[1])} × ${s[2]} ${m.coin}` : m.kind === "Mark" ? `mark ${money(s[1])}` : `close ${money(s[1])}`, ""]);
       if (t >= 0 && run.twap[gi] != null) lines.push([`${m.kind === "Candle1m" ? "mean" : "time-weighted"} so far ${money(run.twap[gi]!)}`, ""]);
       if (t >= 0 && m.kind === "Trade" && run.other[gi] != null) lines.push([`volume-weighted so far ${money(run.other[gi]!)}`, ""]);
+      return lines;
+    };
+    const spoken = (lines: [string, string][]) => lines.map(([l]) => l).join(", ");
+    /** Draws the readout at x position px (and, from the pointer, near height py), and returns what it says. */
+    const readAt = (px: number, py?: number) => {
+      px = Math.min(W - pad.r, Math.max(pad.l, px));
+      const t = tAt(px);
+      const s = nearest(t);
+      hxLine.setAttribute("x1", String(px)); hxLine.setAttribute("x2", String(px));
+      ring.setAttribute("cx", String(x(s[0]))); ring.setAttribute("cy", String(y(s[1])));
+      const lines = linesAt(t, s);
       text.innerHTML = lines.map(([l, c], i) => `<tspan x="0" dy="${i ? 15 : 0}" class="${c}">${l}</tspan>`).join("");
       const b = text.getBBox();
       const left = px > W * 0.6;
       const bx = left ? px - b.width - 22 : px + 12;
-      const by = Math.max(pad.t + 4, Math.min(H - pad.b - b.height - 14, p.y - b.height / 2));
+      const by = Math.max(pad.t + 4, Math.min(H - pad.b - b.height - 14, (py ?? y(s[1])) - b.height / 2));
       text.setAttribute("transform", `translate(${bx + 8} ${by + 15})`);
       box.setAttribute("x", String(bx)); box.setAttribute("y", String(by));
       box.setAttribute("width", String(b.width + 16)); box.setAttribute("height", String(b.height + 12));
       svgEl.classList.add("hovering");
+      return spoken(lines);
+    };
+    svgEl.addEventListener("pointermove", (ev) => {
+      const ctm = svgEl.getScreenCTM();
+      if (!ctm || !pts.length) return;
+      const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(ctm.inverse());
+      readAt(p.x, p.y);
     });
-    svgEl.addEventListener("pointerleave", () => svgEl.classList.remove("hovering"));
+    // Leaving with the pointer hides the readout, unless the keyboard is using it.
+    svgEl.addEventListener("pointerleave", () => { if (!host.matches(":focus-visible")) svgEl.classList.remove("hovering"); });
+
+    reader = pts.length
+      ? { read: (t) => readAt(x(t)), say: (t) => spoken(linesAt(t, nearest(t))), hide: () => svgEl.classList.remove("hovering"), from: x0, to: length }
+      : null;
+    host.setAttribute("aria-valuemin", (x0 / 1000).toFixed(1));
+    host.setAttribute("aria-valuemax", (length / 1000).toFixed(1));
+    const at = cursor ?? 0;
+    host.setAttribute("aria-valuenow", (at / 1000).toFixed(1));
+    if (reader) host.setAttribute("aria-valuetext", reader.say(at));
+    if (reader && cursor !== null && host.matches(":focus-visible")) reader.read(cursor);
   }
 
   async function init() {
@@ -328,6 +361,33 @@ import "../../styles/lab.css";
       .join("");
     show(markets[0]);
   }
+  // The arrow keys move the readout through the window, a hundredth of it at a time; Page Up and Page
+  // Down a tenth; Home and End to either end. A screen reader hears the readout as the slider's value.
+  const chartEl = $("chart");
+  const readCursor = () => {
+    if (!reader || cursor === null) return;
+    chartEl.setAttribute("aria-valuenow", (cursor / 1000).toFixed(1));
+    chartEl.setAttribute("aria-valuetext", reader.read(cursor));
+  };
+  chartEl.addEventListener("keydown", (e) => {
+    if (!reader) return;
+    const steps: Record<string, number> = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1, PageUp: 10, PageDown: -10 };
+    let t = cursor ?? 0;
+    if (e.key === "Home") t = reader.from;
+    else if (e.key === "End") t = reader.to;
+    else if (e.key in steps) t += (steps[e.key] * (reader.to - reader.from)) / 100;
+    else return;
+    e.preventDefault();
+    cursor = Math.min(reader.to, Math.max(reader.from, t));
+    readCursor();
+  });
+  chartEl.addEventListener("focus", () => {
+    if (!chartEl.matches(":focus-visible")) return; // a click: the pointer shows the readout
+    cursor ??= 0;
+    readCursor();
+  });
+  chartEl.addEventListener("blur", () => reader?.hide());
+
   select.addEventListener("change", () => show(markets.find((m) => String(m.outcome) === select.value)!));
   new ResizeObserver(() => { if (current && $("chart").clientWidth !== drawnWidth) show(current, false); }).observe($("chart"));
   $("replay").addEventListener("click", () => { if (current) show(current, true); });
