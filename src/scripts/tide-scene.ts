@@ -12,8 +12,9 @@ const FOCAL = 7; // perspective: bigger is flatter
 
 export type Colors = { bg: string; bid: string; ask: string; ink: string };
 export type Msg =
-  // ceiling: where the text above ends; floor: space kept clear at the bottom (both in px)
-  | { type: "size"; w: number; h: number; dpr: number; ceiling: number; floor: number }
+  // ceiling: where the text above ends; floor: space kept clear at the bottom (both in px);
+  // cover: how much of the width the text above spans (0 to 1)
+  | { type: "size"; w: number; h: number; dpr: number; ceiling: number; floor: number; cover?: number }
   | { type: "colors"; colors: Colors; mono: string }
   | { type: "push"; book?: Book; fill?: boolean } // a new ridge at the front; without a book, a simulated one
   | { type: "pointer"; at: { x: number; y: number } | null }
@@ -43,7 +44,7 @@ export function createScene(canvas: HTMLCanvasElement | OffscreenCanvas, reduce:
   let depthRef = 0;
   let pushedAt = 0;
   let pointer: { x: number; y: number } | null = null;
-  let w = 0, h = 0, dpr = 1, ceiling = 0, floor = 0;
+  let w = 0, h = 0, dpr = 1, ceiling = 0, floor = 0, cover = 0;
   let running = false;
   let frameId = 0;
   let dirty = true; // set when something besides the slide changes the picture
@@ -120,9 +121,16 @@ export function createScene(canvas: HTMLCanvasElement | OffscreenCanvas, reduce:
   // Screen geometry of a ridge at depth `d` (0 = front).
   const geo = (d: number) => {
     const s = FOCAL / (FOCAL + d);
-    const horizon = Math.max(h * 0.52, Math.min(ceiling, h * 0.7));
-    const front = Math.max(horizon + 40, Math.min(h * 0.95, h - floor - 6));
-    return { s, base: horizon + (front - horizon) * s, half: w * 0.72 * s, amp: h * 0.42 * s };
+    // The far ridges start below the text above (the stage keeps room for them), and the front one sits
+    // above the caption.
+    const bottom = Math.min(h * 0.95, h - floor - 6);
+    const horizon = Math.max(h * 0.52, Math.min(ceiling, bottom - 60));
+    const front = Math.max(horizon + 40, bottom);
+    // Where the text above spans most of the width (on phones, or with large text), the peaks and the
+    // labels on them stay below it, however little room the caption leaves. A peak reaches 1.25 × amp
+    // above its base, and a label sits 22px above its peak.
+    const room = cover > 0.75 && ceiling > 0 ? Math.max(0, front - ceiling - 24) / 1.25 : Infinity;
+    return { s, base: horizon + (front - horizon) * s, half: w * 0.72 * s, amp: Math.min(h * 0.42, room) * s };
   };
   const height = (v: number) => Math.min(1.25, Math.sqrt(v / (depthRef || 1)));
 
@@ -263,6 +271,7 @@ export function createScene(canvas: HTMLCanvasElement | OffscreenCanvas, reduce:
         h = msg.h;
         ceiling = msg.ceiling || 0;
         floor = msg.floor || 0;
+        cover = msg.cover || 0;
         dpr = Math.min(msg.dpr || 1, 2);
         canvas.width = Math.round(w * dpr);
         canvas.height = Math.round(h * dpr);
