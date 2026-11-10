@@ -29,7 +29,8 @@ const merged = (r: string) => `${gh}/${r}/pulls?q=is%3Apr+is%3Amerged+author%3Av
     <ul>
       <li>
         <strong>Every lesson shows the date</strong> its facts were last checked against the live
-        API. The dot beside it turns from green to amber after 14 days, and to red after 30.
+        API. The dot beside it turns from green to amber after 14 days, and to red after 30. New and
+        re-checked lessons also arrive in <a href="/tracks/rss.xml">a feed of their own</a>.
       </li>
       <li>
         <strong>A bot watches the API and the docs.</strong> Every 6 hours it compares mainnet,
@@ -65,6 +66,13 @@ const merged = (r: string) => `${gh}/${r}/pulls?q=is%3Apr+is%3Amerged+author%3Av
       Elsewhere, there's merged work in <a href={merged("anza-xyz/agave")}>Agave</a>, the Solana
       validator, in <a href={merged("rust-lang/libc")}>rust-lang/libc</a>, and in{" "}
       <a href={merged("obi1kenobi/cargo-semver-checks")}>cargo-semver-checks</a>.
+    </p>
+
+    <h2>With an assistant</h2>
+    <p>
+      Every track has a Markdown version, which its Copy as Markdown button copies, and{" "}
+      <a href="/llms.txt">/llms.txt</a> lists them all for tools that read it. Paste a lesson into an
+      assistant along with your question, and it has the checked facts in front of it.
     </p>
 
     <h2>Corrections</h2>

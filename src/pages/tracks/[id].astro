@@ -40,7 +40,7 @@ const list = (xs: string[]) => (xs.length < 2 ? xs.join("") : `${xs.slice(0, -1)
 const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" })))].reverse());
 ---
 
-<Base title={t.seoTitle ?? name} heading={t.title} description={t.summary} trail={[[name, path]]} data={data} modified={lesson ? t.verified : undefined}>
+<Base title={t.seoTitle ?? name} heading={t.title} description={t.summary} trail={[[name, path]]} data={data} modified={lesson ? t.verified : undefined} markdown={`/tracks/${track.id}.md`}>
   <div class="layout" style={`--c: ${lookOf(t.code).color}`}>
     <nav class="side" aria-label="Roadmap">
       <p class="eyebrow">The roadmap</p>
@@ -90,12 +90,17 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
               <span class="live-dot" />Checked against the live API · <b><time datetime={t.verified.toISOString().slice(0, 10)}>{verified}</time></b><span class="ago" data-ago />
             </span>
           ) : null}
+        </p>
+        {/* What the reader can do with the page, on a row of their own. */}
+        <div class="page-actions" data-pagefind-ignore>
           {/* One name for both states; aria-pressed says whether it's done, while the visible label changes to "Done". */}
           <button class="done-btn" type="button" data-done-toggle={track.id} aria-pressed="false" aria-label="Mark as done" data-pagefind-ignore>
             <span class="tick"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.6 6.3 5 8.6 9.6 3.6" /></svg></span>
             <span class="done-label">Mark as done</span>
           </button>
-        </p>
+          {/* Copies the Markdown version below (/tracks/<id>.md), for an assistant; shown where the browser can copy. */}
+          <button class="md-btn" type="button" data-copy-md={`/tracks/${track.id}.md`} aria-live="polite" hidden data-pagefind-ignore>Copy as Markdown</button>
+        </div>
         {changed.length > 0 && (
           <p class="source-note" data-pagefind-ignore>
             Since this was checked, the docs changed {changed.length === 1 ? "a page" : `${changed.length} pages`} it relies on:{" "}
@@ -188,6 +193,7 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
 
 <script>
   import "../../scripts/code-blocks.ts";
+  import "../../scripts/copy-markdown.ts";
 </script>
 
 <style>
@@ -229,7 +235,14 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
 
   .head { display: grid; gap: 14px; }
   .head h1 { font-size: clamp(2.4rem, 5.6vw, 4.2rem); font-weight: 600; letter-spacing: -0.055em; line-height: 0.98; }
-  .status { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .status, .page-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .md-btn {
+    display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 8px; cursor: pointer;
+    font: 600 0.875rem/1 var(--body); color: var(--ink-2); background: transparent; border: 1px solid var(--rule-strong);
+    transition: border-color 150ms var(--ease), color 150ms var(--ease);
+  }
+  .md-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .md-btn[hidden] { display: none; }
 
   .reading { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
   .reading section { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
