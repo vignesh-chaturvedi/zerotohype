@@ -8,13 +8,13 @@ const AUTHOR_ID = `${SITE}/about/#author`;
 
 export type Node = Record<string, unknown>;
 
-/** The person behind the site. The About page says who they are; GitHub is where their work is. */
+/** The person behind the site. The About page says who they are; GitHub and X are where else they are. */
 export const author: Node = {
   "@type": "Person",
   "@id": AUTHOR_ID,
   name: "Vignesh Chaturvedi",
   url: `${SITE}/about/`,
-  sameAs: ["https://github.com/vignesh-chaturvedi"],
+  sameAs: ["https://github.com/vignesh-chaturvedi", "https://x.com/vitwts"],
 };
 
 export const website: Node = {
