@@ -3,6 +3,7 @@ order: 7
 stage: Deploying markets
 code: T7
 title: Running a perp DEX
+seoTitle: "Run a HIP-3 perp DEX on Hyperliquid"
 summary: What a HIP-3 deployer must do around the clock, how sub-deployer keys work, and how real DEXs price assets when markets are closed.
 depth: lesson
 verified: 2026-10-22

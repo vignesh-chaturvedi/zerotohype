@@ -3,6 +3,7 @@ order: 3
 stage: Foundations
 code: T3
 title: Signing and sending
+seoTitle: "Signing Hyperliquid actions: both schemes and common errors"
 summary: Where most bots break. Two signing schemes, and a handful of encoding traps that make the exchange recover the wrong address.
 depth: lesson
 verified: 2026-10-22

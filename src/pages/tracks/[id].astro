@@ -5,6 +5,7 @@ import TrackCover from "../../components/TrackCover.astro";
 import { lookOf } from "../../lib/track-look";
 import { freshness } from "../../lib/freshness";
 import { editedSince } from "../../lib/source-changes";
+import { page } from "../../lib/structured-data";
 
 export async function getStaticPaths() {
   const tracks = (await getCollection("tracks")).sort((a, b) => a.data.order - b.data.order);
@@ -29,11 +30,17 @@ const tryNext = t.build.filter((b) => b.status === "live" && b.href);
 const editUrl = `https://github.com/vignesh-chaturvedi/zerotohype/edit/main/src/content/tracks/${track.id}.md`;
 // Cited docs pages that the changelog bot saw edited after the lesson was checked.
 const changed = t.verified ? editedSince(t.docs, t.verified) : [];
+// What search engines are told: a lesson is an article modified when its facts were last checked;
+// a reading list is a collection of links.
+const name = `${t.code} ${t.title}`;
+const path = `/tracks/${track.id}/`;
+const lesson = t.depth === "lesson";
+const data = [page(lesson ? "TechArticle" : "CollectionPage", path, { name, headline: t.seoTitle ?? name, description: t.summary, modified: t.verified, section: lesson ? t.stage : undefined })];
 const list = (xs: string[]) => (xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}`);
 const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" })))].reverse());
 ---
 
-<Base title={`${t.code} ${t.title}`} description={t.summary}>
+<Base title={t.seoTitle ?? name} heading={t.title} description={t.summary} trail={[[name, path]]} data={data} modified={lesson ? t.verified : undefined}>
   <div class="layout" style={`--c: ${lookOf(t.code).color}`}>
     <nav class="side" aria-label="Roadmap">
       <p class="eyebrow">The roadmap</p>

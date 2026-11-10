@@ -3,6 +3,7 @@ order: 6
 stage: Deploying markets
 code: T6
 title: Launching assets
+seoTitle: "Launch a token on Hyperliquid: HIP-1 and HIP-2"
 summary: Native spot tokens (HIP-1), the Hyperliquidity strategy that gives them a market (HIP-2), and spot quote assets.
 depth: links
 docs:

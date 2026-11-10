@@ -3,6 +3,7 @@ order: 2
 stage: Foundations
 code: T2
 title: Reading the exchange
+seoTitle: "Reading Hyperliquid market data: info API and WebSocket"
 summary: Every number a bot or dashboard needs, from the info endpoint and WebSocket feeds, with the rules for asset IDs, decimals and rate limits.
 depth: lesson
 verified: 2026-10-22

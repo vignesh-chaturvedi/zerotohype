@@ -4,6 +4,7 @@ import entries from "../data/changelog.json";
 import meta from "../data/changelog-meta.json";
 import { freshness } from "../lib/freshness";
 import { entryId, inlineHtml as inline, type Entry } from "../lib/changelog";
+import { page } from "../lib/structured-data";
 
 const day = (iso: string) =>
   new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
@@ -15,10 +16,12 @@ for (const e of entries as Entry[]) {
 const since = day(meta.trackingSince);
 const lastRun = new Date(meta.lastRun).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" });
 const c = meta.counts;
+const description = "What changed in Hyperliquid's API, detected automatically from mainnet, testnet and the docs.";
+const data = [page("WebPage", "/changelog/", { name: "Hyperliquid API changelog", description, modified: new Date(meta.lastRun) })];
 const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"], ["docs", "Docs"]] as const;
 ---
 
-<Base title="Changelog" description="What changed in Hyperliquid's API, detected automatically from mainnet, testnet and the docs.">
+<Base title="Hyperliquid API changelog" heading="What changed in Hyperliquid." trail={[["API changelog", "/changelog/"]]} data={data} description={description}>
   <div style="display: contents" data-pagefind-body data-pagefind-meta="kind:Changelog">
   <header class="page-head">
     <p class="eyebrow">API changelog</p>

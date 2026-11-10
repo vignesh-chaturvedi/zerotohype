@@ -3,6 +3,7 @@ order: 5
 stage: Trading
 code: T5
 title: Building on order flow
+seoTitle: "Hyperliquid builder codes and referrals for apps"
 summary: How a third-party app earns from and manages trading. Builder codes, referrals, sub-accounts, vaults and multi-sig.
 depth: lesson
 verified: 2026-11-09

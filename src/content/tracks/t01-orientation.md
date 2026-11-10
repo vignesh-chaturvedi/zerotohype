@@ -3,6 +3,7 @@ order: 1
 stage: Foundations
 code: T1
 title: Orientation
+seoTitle: "Hyperliquid API basics: testnet, API wallets and nonces"
 summary: What Hyperliquid is to a developer. Two execution layers share one state, the testnet has a faucet, and API keys can trade but never withdraw.
 depth: lesson
 verified: 2026-10-22

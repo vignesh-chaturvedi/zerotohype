@@ -3,6 +3,7 @@ order: 10
 stage: Contracts and infra
 code: T10
 title: Infra and data
+seoTitle: "Hyperliquid nodes, L1 data and the explorer API"
 summary: Running a node, reading raw L1 data, and the explorer API that shows each address's transactions and errors.
 depth: links
 docs:
