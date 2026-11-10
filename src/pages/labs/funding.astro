@@ -77,6 +77,7 @@ import "../../styles/lab.css";
 
 <script>
   import { CLAMP_8H, INTEREST_8H, hourlyFunding, impliedAvgPremium, premium } from "../../lib/funding";
+  import "../../scripts/lab-bar.ts";
 
   type Ctx = { oraclePx: string; markPx: string; midPx: string | null; impactPxs: [string, string] | null; premium: string | null; funding: string };
   const API = "https://api.hyperliquid.xyz/info";

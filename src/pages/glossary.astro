@@ -73,13 +73,13 @@ for (const t of sorted) {
   .letters a:hover { border-color: var(--accent); color: var(--accent); }
 
   .group { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 0 20px; align-items: start; }
-  .letter { position: sticky; top: calc(var(--head-h) + 16px); margin: 0; font: 400 2.4rem/1 var(--data); color: var(--accent); scroll-margin-top: calc(var(--head-h) + 16px); }
+  .letter { position: sticky; top: calc(var(--head-h) + 16px); margin: 0; font: 400 2.4rem/1 var(--data); color: var(--accent); scroll-margin-top: 8px; }
   .terms { display: grid; }
 
   /* One row per term: the name on the left, what it means on the right */
   /* Each term has a rule above it, so the gap between two letters has one line, not two. */
   .term { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: 6px 24px; padding: 16px 0; border-top: 1px solid var(--rule); }
-  .term h3 { margin: 0; font: 600 1.0625rem/1.35 var(--display); letter-spacing: -0.01em; overflow-wrap: anywhere; scroll-margin-top: calc(var(--head-h) + 20px); }
+  .term h3 { margin: 0; font: 600 1.0625rem/1.35 var(--display); letter-spacing: -0.01em; overflow-wrap: anywhere; scroll-margin-top: 12px; }
   .term h3:target { color: var(--accent); }
   .term:has(h3:target) { background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%); }
   .aka { margin: 4px 0 0; font: 400 0.8125rem/1.45 var(--body); color: var(--muted); }
