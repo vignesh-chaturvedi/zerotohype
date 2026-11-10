@@ -129,10 +129,11 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
     <dialog id="search" class="search" aria-label="Search the site">
       <form method="dialog" class="search-bar" role="search" onsubmit="return false">
         <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6" /><path d="m13 13 4.2 4.2" /></svg>
-        <input type="search" placeholder="Search tracks, labs and the changelog" autocomplete="off" spellcheck="false" aria-label="Search" aria-controls="search-results" />
-        <button type="button" class="esc" onclick="this.closest('dialog').close()">Esc</button>
+        <input type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-results" placeholder="Search tracks, labs and the changelog" autocomplete="off" spellcheck="false" aria-label="Search" />
+        <button type="button" class="esc" aria-label="Close search (Esc)" onclick="this.closest('dialog').close()">Esc</button>
       </form>
-      <div id="search-results" class="search-results" role="listbox" aria-label="Results"></div>
+      <div id="search-results" class="search-results"></div>
+      <p class="visually-hidden" role="status" id="search-status"></p>
       <p class="search-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move <kbd>↵</kbd> open</span><span>Runs in your browser</span></p>
     </dialog>
     <footer class="site-foot">

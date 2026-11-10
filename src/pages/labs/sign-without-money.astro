@@ -44,16 +44,17 @@ const bugs = [
       <button class="run" id="run" type="button">Sign and send to testnet</button>
     </section>
 
-    <section class="panel result" aria-labelledby="out-title" aria-live="polite">
+    {/* Only the verdict is announced when a run finishes; the steps above it are long hex, there to read at leisure. */}
+    <section class="panel result" aria-labelledby="out-title">
       <h2 id="out-title">What happened</h2>
       <ol class="steps-out">
-        <li><span class="label">A throwaway key</span><output class="value" id="out-key">Generated when you press the button.</output></li>
-        <li><span class="label">The action</span><output class="value" id="out-action">{JSON.stringify({ type: "cancel", cancels: [{ a: 0, o: 1 }] })}</output></li>
-        <li><span class="label">Bytes hashed: msgpack of the action, the nonce, then 00 for "no vault"</span><output class="value" id="out-packed">–</output></li>
-        <li><span class="label">keccak-256 of those bytes, signed as an EIP-712 Agent message</span><output class="value" id="out-sig">–</output></li>
-        <li><span class="label">The exchange's reply</span><output class="value" id="out-reply">–</output></li>
+        <li><span class="label">A throwaway key</span><div class="value" id="out-key">Generated when you press the button.</div></li>
+        <li><span class="label">The action</span><div class="value" id="out-action">{JSON.stringify({ type: "cancel", cancels: [{ a: 0, o: 1 }] })}</div></li>
+        <li><span class="label">Bytes hashed: msgpack of the action, the nonce, then 00 for "no vault"</span><div class="value" id="out-packed">–</div></li>
+        <li><span class="label">keccak-256 of those bytes, signed as an EIP-712 Agent message</span><div class="value" id="out-sig">–</div></li>
+        <li><span class="label">The exchange's reply</span><div class="value" id="out-reply">–</div></li>
       </ol>
-      <div class="verdict" id="verdict"><strong>Not run yet</strong>Press the button to sign and send.</div>
+      <div class="verdict" id="verdict" role="status"><strong>Not run yet</strong>Press the button to sign and send.</div>
     </section>
     </div>
 

@@ -119,7 +119,7 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
       </div>
     </div>
 
-    <div class="paths" aria-labelledby="paths-title">
+    <div class="paths">
       <h3 id="paths-title" class="eyebrow">Shorter routes, by what you're building</h3>
       <ul>
         {paths.map((p) => (
@@ -245,10 +245,10 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
     </div>
     <div class="feed">
       <div class="feed-counts">
-        <span><b>{c.mainnet.perps}</b>perps</span>
-        <span><b>{c.mainnet.dexs}</b>HIP-3 DEXs</span>
-        <span><b>{c.mainnet.venues}</b>HIP-4 venues</span>
-        <span><b>{c.docs.pages}</b>docs pages</span>
+        <span><b>{c.mainnet.perps}</b> perps</span>
+        <span><b>{c.mainnet.dexs}</b> HIP-3 DEXs</span>
+        <span><b>{c.mainnet.venues}</b> HIP-4 venues</span>
+        <span><b>{c.docs.pages}</b> docs pages</span>
       </div>
       <ul class="feed-list">
         {latest.map((e) => (

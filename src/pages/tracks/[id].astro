@@ -83,7 +83,8 @@ const editDays = list([...new Set(changed.map((c) => new Date(c.time).toLocaleDa
               <span class="live-dot" />Checked against the live API · <b><time datetime={t.verified.toISOString().slice(0, 10)}>{verified}</time></b><span class="ago" data-ago />
             </span>
           ) : null}
-          <button class="done-btn" type="button" data-done-toggle={track.id} aria-pressed="false" data-pagefind-ignore>
+          {/* One name for both states; aria-pressed says whether it's done, while the visible label changes to "Done". */}
+          <button class="done-btn" type="button" data-done-toggle={track.id} aria-pressed="false" aria-label="Mark as done" data-pagefind-ignore>
             <span class="tick"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.6 6.3 5 8.6 9.6 3.6" /></svg></span>
             <span class="done-label">Mark as done</span>
           </button>

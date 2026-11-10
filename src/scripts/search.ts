@@ -1,5 +1,7 @@
 // Site search: a dialog opened with ⌘K, Ctrl+K or "/", backed by the Pagefind index that the build
 // writes to /pagefind/. The index loads on first open, and every search runs in the browser.
+// The input is a combobox: the arrow keys move through the results while typing goes on, and a
+// screen reader hears the highlighted result and, after each search, how many there are.
 
 type SubResult = { title: string; url: string; excerpt: string; weighted_locations?: { balanced_score: number }[] };
 type Data = { url: string; excerpt: string; meta: { title?: string; kind?: string }; sub_results?: SubResult[] };
@@ -11,6 +13,7 @@ type Pagefind = {
 const dialog = document.querySelector<HTMLDialogElement>("#search");
 const input = dialog?.querySelector<HTMLInputElement>("input");
 const list = dialog?.querySelector<HTMLElement>("#search-results");
+const statusLine = dialog?.querySelector<HTMLElement>("#search-status");
 const suggestions = ["builder fee", "setOracle", "nonce", "funding", "HIP-3", "CoreWriter", "TWAP"];
 
 let pagefind: Promise<Pagefind | null> | null = null;
@@ -41,11 +44,36 @@ function setActive(i: number) {
   all[active].scrollIntoView({ block: "nearest" });
 }
 
+/** The results area is a listbox only while it holds results; a note or the suggestions are plain text and buttons. */
+function asList(on: boolean) {
+  if (!list || !input) return;
+  if (on) {
+    list.setAttribute("role", "listbox");
+    list.setAttribute("aria-label", "Results");
+  } else {
+    list.removeAttribute("role");
+    list.removeAttribute("aria-label");
+    input.removeAttribute("aria-activedescendant");
+    active = -1;
+  }
+  input.setAttribute("aria-expanded", String(on));
+}
+
+const announce = (text: string) => { if (statusLine) statusLine.textContent = text; };
+
+/** Shows a note instead of results, and says it. */
+function note(html: string, said: string) {
+  if (!list) return;
+  asList(false);
+  list.innerHTML = `<p class="search-note">${html}</p>`;
+  announce(said);
+}
+
 function showSuggestions() {
   if (!list) return;
-  active = -1;
-  input?.removeAttribute("aria-activedescendant");
+  asList(false);
   list.innerHTML = `<p class="search-note">Try ${suggestions.map((s) => `<button type="button" class="chip" data-q="${s}">${s}</button>`).join(" ")}</p>`;
+  announce("");
 }
 
 const clean = (s = "") => s.replace(/<(?!\/?mark>)[^>]*>/g, "");
@@ -66,7 +94,7 @@ async function run(q: string) {
   if (!q.trim()) return showSuggestions();
   const pf = await load();
   if (!pf) {
-    list.innerHTML = `<p class="search-note">Search isn't available here. It's built with the site, so it only works on a production build.</p>`;
+    note("Search isn't available here. It's built with the site, so it only works on a production build.", "Search isn't available here.");
     return;
   }
   const res = await pf.debouncedSearch(q, {}, 120);
@@ -74,26 +102,30 @@ async function run(q: string) {
   const data = await Promise.all(res.results.slice(0, 8).map((r) => r.data()));
   if (input && input.value !== q) return;
   if (!data.length) {
-    list.innerHTML = `<p class="search-note">Nothing matches “${q.replace(/[<>&"]/g, "")}”. Try a shorter word, or an API name like <code>l2Book</code>.</p>`;
+    const shown = q.replace(/[<>&"]/g, "");
+    note(`Nothing matches “${shown}”. Try a shorter word, or an API name like <code>l2Book</code>.`, `No results for ${shown}.`);
     return;
   }
   let n = 0;
+  asList(true);
+  // Options stay out of the Tab order: the arrow keys reach them from the input.
   list.innerHTML = data
     .map((d) => {
       const subs = bestSections(d);
-      return `<div class="hit-group">
-        <a role="option" id="hit-${n++}" class="hit" href="${d.url}">
+      return `<div class="hit-group" role="none">
+        <a role="option" id="hit-${n++}" class="hit" href="${d.url}" tabindex="-1">
           <span class="hit-kind">${clean(d.meta.kind ?? "Page")}</span>
           <span class="hit-title">${clean(d.meta.title ?? d.url)}</span>
           <span class="hit-excerpt">${clean(d.excerpt)}</span>
         </a>
         ${subs
-          .map((s) => `<a role="option" id="hit-${n++}" class="hit sub" href="${s.url}"><span class="hit-title"># ${clean(s.title)}</span><span class="hit-excerpt">${clean(s.excerpt)}</span></a>`)
+          .map((s) => `<a role="option" id="hit-${n++}" class="hit sub" href="${s.url}" tabindex="-1"><span class="hit-title"># ${clean(s.title)}</span><span class="hit-excerpt">${clean(s.excerpt)}</span></a>`)
           .join("")}
       </div>`;
     })
     .join("");
   setActive(0);
+  announce(data.length === 1 ? "1 result." : `${data.length} results.`);
 }
 
 function open() {
