@@ -1,0 +1,391 @@
+---
+import Base from "../../layouts/Base.astro";
+import "../../styles/lab.css";
+---
+
+<Base title="Hyperliquid liquidation price calculator, checked against the API" heading="Margin and liquidation price" trail={[["Labs", "/labs/"], ["Margin and liquidation price", "/labs/liquidation-price/"]]} description="Work out a Hyperliquid perp position's margin and liquidation price, isolated or cross, with margin tiers, and check the formula against the liquidation prices the API reports for real positions.">
+  <div class="lab lab-liq" data-pagefind-body data-pagefind-meta="kind:Lab">
+    <header class="lab-head">
+      <p class="eyebrow">Workbench · T4 Trading mechanics</p>
+      <h1>Margin and liquidation price</h1>
+      <p class="lede">
+        Set up a position and see its margin, its maintenance margin and the price that liquidates it,
+        worked out with the docs' formula. Then check the formula against the liquidation prices the API
+        reports for any account's open positions.
+      </p>
+    </header>
+
+    <section class="panel controls" aria-labelledby="pick-title">
+      <h2 id="pick-title" class="visually-hidden">Perp</h2>
+      <div class="field">
+        <label for="coin">Main-DEX perp</label>
+        <select id="coin"><option value="BTC">BTC</option></select>
+      </div>
+      <p class="small" id="summary">Loading the perps from api.hyperliquid.xyz…</p>
+    </section>
+
+    <div class="split">
+      <section class="panel pick" aria-labelledby="pos-title">
+        <h2 id="pos-title">Your position</h2>
+        <fieldset class="seg">
+          <legend>Side</legend>
+          <label><input type="radio" name="side" value="1" checked /> Long</label>
+          <label><input type="radio" name="side" value="-1" /> Short</label>
+        </fieldset>
+        <fieldset class="seg">
+          <legend>Margin</legend>
+          <label><input type="radio" name="mode" value="isolated" checked /> Isolated</label>
+          <label><input type="radio" name="mode" value="cross" /> Cross</label>
+        </fieldset>
+        <div class="field">
+          <label for="entry">Entry price</label>
+          <input id="entry" type="number" min="0" step="any" inputmode="decimal" />
+        </div>
+        <div class="field">
+          <label for="size">Size, in <span id="unit">BTC</span></label>
+          <input id="size" type="number" min="0" step="any" inputmode="decimal" />
+        </div>
+        <div class="field">
+          <label for="lev">Leverage</label>
+          <input id="lev" type="number" min="1" step="1" inputmode="numeric" />
+        </div>
+        <div class="field" id="av-field" hidden>
+          <label for="av">Account value, in USDC</label>
+          <input id="av" type="number" min="0" step="any" inputmode="decimal" />
+        </div>
+        <p class="small" id="mode-note">
+          Isolated: the position stands on its own margin, the size times the price over the leverage.
+        </p>
+      </section>
+
+      <section class="panel" aria-labelledby="out-title">
+        <h2 id="out-title">Worked out</h2>
+        <div class="grid-stats">
+          <div class="stat"><span>Position value</span><b id="o-ntl">–</b></div>
+          <div class="stat"><span>Initial margin</span><b id="o-im">–</b></div>
+          <div class="stat"><span>Maintenance margin</span><b id="o-mm">–</b></div>
+          <div class="stat"><span>Liquidation price</span><b id="o-liq">–</b></div>
+        </div>
+        <p id="o-say">–</p>
+        <pre class="value" id="o-work">–</pre>
+        <div class="chart" id="chart" role="img" aria-label="Equity and maintenance margin against the mark price"></div>
+        <p class="small">
+          The position's equity, falling as the price moves against it, and the maintenance margin it must
+          keep. Where the lines cross is the liquidation price. Liquidations are judged at the mark price,
+          not the last trade.
+        </p>
+      </section>
+    </div>
+
+    <section class="panel" aria-labelledby="tiers-title">
+      <h2 id="tiers-title">Margin tiers</h2>
+      <p class="small" id="tiers-say">–</p>
+      <div class="table-scroll">
+        <table class="tiers">
+          <thead><tr><th scope="col">Position value from</th><th scope="col">Max leverage</th><th scope="col">Maintenance rate</th><th scope="col">Deduction</th></tr></thead>
+          <tbody id="tiers"></tbody>
+        </table>
+      </div>
+      <p class="small">
+        Maintenance margin is half the initial margin at the tier's max leverage, so its rate is
+        1 ÷ (2 × max leverage). Above each tier's start the rate steps up, and the deduction keeps the total
+        from jumping: maintenance = value × rate − deduction.
+      </p>
+    </section>
+
+    <section class="panel" aria-labelledby="check-title">
+      <h2 id="check-title">Check it against the API</h2>
+      <p class="small">
+        Any account's open positions are public. This asks the info endpoint for an account's positions
+        (<code>clearinghouseState</code>) and its account mode (<code>userAbstraction</code>), works out each
+        liquidation price with the formula above, and sets it beside the API's own.
+      </p>
+      <form class="check" id="check">
+        <div class="field">
+          <label for="addr">Account address</label>
+          <input id="addr" type="text" autocomplete="off" spellcheck="false" placeholder="0x…" />
+        </div>
+        <button type="submit" class="lab-btn">Check</button>
+        <button type="button" class="lab-btn" id="random">Try an active trader</button>
+      </form>
+      <p id="check-say" role="status"></p>
+      <div class="table-scroll" id="check-wrap" hidden>
+        <table class="tiers">
+          <thead><tr><th scope="col">Perp</th><th scope="col">Position</th><th scope="col">Margin</th><th scope="col">API's liquidation price</th><th scope="col">Worked out here</th><th scope="col">Match</th></tr></thead>
+          <tbody id="check-rows"></tbody>
+        </table>
+      </div>
+      <p class="small">
+        On 11 Nov 2026, for positions held by accounts trading on mainnet, the formula matched the API's
+        liquidation price for all 196 isolated positions checked, and for 473 of 475 cross positions in
+        accounts in the standard mode. Accounts in unified or portfolio margin mode back their perps with
+        spot balances, and the API works their cross positions out differently, so the lab doesn't.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style is:global>
+  /* Global, because the tables and the chart are drawn by the script below; everything is kept to this lab. */
+  .lab-liq .pick { align-content: start; }
+  /* .field sets display: grid, which would otherwise beat the hidden attribute. */
+  .lab-liq .field[hidden] { display: none; }
+  .lab-liq .stat b small { display: block; margin-top: 2px; font: 400 0.75rem/1.3 var(--data); color: var(--muted); }
+  .lab-liq .seg { display: flex; flex-wrap: wrap; gap: 6px; border: 0; padding: 0; margin: 0; }
+  .lab-liq .seg legend { font-weight: 600; font-size: 0.875rem; margin-bottom: 6px; padding: 0; }
+  .lab-liq .seg label { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; min-height: 44px; border: 1px solid var(--rule-strong); border-radius: 10px; cursor: pointer; font-size: 0.9375rem; }
+  .lab-liq .seg label:has(input:checked) { border-color: var(--ink); background: var(--sunk); }
+  .lab-liq .seg input { accent-color: var(--accent); margin: 0; }
+  .lab-liq #o-say, .lab-liq #check-say { max-width: 72ch; line-height: 1.6; }
+  .lab-liq #check-say:empty { display: none; }
+  .lab-liq .tiers { width: 100%; border-collapse: collapse; font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+  .lab-liq .tiers th { font: 500 0.6875rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 10px 14px 6px; border-bottom: 1px solid var(--rule); }
+  .lab-liq .tiers td { padding: 7px 14px; border-bottom: 1px solid var(--rule); font-family: var(--data); font-size: 0.8125rem; white-space: nowrap; }
+  .lab-liq .tiers tr:last-child td { border-bottom: 0; }
+  .lab-liq .tiers tr.here td { background: var(--sunk); }
+  .lab-liq .tiers td.yes { color: color-mix(in srgb, var(--ok) 70%, var(--ink)); font-weight: 600; }
+  .lab-liq .tiers td.no { color: color-mix(in srgb, var(--mvp) 80%, var(--ink)); font-weight: 600; }
+  .lab-liq .check { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: end; }
+  .lab-liq .check .field { flex: 1 1 320px; max-width: 480px; }
+  .lab-liq .check input { font-family: var(--data); font-size: 0.875rem; }
+  .lab-liq .check .lab-btn { min-height: 44px; }
+  .lab-liq .eq-line { fill: none; stroke: var(--ink); stroke-width: 2; }
+  .lab-liq .mm-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 6 4; }
+  .lab-liq .entry-line { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 4; }
+  .lab-liq .liq-dot { fill: var(--accent); }
+  @media (forced-colors: active) {
+    .lab-liq .seg label:has(input:checked) { border: 2px solid Highlight; }
+  }
+</style>
+
+<script>
+  import { info, perps, marketOptions, type Market, type MarginTable } from "../../lib/markets";
+  import { tiersFor, tierAt, maintenanceOf, liquidationPrice, type Tier } from "../../lib/liquidation";
+  import { nearestPrices } from "../../lib/precision";
+  import "../../scripts/lab-bar.ts";
+
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  const coinSel = $("coin") as HTMLSelectElement;
+  const entryIn = $("entry") as HTMLInputElement;
+  const sizeIn = $("size") as HTMLInputElement;
+  const levIn = $("lev") as HTMLInputElement;
+  const avIn = $("av") as HTMLInputElement;
+  const markets = new Map<string, Market>();
+  let tables: MarginTable[] = [];
+  let market: Market | undefined;
+  let tiers: Tier[] = [];
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+  const px = (x: number) => x.toLocaleString("en-US", { maximumSignificantDigits: 6 });
+  const usd = (x: number) => `$${x.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const big = (x: number) => `${x < 0 ? "−" : ""}$${Math.abs(x).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+  const pct = (x: number, d = 2) => `${(x * 100).toFixed(d).replace(/\.?0+$/, "")}%`;
+  const radio = (name: string) => document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value ?? "";
+  const unitOf = (m: Market) => m.coin;
+
+  function render() {
+    if (!market) return;
+    const side = Number(radio("side")) as 1 | -1;
+    const cross = radio("mode") === "cross";
+    const entry = Number(entryIn.value);
+    const size = Number(sizeIn.value);
+    const lev = Math.max(1, Math.round(Number(levIn.value) || 1));
+    $("av-field").hidden = !cross;
+    $("mode-note").textContent = cross
+      ? "Cross: the whole account backs the position. Leverage only sets the margin needed to open it; how far the price can go depends on the account's value. Other positions are left out here."
+      : "Isolated: the position stands on its own margin, the size times the price over the leverage.";
+    if (!(entry > 0) || !(size > 0)) {
+      $("o-say").textContent = "Enter an entry price and a size.";
+      return;
+    }
+    const ntl = entry * size;
+    const im = ntl / lev;
+    const tier = tierAt(tiers, ntl);
+    const mm = maintenanceOf(tiers, ntl);
+    // Until the reader types an account value, cross starts with just the margin to open, to the cent on
+    // screen but exact in the sums, so it gives the same price as isolated.
+    const typed = cross && !!avIn.dataset.touched;
+    if (cross && !typed) avIn.value = im.toFixed(2);
+    const equity = typed ? Number(avIn.value) || 0 : im;
+    $("o-ntl").textContent = usd(ntl);
+    $("o-im").innerHTML = `${usd(im)}<small>at ${lev}x</small>`;
+    $("o-mm").innerHTML = `${usd(mm)}<small>${pct(tier.rate, 3)} of the value</small>`;
+
+    const liq = liquidationPrice({ side, size, price: entry, equity, tiers });
+    const word = side === 1 ? "long" : "short";
+    let say = "";
+    if (lev > tier.maxLeverage) say += `At ${big(ntl)}, ${market.coin} allows at most ${tier.maxLeverage}x, so the exchange wouldn't open this at ${lev}x. `;
+    if (equity < im && cross) say += `The account holds less than the ${usd(im)} needed to open this. `;
+    if (!liq) {
+      $("o-liq").textContent = "none";
+      $("o-say").textContent = say + `No price liquidates this ${word}: the margin behind it covers its whole value.`;
+      $("o-work").textContent = "liq = price − side × margin_available / size / (1 − rate × side)\n    ≤ 0, so it can't be liquidated";
+      drawChart(side, size, entry, equity, null);
+    } else {
+      const move = (liq.price - entry) / entry;
+      $("o-liq").textContent = px(liq.price);
+      $("o-say").textContent = say + `A ${word} of ${size} ${unitOf(market)} from ${px(entry)} with ${usd(equity)} of ${cross ? "account value" : "isolated margin"} behind it is liquidated if the mark price ${side === 1 ? "falls" : "rises"} to ${px(liq.price)}, ${pct(Math.abs(move))} ${side === 1 ? "below" : "above"} the entry.`;
+      const r = liq.tier.rate;
+      $("o-work").textContent =
+        `margin_available = ${cross ? "account value" : "isolated margin"} − maintenance margin\n` +
+        `                 = ${usd(equity)} − ${usd(liq.maintenanceNow)} = ${usd(liq.marginAvailable)}\n` +
+        `liq = price − side × margin_available / size / (1 − rate × side)\n` +
+        `    = ${px(entry)} − ${side === 1 ? "1" : "(−1)"} × ${liq.marginAvailable.toFixed(2)} / ${size} / (1 − ${r} × ${side === 1 ? "1" : "(−1)"})\n` +
+        `    = ${px(liq.price)}`;
+      drawChart(side, size, entry, equity, liq.price);
+    }
+    $("tiers").innerHTML = tiers
+      .map((t) => `<tr${t === tier ? ' class="here"' : ""}><td>${big(t.lowerBound)}</td><td>${t.maxLeverage}x</td><td>${pct(t.rate, 3)}</td><td>${big(t.deduction)}</td></tr>`)
+      .join("");
+  }
+
+  function drawChart(side: 1 | -1, size: number, entry: number, equity: number, liq: number | null) {
+    const host = $("chart");
+    const W = Math.max(300, host.clientWidth), H = 250;
+    const m = { l: 76, r: 20, t: 16, b: 50 };
+    // From a little past the liquidation price to a little past the entry, on the side it moves against.
+    const far = liq ?? (side === 1 ? 0 : entry * 2);
+    const span = Math.abs(entry - far) || entry * 0.1;
+    const lo = Math.max(0, Math.min(entry, far) - span * 0.25), hi = Math.max(entry, far) + span * 0.25;
+    const eq = (p: number) => equity + side * size * (p - entry);
+    const mmAt = (p: number) => maintenanceOf(tiers, size * p);
+    const xs = Array.from({ length: 61 }, (_, i) => lo + ((hi - lo) * i) / 60);
+    const ys = xs.flatMap((p) => [eq(p), mmAt(p)]);
+    const yMin = Math.min(0, ...ys), yMax = Math.max(...ys) * 1.05 || 1;
+    const x = (p: number) => m.l + ((p - lo) / (hi - lo)) * (W - m.l - m.r);
+    const y = (v: number) => m.t + (1 - (v - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+    const line = (f: (p: number) => number) => xs.map((p, i) => `${i ? "L" : "M"}${x(p).toFixed(1)},${y(f(p)).toFixed(1)}`).join(" ");
+    let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+    for (const v of [yMin, (yMin + yMax) / 2, yMax]) svg += `<line class="gridline" x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${big(v)}</text>`;
+    for (const p of [lo, (lo + hi) / 2, hi]) svg += `<text class="ax" x="${x(p)}" y="${H - m.b + 18}" text-anchor="${p === lo ? "start" : p === hi ? "end" : "middle"}">${px(p)}</text>`;
+    svg += `<line class="entry-line" x1="${x(entry)}" x2="${x(entry)}" y1="${m.t}" y2="${H - m.b}"/><text class="ax" x="${x(entry) + 6}" y="${m.t + 10}">entry</text>`;
+    svg += `<path class="eq-line" d="${line(eq)}"/><path class="mm-line" d="${line(mmAt)}"/>`;
+    if (liq !== null && liq >= lo && liq <= hi) svg += `<circle class="liq-dot" cx="${x(liq)}" cy="${y(mmAt(liq))}" r="5"/><text class="ax ax-title" x="${x(liq)}" y="${y(mmAt(liq)) - 12}" text-anchor="middle">liquidation</text>`;
+    svg += `<text class="ax ax-title" x="${(m.l + W - m.r) / 2}" y="${H - 8}" text-anchor="middle">Mark price</text>`;
+    host.innerHTML = svg + "</svg>";
+    host.setAttribute("aria-label", liq === null ? "Equity stays above maintenance margin at every price" : `Equity falls to the maintenance margin at a mark price of ${px(liq)}`);
+  }
+
+  function pick() {
+    market = markets.get(coinSel.value);
+    if (!market) return;
+    tiers = tiersFor(market.marginTableId, market.maxLeverage ?? 1, tables);
+    $("unit").textContent = unitOf(market);
+    levIn.max = String(market.maxLeverage);
+    levIn.value = String(Math.min(10, market.maxLeverage ?? 10));
+    const ref = market.mark;
+    entryIn.value = nearestPrices(String(Number(ref.toPrecision(6))), "perp", market.szDecimals).down;
+    sizeIn.value = String(Number((10_000 / ref).toFixed(market.szDecimals)) || 1);
+    delete avIn.dataset.touched;
+    $("summary").textContent = `${market.coin}: up to ${market.maxLeverage}x, maintenance margin ${pct(tiers[0].rate, 3)} of the position's value${tiers.length > 1 ? ` up to ${big(tiers[1].lowerBound)}, more above` : ""}.`;
+    $("tiers-say").textContent = tiers.length > 1
+      ? `${market.coin} has ${tiers.length} tiers: the bigger the position, the less leverage it may use and the more maintenance margin it keeps. The row for your position is shaded.`
+      : `${market.coin} has one tier: up to ${market.maxLeverage}x at any size.`;
+    render();
+  }
+
+  // Checking real positions.
+  type Pos = { coin: string; szi: string; positionValue: string; liquidationPx: string | null; leverage: { type: "cross" | "isolated"; value: number; rawUsd?: string } };
+  type State = { assetPositions: { position: Pos }[]; crossMarginSummary: { accountValue: string }; crossMaintenanceMarginUsed: string };
+
+  async function check(addr: string) {
+    const say = $("check-say");
+    const rows = $("check-rows");
+    const wrap = $("check-wrap");
+    if (!/^0x[0-9a-fA-F]{40}$/.test(addr)) {
+      say.textContent = "That isn't an address: 0x and 40 hex digits.";
+      wrap.hidden = true;
+      return;
+    }
+    say.textContent = "Asking api.hyperliquid.xyz…";
+    try {
+      const [state, mode] = await Promise.all([info<State>({ type: "clearinghouseState", user: addr }), info<string>({ type: "userAbstraction", user: addr })]);
+      const standard = mode === "default" || mode === "disabled";
+      const AV = Number(state.crossMarginSummary.accountValue);
+      const MM = Number(state.crossMaintenanceMarginUsed);
+      let shown = 0, compared = 0, matched = 0;
+      const html = state.assetPositions.map(({ position: p }) => {
+        const m = markets.get(p.coin);
+        const szi = Number(p.szi), size = Math.abs(szi), side = Math.sign(szi) as 1 | -1;
+        const pos = `${side === 1 ? "Long" : "Short"} ${size} ${esc(p.coin)}`;
+        const api = p.liquidationPx === null ? null : Number(p.liquidationPx);
+        shown++;
+        if (!m) return `<tr><td>${esc(p.coin)}</td><td>${pos}</td><td>${esc(p.leverage.type)}</td><td>${api === null ? "none" : px(api)}</td><td colspan="2">not a main-DEX perp</td></tr>`;
+        const t = tiersFor(m.marginTableId, m.maxLeverage ?? 1, tables);
+        const mark = Number(p.positionValue) / size;
+        const iso = p.leverage.type === "isolated";
+        if (!iso && !standard) return `<tr><td>${esc(p.coin)}</td><td>${pos}</td><td>cross, ${esc(String(mode))}</td><td>${api === null ? "none" : px(api)}</td><td colspan="2">not worked out: spot balances back this account's perps</td></tr>`;
+        const r = liquidationPrice({ side, size, price: mark, tiers: t, equity: iso ? Number(p.leverage.rawUsd) + szi * mark : AV, otherMaintenance: iso ? 0 : MM - maintenanceOf(t, size * mark) });
+        compared++;
+        const ok = api === null ? r === null : !!r && Math.abs(r.price - api) / api < 1e-3;
+        if (ok) matched++;
+        return `<tr><td>${esc(p.coin)}</td><td>${pos}</td><td>${esc(p.leverage.type)}, ${Number(p.leverage.value)}x</td><td>${api === null ? "none" : px(api)}</td><td>${r ? px(r.price) : "none"}</td><td class="${ok ? "yes" : "no"}">${ok ? "Yes" : "No"}</td></tr>`;
+      });
+      rows.innerHTML = html.join("");
+      wrap.hidden = shown === 0;
+      const modeName = mode === "unifiedAccount" ? "unified account" : mode === "portfolioMargin" ? "portfolio margin" : String(mode);
+      say.textContent = shown === 0
+        ? "This account has no open perp positions on the main DEX."
+        : `${compared ? `${matched} of ${compared} worked out here match${compared === 1 && matched === 1 ? "es" : ""} the API to within 0.1%.` : "None of these could be worked out here."}${standard ? "" : ` The account is in ${modeName} mode, so spot balances back its perps and its cross positions aren't worked out here.`}`;
+    } catch {
+      say.textContent = "Couldn't reach api.hyperliquid.xyz. Try again in a moment.";
+    }
+  }
+
+  async function randomTrader() {
+    const say = $("check-say");
+    say.textContent = "Picking someone from BTC's latest trades…";
+    try {
+      const trades = await info<{ users?: string[] }[]>({ type: "recentTrades", coin: "BTC" });
+      const users = [...new Set(trades.flatMap((t) => t.users ?? []))];
+      // Someone with open positions the formula covers: isolated ones, or any in an account in the
+      // standard mode. Failing that, the last one found with positions at all.
+      let fallback = "";
+      for (let i = 0; i < 8 && users.length; i++) {
+        const addr = users.splice(Math.floor(Math.random() * users.length), 1)[0];
+        const state = await info<State>({ type: "clearinghouseState", user: addr });
+        if (!state.assetPositions.length) continue;
+        fallback = addr;
+        const mode = await info<string>({ type: "userAbstraction", user: addr });
+        if (mode === "default" || mode === "disabled" || state.assetPositions.some(({ position }) => position.leverage.type === "isolated")) {
+          ($("addr") as HTMLInputElement).value = addr;
+          return check(addr);
+        }
+      }
+      if (fallback) {
+        ($("addr") as HTMLInputElement).value = fallback;
+        return check(fallback);
+      }
+      say.textContent = "Nobody picked had open positions. Try again.";
+    } catch {
+      say.textContent = "Couldn't reach api.hyperliquid.xyz. Try again in a moment.";
+    }
+  }
+
+  async function start() {
+    try {
+      const got = await perps();
+      tables = got.tables;
+      for (const m of got.markets) markets.set(m.coin, m);
+      coinSel.innerHTML = marketOptions(got.markets, [], "BTC");
+      pick();
+    } catch {
+      $("summary").textContent = "Couldn't reach api.hyperliquid.xyz. Reload the page to try again.";
+    }
+  }
+
+  coinSel.addEventListener("change", pick);
+  for (const el of [entryIn, sizeIn, levIn]) el.addEventListener("input", render);
+  avIn.addEventListener("input", () => {
+    avIn.dataset.touched = "1";
+    render();
+  });
+  document.querySelectorAll('input[name="side"], input[name="mode"]').forEach((r) => r.addEventListener("change", render));
+  new ResizeObserver(() => render()).observe($("chart"));
+  $("check").addEventListener("submit", (e) => {
+    e.preventDefault();
+    check((($("addr") as HTMLInputElement).value || "").trim());
+  });
+  $("random").addEventListener("click", randomTrader);
+  start();
+</script>
