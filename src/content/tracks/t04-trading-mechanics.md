@@ -24,7 +24,7 @@ outside:
   - { title: Monitor TP/SL trigger orders, url: "https://www.quicknode.com/guides/hyperliquid/monitor-tpsl-trigger-orders-stream-hyperliquid", by: QuickNode, note: "Take-profit and stop-loss trigger orders streamed over QuickNode's gRPC feed, with a sample heatmap app." }
 build:
   - { label: Funding and mark price, kind: lab, status: live, href: "/labs/funding/" }
-  - { label: Margin and liquidation price, kind: workbench }
+  - { label: Margin and liquidation price, kind: workbench, status: live, href: "/labs/liquidation-price/" }
   - { label: Fee tier, kind: workbench }
   - { label: Funding-rate scanner, kind: project }
 ---
@@ -105,6 +105,8 @@ margin available (cross) = account value − maintenance margin required
 ```
 
 For a cross position, leverage doesn't change the liquidation price; lower leverage only locks more collateral. For isolated positions it does, because the margin set aside depends on it.
+
+The [margin and liquidation price workbench](/labs/liquidation-price/) works this out for any perp, margin tiers included. On Nov 11, 2026 the formula gave the API's own liquidation price for all 196 isolated positions checked, and for 473 of 475 cross positions in standard accounts. Accounts in unified or portfolio margin mode back their perps with spot balances, and their cross positions come out differently.
 
 ## Order types
 

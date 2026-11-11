@@ -174,17 +174,17 @@ export const terms: Term[] = [
   {
     term: "Liquidation",
     def: "When a cross account's value falls below the maintenance margin of its positions, they're sent to the book as market orders, those over 100k USDC a fifth at a time. Further down, the [backstop liquidator](#backstop-liquidator) takes over.",
-    see: [["T4 · Liquidations", `${T4}#liquidations`]],
+    see: [["T4 · Liquidations", `${T4}#liquidations`], ["Lab · Margin and liquidation price", "/labs/liquidation-price/"]],
   },
   {
     term: "Maintenance margin",
     def: "The margin a position has to keep: half the initial margin at maximum leverage, which is 1.25% of notional for BTC at 40×. An account below it can be liquidated.",
-    see: [["T4 · Margin", `${T4}#margin`]],
+    see: [["T4 · Margin", `${T4}#margin`], ["Lab · Margin and liquidation price", "/labs/liquidation-price/"]],
   },
   {
     term: "Margin tiers",
     def: "Bigger positions get less leverage: an asset's margin table lowers the maximum leverage, and so raises the margin needed, as a position grows.",
-    see: [["Docs · Margin tiers", `${D}/trading/margin-tiers`], ["API errors · PerpMaxPosition", "/errors/#perp-max-position"]],
+    see: [["Docs · Margin tiers", `${D}/trading/margin-tiers`], ["API errors · PerpMaxPosition", "/errors/#perp-max-position"], ["Lab · Margin and liquidation price", "/labs/liquidation-price/"]],
   },
   {
     term: "Mark price",
@@ -194,12 +194,12 @@ export const terms: Term[] = [
   {
     term: "Market order",
     def: "An [IOC](#ioc) order priced through the book, so it fills at once at the best prices available. The Python SDK prices it 5% past the mid by default.",
-    see: [["T4 · Order types", `${T4}#order-types`]],
+    see: [["T4 · Order types", `${T4}#order-types`], ["Lab · Live order book", "/labs/order-book/"]],
   },
   {
     term: "Mid price",
     def: "The middle of Hyperliquid's own book, between the best bid and the best ask.",
-    see: [["T4 · Three prices, three jobs", `${T4}#three-prices-three-jobs`]],
+    see: [["T4 · Three prices, three jobs", `${T4}#three-prices-three-jobs`], ["Lab · Live order book", "/labs/order-book/"]],
   },
   {
     term: "msgpack",
@@ -299,7 +299,7 @@ export const terms: Term[] = [
   {
     term: "szDecimals",
     def: "How many decimals an asset's order sizes may have. It also limits prices, to `6 − szDecimals` decimals for perps and `8 − szDecimals` for spot.",
-    see: [["T2 · Prices and sizes have strict precision", `${T2}#prices-and-sizes-have-strict-precision`]],
+    see: [["T2 · Prices and sizes have strict precision", `${T2}#prices-and-sizes-have-strict-precision`], ["Lab · Tick and lot sizes", "/labs/tick-and-lot/"]],
   },
   {
     term: "Testnet",
@@ -309,7 +309,7 @@ export const terms: Term[] = [
   {
     term: "Tick size",
     def: "The precision a price may have: at most 5 significant figures and a set number of decimals, though whole-number prices are always allowed.",
-    see: [["T2 · Prices and sizes have strict precision", `${T2}#prices-and-sizes-have-strict-precision`], ["API errors · Tick", "/errors/#tick"]],
+    see: [["T2 · Prices and sizes have strict precision", `${T2}#prices-and-sizes-have-strict-precision`], ["API errors · Tick", "/errors/#tick"], ["Lab · Tick and lot sizes", "/labs/tick-and-lot/"]],
   },
   {
     term: "Time in force", aka: ["TIF"],

@@ -21,8 +21,8 @@ outside:
   - { title: Order book levels L1 to L4, url: "https://www.quicknode.com/guides/hyperliquid/hyperliquid-order-book-depth-l1-l2-l3-l4", by: QuickNode, note: "The four resolutions of the order book, which stream gives each, and how to read them in JavaScript." }
   - { title: Query balances for many wallets, url: "https://www.quicknode.com/guides/hyperliquid/query-balances-for-multiple-wallets", by: QuickNode, note: "Balances for many wallets at once with batched requests, and which method suits which job." }
 build:
-  - { label: Live order book in the browser, kind: lab }
-  - { label: Tick and lot rounding, kind: workbench }
+  - { label: Live order book in the browser, kind: lab, status: live, href: "/labs/order-book/" }
+  - { label: Tick and lot rounding, kind: workbench, status: live, href: "/labs/tick-and-lot/" }
 ---
 
 ## Ask with one request type
@@ -71,6 +71,8 @@ The exchange rejects an order whose numbers have too much precision.
 
 For example, `1234.5` is a valid price but `1234.56` isn't, because it has six significant figures.
 
+The [tick and lot sizes workbench](/labs/tick-and-lot/) checks a price and a size for any market, gives the nearest valid values, and has tested rounding code in Python, TypeScript and Rust.
+
 ## Stream instead of polling
 
 Use the WebSocket for anything live. Subscribe with one message per feed:
@@ -80,6 +82,8 @@ Use the WebSocket for anything live. Subscribe with one message per feed:
 ```
 
 The server answers each subscription with a `subscriptionResponse`. A subscription the server doesn't recognise gets an `error` message instead and then stays silent, so check for both. These subscriptions answered on mainnet on Oct 22, 2026: `allMids`, `l2Book`, `trades`, `bbo`, `candle`, `activeAssetCtx` and `userFills`.
+
+A known type with a bad value is worse. On Nov 11, 2026, subscribing to a coin the exchange doesn't list, or to an order book grouping it doesn't offer, made the server close the whole connection without a message, taking every other subscription on it down too. The order book feed sent 20 levels a side every few seconds, or 5 levels about twice a second with `"fast": true`. The [live order book](/labs/order-book/) shows the groupings it accepts and the messages that come back.
 
 Servers disconnect clients now and then without warning. Reconnect automatically; the first message after you resubscribe is a snapshot covering what you missed.
 
