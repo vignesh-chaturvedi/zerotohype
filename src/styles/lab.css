@@ -67,6 +67,10 @@
 .field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; max-width: 340px; }
 .field label { font-weight: 600; font-size: 0.875rem; }
 .field select, .field input { font: 400 0.9375rem/1.3 var(--body); padding: 10px 12px; border: 1px solid var(--rule-strong); border-radius: 10px; background: var(--surface); color: var(--ink); }
+/* On touch screens, fields and buttons a finger can hit: 44px (WCAG 2.5.5). */
+@media (pointer: coarse) {
+  .field select, .field input, .lab-btn { min-height: 44px; }
+}
 .chart { width: 100%; min-width: 0; }
 .chart svg { display: block; width: 100%; height: auto; }
 /* In high contrast mode the charts keep their own colours, on their own background, since the colours
