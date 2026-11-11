@@ -2716,6 +2716,9 @@
       "fullName": "OSRS Test Dex",
       "oracleUpdater": "0x9f168f1d6dae2c5ffc9e0a339c58a006e4d3eef1",
       "grants": {
+        "registerAsset": [
+          "0xffff9eab64f6d1e52ec88ca3ea1237db2417a1db"
+        ],
         "setOracle": [
           "0x764ed9d59c91a2c653fd50c43585917366244335",
           "0x9f168f1d6dae2c5ffc9e0a339c58a006e4d3eef1",
@@ -3885,6 +3888,7 @@
     "flip": 18,
     "aa": 4,
     "kelp": 9,
+    "ay": 11,
     "hehe": 6,
     "txyc": 20,
     "txya": 20,
@@ -3919,7 +3923,7 @@
     "layr": 3,
     "pgn": 3,
     "momo": 5,
-    "dorn": 8,
+    "dorn": 4,
     "txyb": 20,
     "ali": 3,
     "mig": 20,
@@ -3935,10 +3939,9 @@
     "catm": 5,
     "xcds": 5,
     "ddty": 1,
-    "ay": 2,
     "dadu": 2,
-    "omen": 2,
-    "cat": 4
+    "cat": 4,
+    "omen": 2
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",

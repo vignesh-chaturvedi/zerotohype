@@ -1,5 +1,11 @@
 [
   {
+    "time": "2026-11-11T06:06:29.281Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`osrs`: `registerAsset` granted to 0xffff…a1db"
+  },
+  {
     "time": "2026-11-10T07:11:41.491Z",
     "network": "docs",
     "area": "docs",
