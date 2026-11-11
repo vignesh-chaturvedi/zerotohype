@@ -1,10 +1,10 @@
 ---
 import Base from "../../layouts/Base.astro";
 import TrackCover from "../../components/TrackCover.astro";
-import { lookOf } from "../../lib/track-look";
+import { lookOf, type Motif } from "../../lib/track-look";
 import settlements from "../../../public/data/hip4-settlements.json";
 
-const labs = [
+const labs: { n: string; code: string; href: string; title: string; track: string; note: string; what: string; motif?: Motif; kind?: string }[] = [
   {
     n: "01",
     code: "T3",
@@ -32,6 +32,37 @@ const labs = [
     note: `${settlements.markets.length} real settlements`,
     what: "Recompute real HIP-4 settlements from the prices hyperkeeper recorded, and see which kind of average each venue really uses.",
   },
+  {
+    n: "04",
+    code: "T2",
+    href: "/labs/order-book/",
+    title: "Live order book",
+    track: "T2 Reading the exchange",
+    note: "Mainnet · live feed",
+    what: "Any perp or spot pair's book, streamed from the WebSocket. Change how it's grouped and how often it comes, see the messages themselves, and work out what a market order would cost.",
+  },
+  {
+    n: "05",
+    code: "T2",
+    href: "/labs/tick-and-lot/",
+    title: "Tick and lot sizes",
+    track: "T2 Reading the exchange",
+    note: "Mainnet · read-only",
+    what: "Type a price and a size and see whether the exchange would take them, the nearest values it would, and code in three languages that rounds them.",
+    motif: "ticks",
+    kind: "Workbench",
+  },
+  {
+    n: "06",
+    code: "T4",
+    href: "/labs/liquidation-price/",
+    title: "Margin and liquidation price",
+    track: "T4 Trading mechanics",
+    note: "Mainnet · read-only",
+    what: "Work out a position's margin and liquidation price, margin tiers included, then check the formula against the liquidation prices the API reports for real positions.",
+    motif: "liq",
+    kind: "Workbench",
+  },
 ];
 ---
 
@@ -48,9 +79,9 @@ const labs = [
     {labs.map((lab) => (
       <li>
         <a class="lab-card" href={lab.href} style={`--c: ${lookOf(lab.code).color}`}>
-          <TrackCover code={lab.code} label={lab.note} num={lab.n} />
+          <TrackCover code={lab.code} label={lab.note} num={lab.n} motif={lab.motif} />
           <span class="lab-body">
-            <span class="lab-top"><span class="eyebrow">Lab {lab.n} · {lab.track}</span><span class="tag ok">Live</span></span>
+            <span class="lab-top"><span class="eyebrow">{lab.kind ?? "Lab"} {lab.n} · {lab.track}</span><span class="tag ok">Live</span></span>
             <span class="lab-title">{lab.title}</span>
             <span class="lab-what">{lab.what}</span>
             <span class="lab-go">Open the lab <span aria-hidden="true">→</span></span>
@@ -60,8 +91,8 @@ const labs = [
     ))}
   </ol>
   <p class="more muted">
-    More are on the way: a live order book, a margin and liquidation workbench, and a CoreWriter
-    encoder. Each track's page lists what it will get.
+    More are on the way, among them a CoreWriter encoder, a fee tier workbench and a builder code fee
+    calculator. Each track's page lists what it will get.
   </p>
 </Base>
 

@@ -1,6 +1,6 @@
 ---
 // A track's cover: its colour, its code, and a line drawing of what the track is about.
-import { lookOf } from "../lib/track-look";
+import { lookOf, type Motif } from "../lib/track-look";
 
 interface Props {
   code: string;
@@ -9,10 +9,13 @@ interface Props {
   label?: string;
   /** The big number in the corner; defaults to the track's. */
   num?: string;
+  /** A drawing other than the track's, for a lab that shares a track with another. */
+  motif?: Motif;
 }
 
-const { code, variant = "card", label, num = code.replace("T", "").padStart(2, "0") } = Astro.props;
-const { color, motif } = lookOf(code);
+const { code, variant = "card", label, num = code.replace("T", "").padStart(2, "0"), motif: drawing } = Astro.props;
+const { color, motif: trackMotif } = lookOf(code);
+const motif = drawing ?? trackMotif;
 
 // Deterministic shapes for the drawings that need many marks.
 const signCells = Array.from({ length: 32 }, (_, i) => ({ x: 112 + (i % 8) * 17, y: 52 + Math.floor(i / 8) * 17, on: (i * 7 + Math.floor(i / 8) * 3) % 5 < 2 }));
@@ -33,6 +36,7 @@ const nodes = [
   { x: 160, y: 132 }, { x: 228, y: 146 }, { x: 288, y: 118 },
 ];
 const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [4, 5], [0, 4]];
+const tickXs = Array.from({ length: 11 }, (_, i) => 118 + i * 18);
 ---
 
 <div class={`cover ${variant}`} style={`--c: ${color}`}>
@@ -86,7 +90,7 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
         {fundingBars.map((b) => <rect x={b.x} y={b.v > 0 ? 120 - b.v : 120} width="7" height={Math.abs(b.v)} rx="1.5" class="f2" data-bar={b.v.toFixed(1)} />)}
         <path d="M110 120 H305" class="dash" />
         <path d="M110 112 C135 66 160 66 185 108 S235 168 262 126 S296 80 305 92" class="thick" data-snap="curve" data-flow="2" />
-        <text x="112" y="186" class="cv-t">PREMIUM · FUNDING / H</text>
+        <text x="305" y="186" text-anchor="end" class="cv-t">PREMIUM · FUNDING / H</text>
       </g>
     )}
     {motif === "flow" && (
@@ -138,6 +142,32 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
           </g>
         ))}
         <text x="112" y="186" class="cv-t">precompile ⇄ CoreWriter</text>
+      </g>
+    )}
+    {motif === "ticks" && (
+      <g>
+        <path d="M112 132 H305" />
+        {tickXs.map((x, i) => <path d={`M${x} 132 V${i % 5 === 0 ? 114 : 123}`} />)}
+        <path d="M112 132 H305" class="rail" data-flow="2" />
+        <path d="M181 78 V132" class="dash" />
+        <circle cx="181" cy="72" r="5" class="f3" />
+        <path d="M177 80 Q168 104 172 128" />
+        <path d="M185 80 Q194 104 190 128" />
+        <circle cx="172" cy="132" r="3.5" class="f3" />
+        <circle cx="190" cy="132" r="3.5" class="f3" />
+        <text x="181" y="58" text-anchor="middle" class="cv-t">73836.408</text>
+        <text x="305" y="158" text-anchor="end" class="cv-t">5 SIG FIGS · 6 − szDecimals</text>
+      </g>
+    )}
+    {motif === "liq" && (
+      <g>
+        <path d="M112 64 C150 70 168 96 196 104 S252 138 272 150 H112 Z" class="f1" />
+        <path d="M112 150 H305" class="dash" />
+        <path d="M112 64 C150 70 168 96 196 104 S252 138 272 150" class="thick" data-flow="1" />
+        <circle cx="272" cy="150" r="5" class="f3" />
+        <text x="112" y="54" class="cv-t">ENTRY</text>
+        <text x="305" y="168" text-anchor="end" class="cv-t">LIQUIDATION</text>
+        <text x="305" y="186" text-anchor="end" class="cv-t">EQUITY → MAINTENANCE</text>
       </g>
     )}
     {motif === "nodes" && (
