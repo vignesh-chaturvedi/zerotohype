@@ -1,0 +1,240 @@
+---
+import Base from "../../layouts/Base.astro";
+import { Content as Rounding } from "./_rounding.md";
+import "../../styles/lab.css";
+---
+
+<Base title="Hyperliquid tick size and lot size: check and round" heading="Tick and lot sizes" trail={[["Labs", "/labs/"], ["Tick and lot sizes", "/labs/tick-and-lot/"]]} description="Type a price and a size for any Hyperliquid perp or spot pair and see whether the exchange would take them, the nearest values it would, and tested code that rounds them.">
+  <div class="lab lab-tick" data-pagefind-body data-pagefind-meta="kind:Lab">
+    <header class="lab-head">
+      <p class="eyebrow">Workbench · T2 Reading the exchange</p>
+      <h1>Tick and lot sizes</h1>
+      <p class="lede">
+        The exchange rejects an order whose price or size is more precise than the market allows. Pick a
+        market, type a price and a size, and see whether they would pass, the nearest values that would,
+        and the exact text to send.
+      </p>
+    </header>
+
+    <section class="panel controls" aria-labelledby="pick-title">
+      <h2 id="pick-title" class="visually-hidden">Market</h2>
+      <div class="field">
+        <label for="coin">Market</label>
+        <select id="coin"><option value="BTC">BTC</option></select>
+      </div>
+      <p class="small" id="summary">Loading the markets from api.hyperliquid.xyz…</p>
+    </section>
+
+    <div class="split">
+      <section class="panel pick" aria-labelledby="order-title">
+        <h2 id="order-title">Your order</h2>
+        <div class="field">
+          <label for="px">Price</label>
+          <input id="px" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" />
+        </div>
+        <div class="field">
+          <label for="sz">Size, in <span id="sz-unit">BTC</span></label>
+          <input id="sz" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" />
+        </div>
+        <p class="small">
+          Type them as your code would send them. Commas are ignored. The starting values are too precise
+          on purpose.
+        </p>
+      </section>
+
+      <section class="panel" aria-labelledby="verdict-title">
+        <h2 id="verdict-title">What the exchange would make of it</h2>
+        <div class="verdict" id="v-price"></div>
+        <div class="verdict" id="v-size"></div>
+        <div class="verdict" id="v-value"></div>
+        <div>
+          <p class="label">The order to send, as a buy</p>
+          <code class="value" id="send">–</code>
+          <p class="small">
+            <code>a</code> is the market's asset number, and <code>p</code> and <code>s</code> are text.
+            For a sell, <code>b</code> is <code>false</code>.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <section class="panel" aria-labelledby="rules-title">
+      <h2 id="rules-title">The rules for this market</h2>
+      <div class="grid-stats">
+        <div class="stat"><span>szDecimals</span><b id="r-szd">–</b></div>
+        <div class="stat"><span>Price decimals allowed</span><b id="r-dec">–</b></div>
+        <div class="stat"><span>Price step here</span><b id="r-step">–</b></div>
+        <div class="stat"><span>Size step</span><b id="r-lot">–</b></div>
+        <div class="stat"><span>Smallest order</span><b id="r-min">–</b></div>
+      </div>
+      <p id="why">–</p>
+      <p class="small">
+        A price may have at most 5 significant figures, unless it's a whole number, and at most 6 decimals
+        minus <code>szDecimals</code> on a perp, or 8 minus on spot. A size may have at most
+        <code>szDecimals</code> decimals. An order must be worth at least $10, or 10 of the quote token on
+        spot. On 11 Nov 2026 every price resting in mainnet's books fitted these rules: 9,800 levels across
+        179 perps and 73 spot pairs.
+      </p>
+    </section>
+
+    <section class="panel" aria-labelledby="code-title">
+      <h2 id="code-title">Rounding in code</h2>
+      <div class="prose code-prose">
+        <Rounding />
+      </div>
+      <p class="small">
+        On 11 Nov 2026 each was run on 4,000 random prices and sizes, perps and spot, and gave the nearest
+        valid value every time. The official Python SDK's example rounds twice, to 5 significant figures
+        and then to the decimals, and now and then lands one step off: 39.5500097 at one decimal becomes
+        39.5, though 39.6 is nearer. That's still a valid price, just not the nearest.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style is:global>
+  /* Global, because the verdicts are filled in by the script below; everything is kept to this lab. */
+  .lab-tick .verdict p { margin: 4px 0 0; }
+  .lab-tick .verdict ul { margin: 6px 0 0; padding-left: 1.2em; display: grid; gap: 4px; }
+  .lab-tick .verdict:empty { display: none; }
+  .lab-tick .label { font-weight: 600; margin-bottom: 8px; }
+  .lab-tick #send { display: block; margin-bottom: 8px; }
+  .lab-tick #why { max-width: 72ch; line-height: 1.6; }
+  .lab-tick .code-prose { max-width: none; font-size: 1rem; }
+  .lab-tick input#px, .lab-tick input#sz { font-family: var(--data); font-size: 0.9375rem; }
+</style>
+
+<script>
+  import { perps, spots, marketOptions, type Market } from "../../lib/markets";
+  import { checkPrice, checkSize, nearestPrices, parseDecimal, wire, maxPriceDecimals } from "../../lib/precision";
+  import "../../scripts/lab-bar.ts";
+  import "../../scripts/code-blocks.ts";
+
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  const coinSel = $("coin") as HTMLSelectElement;
+  const pxInput = $("px") as HTMLInputElement;
+  const szInput = $("sz") as HTMLInputElement;
+  const markets = new Map<string, Market>();
+  let market: Market | undefined;
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+  /** "73692.5" as "73,692.5", keeping every digit. */
+  const grouped = (s: string) => {
+    const [whole, frac] = s.split(".");
+    return whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (frac !== undefined ? `.${frac}` : "");
+  };
+  const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
+  const unitOf = (m: Market) => (m.kind === "perp" ? m.coin : m.name.split("/")[0]);
+  const minimum = (m: Market) => (m.kind === "perp" ? "$10" : `10 ${esc(m.quote ?? "")}`);
+
+  function box(id: string, kind: "good" | "bad" | "", html: string) {
+    const el = $(id);
+    el.className = `verdict${kind ? ` ${kind}` : ""}`;
+    el.innerHTML = html;
+  }
+
+  function render() {
+    if (!market) return;
+    const { kind, szDecimals: szd } = market;
+    const px = parseDecimal(pxInput.value);
+    const sz = parseDecimal(szInput.value);
+    let sendPx: string | null = null;
+    let sendSz: string | null = null;
+
+    if (!px) box("v-price", "", `<strong>Type a price.</strong><p>Such as ${grouped(String(market.mid ?? market.mark))}.</p>`);
+    else {
+      const c = checkPrice(px, kind, szd);
+      const { down, up, step } = nearestPrices(px, kind, szd);
+      if (c.ok) {
+        sendPx = wire(px);
+        const extra = c.whole && c.sig > 5 ? " It has more than 5 significant figures, but whole numbers are always allowed." : "";
+        box("v-price", "good", `<strong>${grouped(wire(px))} is a valid price for ${esc(market.name)}.</strong><p>${plural(c.sig, "significant figure")} and ${plural(c.decimals, "decimal")}; this market allows ${c.maxDecimals}.${extra}</p>`);
+      } else {
+        const valid = [down, up].filter((v) => Number(v) > 0);
+        sendPx = valid.length === 2 ? (Math.abs(Number(up) - Number(px)) < Math.abs(Number(px) - Number(down)) ? up : down) : valid[0] ?? null;
+        const near = valid.length === 2
+          ? `The nearest prices it takes are ${grouped(down)} and ${grouped(up)}, steps of ${grouped(step)} here. For a buy, the lower one rests in the book and the higher one is likelier to fill; for a sell, the other way round.`
+          : `The smallest price it takes here is ${grouped(up)}.`;
+        box("v-price", "bad", `<strong>The exchange would reject ${esc(px)} as a price.</strong><ul>${c.problems.map((p) => `<li>${p}</li>`).join("")}</ul><p>${near}</p><p>It would answer “Price must be divisible by tick size.” (<a href="/errors/#tick">Tick, in the errors reference</a>)</p>`);
+      }
+    }
+
+    if (!sz) box("v-size", "", `<strong>Type a size.</strong>`);
+    else {
+      const c = checkSize(sz, szd);
+      if (c.ok) {
+        sendSz = wire(sz);
+        box("v-size", "good", `<strong>${grouped(wire(sz))} is a valid size.</strong><p>${esc(market.name)} sizes have up to ${plural(szd, "decimal")}.</p>`);
+      } else if (c.decimals > szd) {
+        sendSz = Number(c.down) > 0 ? c.down : null;
+        box("v-size", "bad", `<strong>${esc(sz)} has too many decimals for a size.</strong><ul>${c.problems.map((p) => `<li>${p}</li>`).join("")}</ul><p>Rounded down it's ${grouped(c.down)}; to the nearest, ${grouped(c.nearest)}. Round down when the size mustn't exceed what you hold. The docs call such a size invalid, so round it before sending.</p>`);
+      } else box("v-size", "bad", `<strong>A size has to be more than zero.</strong>`);
+    }
+
+    // The value uses what would be sent: the nearest valid price, and the size rounded down.
+    if (sendPx && sendSz) {
+      const value = Number(sendPx) * Number(sendSz);
+      const shown = value.toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+      const worth = market.kind === "perp" ? `$${shown}` : `${shown} ${esc(market.quote ?? "")}`;
+      const err = market.kind === "perp" ? ["Order must have minimum value of $10.", "min-trade-ntl", "MinTradeNtl"] : [`Order must have minimum value of 10 ${market.quote}.`, "min-trade-spot-ntl", "MinTradeSpotNtl"];
+      if (value >= 10) box("v-value", "good", `<strong>It's worth ${worth}, over the ${minimum(market)} minimum.</strong><p>That's ${grouped(sendSz)} × ${grouped(sendPx)}, after rounding.</p>`);
+      else box("v-value", "bad", `<strong>It's worth ${worth}, under the ${minimum(market)} minimum.</strong><p>That's ${grouped(sendSz)} × ${grouped(sendPx)}, after rounding. The exchange would answer “${esc(err[0])}” (<a href="/errors/#${err[1]}">${err[2]}, in the errors reference</a>)</p>`);
+      $("send").textContent = JSON.stringify({ a: market.asset, b: true, p: sendPx, s: sendSz, r: false, t: { limit: { tif: "Gtc" } } });
+    } else {
+      box("v-value", "", "");
+      $("send").textContent = "–";
+    }
+  }
+
+  /** Which rule sets the step at today's price, in a sentence. */
+  function rules() {
+    if (!market) return;
+    const { kind, szDecimals: szd } = market;
+    const maxDec = maxPriceDecimals(kind, szd);
+    const ref = market.mid ?? market.mark;
+    const refText = String(Number(ref.toPrecision(5)));
+    const { step } = nearestPrices(refText, kind, szd);
+    $("r-szd").textContent = String(szd);
+    $("r-dec").textContent = `${kind === "perp" ? 6 : 8} − ${szd} = ${maxDec}`;
+    $("r-step").textContent = grouped(step);
+    $("r-lot").textContent = szd ? `0.${"0".repeat(szd - 1)}1` : "1";
+    $("r-min").textContent = minimum(market);
+    const e = Math.floor(Math.log10(ref));
+    const at = `At today's price of about ${grouped(refText)}`;
+    $("why").textContent = ref >= 100_000
+      ? `${at}, every whole number is allowed, so the step is 1.`
+      : e - 4 >= -maxDec
+        ? `${at}, 5 significant figures reach steps of ${grouped(step)}, and the limit of ${plural(maxDec, "decimal")} doesn't bite yet. The step grows tenfold each time the price gains a digit.`
+        : `${at}, 5 significant figures would allow steps of ${e - 4 >= 0 ? grouped(String(10 ** (e - 4))) : `0.${"0".repeat(3 - e)}1`}, but ${market.name} allows only ${plural(maxDec, "decimal")}, so the step is ${grouped(step)}.`;
+    $("summary").textContent = `${market.name}: prices to 5 significant figures and ${plural(maxDec, "decimal")}, sizes to ${plural(szd, "decimal")}.`;
+  }
+
+  function pick() {
+    market = markets.get(coinSel.value);
+    if (!market) return;
+    $("sz-unit").textContent = unitOf(market);
+    // Starting values a little too precise, to show what the rules do with them.
+    const ref = market.mid ?? market.mark;
+    const maxDec = maxPriceDecimals(market.kind, market.szDecimals);
+    pxInput.value = (ref * 1.0000123).toFixed(maxDec + 2);
+    szInput.value = (25 / ref).toFixed(market.szDecimals + 2);
+    rules();
+    render();
+  }
+
+  async function start() {
+    try {
+      const [{ markets: perpList }, spotList] = await Promise.all([perps(), spots()]);
+      for (const m of [...perpList, ...spotList]) markets.set(m.coin, m);
+      coinSel.innerHTML = marketOptions(perpList, spotList, "BTC");
+      pick();
+    } catch {
+      $("summary").textContent = "Couldn't reach api.hyperliquid.xyz. Reload the page to try again.";
+    }
+  }
+
+  coinSel.addEventListener("change", pick);
+  pxInput.addEventListener("input", render);
+  szInput.addEventListener("input", render);
+  start();
+</script>
