@@ -1,0 +1,425 @@
+---
+import Base from "../../layouts/Base.astro";
+import "../../styles/lab.css";
+---
+
+<Base title="Hyperliquid order book, live in your browser" heading="Live order book" trail={[["Labs", "/labs/"], ["Live order book", "/labs/order-book/"]]} description="Any Hyperliquid perp or spot pair's order book, streamed from the API's WebSocket, with the settings that group it, the exact messages, and what a market order would cost.">
+  <div class="lab lab-book" data-pagefind-body data-pagefind-meta="kind:Lab">
+    <header class="lab-head">
+      <p class="eyebrow">Lab · T2 Reading the exchange</p>
+      <h1>Live order book</h1>
+      <p class="lede">
+        Any perp or spot pair's book, streamed from mainnet's WebSocket the way your code would get it.
+        Change how it's grouped and how often it comes, see the messages themselves, and work out what
+        a market order would cost.
+      </p>
+    </header>
+
+    <section class="panel controls" aria-labelledby="pick-title">
+      <h2 id="pick-title" class="visually-hidden">Which book, and how</h2>
+      <div class="field">
+        <label for="coin">Market</label>
+        <select id="coin"><option value="BTC">BTC</option></select>
+      </div>
+      <div class="field">
+        <label for="group">Grouping</label>
+        <select id="group"><option value="0">Full precision</option></select>
+      </div>
+      <div class="field">
+        <label for="speed">Feed</label>
+        <select id="speed">
+          <option value="slow">20 levels, every few seconds</option>
+          <option value="fast">5 levels, twice a second</option>
+        </select>
+      </div>
+      <p class="small" id="status">Loading the markets from api.hyperliquid.xyz…</p>
+      <button type="button" class="lab-btn" id="pause">Pause updates</button>
+    </section>
+
+    <section class="panel" aria-labelledby="book-title">
+      <h2 id="book-title">The book</h2>
+      <div class="grid-stats">
+        <div class="stat"><span>Best bid</span><b id="s-bid">–</b></div>
+        <div class="stat"><span>Best ask</span><b id="s-ask">–</b></div>
+        <div class="stat"><span>Spread</span><b id="s-spread">–</b></div>
+        <div class="stat"><span>Mid</span><b id="s-mid">–</b></div>
+      </div>
+      <div class="book">
+        <div class="table-scroll">
+          <table>
+            <caption>Bids, best first</caption>
+            <thead><tr><th scope="col">Price</th><th scope="col">Size</th><th scope="col">Total</th><th scope="col">Orders</th></tr></thead>
+            <tbody id="bids"><tr><td colspan="4" class="wait">Waiting for the first book…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <caption>Asks, best first</caption>
+            <thead><tr><th scope="col">Price</th><th scope="col">Size</th><th scope="col">Total</th><th scope="col">Orders</th></tr></thead>
+            <tbody id="asks"><tr><td colspan="4" class="wait">Waiting for the first book…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="small">
+        Each level is a price, the total size resting there and how many orders make it up. Each message
+        is the whole book again, not a change to the last one: replace what you have.
+      </p>
+    </section>
+
+    <section class="panel" aria-labelledby="depth-title">
+      <h2 id="depth-title">Depth</h2>
+      <p class="small">
+        How much is resting at each price or better: bids rise to the left of the mid, asks to the right.
+        This is one ridge of the drawing on the homepage.
+      </p>
+      <div class="chart" id="depth" role="img" aria-label="Depth chart, waiting for the first book"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="cost-title">
+      <h2 id="cost-title">What a market order would cost</h2>
+      <div class="order-form">
+        <fieldset class="seg">
+          <legend>Side</legend>
+          <label><input type="radio" name="side" value="buy" checked /> Buy</label>
+          <label><input type="radio" name="side" value="sell" /> Sell</label>
+        </fieldset>
+        <div class="field">
+          <label for="size">Size, in <span id="size-unit">BTC</span></label>
+          <input id="size" type="number" min="0" step="any" inputmode="decimal" />
+        </div>
+      </div>
+      <p id="cost">–</p>
+      <p class="small">
+        The levels it would reach are marked in the book above. A market order on Hyperliquid is a limit
+        order sent with IOC, priced past the mid by a slippage allowance (the Python SDK's default is 5%);
+        anything left after the levels up to that price is cancelled, not filled.
+      </p>
+    </section>
+
+    <section class="panel" aria-labelledby="wire-title">
+      <h2 id="wire-title">What went over the wire</h2>
+      <ol class="steps-out">
+        <li><span class="label">You send</span><code class="value" id="sent">–</code></li>
+        <li><span class="label">The latest book, cut short</span><code class="value" id="got">–</code></li>
+        <li><span class="label">How often it came</span><span class="value" id="cadence">–</span></li>
+        <li><span class="label">The same book over HTTP</span><code class="value" id="http">–</code></li>
+      </ol>
+      <h3>What we found on 11 Nov 2026</h3>
+      <ul class="facts">
+        <li>
+          The default feed sent 20 levels a side every 4 to 8 seconds. With <code>"fast": true</code> it sent
+          5 levels about every half second. For only the best bid and ask, the <code>bbo</code> feed came
+          about five times a second.
+        </li>
+        <li>
+          <code>nSigFigs</code> takes 2 to 5, and <code>mantissa</code> takes 2 or 5, only with nSigFigs 5.
+          The docs also list a mantissa of 1, but it isn't accepted.
+        </li>
+        <li>
+          Ask for a grouping outside that list, or a coin the exchange doesn't list, and the server closes
+          the connection without a message, taking every other subscription on it with it. Over HTTP the
+          same request gets back <code>null</code>. An unknown subscription type is different: it gets an
+          <code>error</code> message, and the connection stays up (<a href="/tracks/t02-reading-the-exchange/#stream-instead-of-polling">T2</a>).
+        </li>
+        <li>
+          A level's size is the total of its orders, and big totals can carry float noise: XAI's book had a
+          level of <code>6674450.7000000002</code>. Round sizes to the market's <code>szDecimals</code> before
+          using them, as the tables above do.
+        </li>
+        <li>
+          Spot pairs other than PURR/USDC go by their index, so HYPE/USDC's book is <code>@107</code>.
+        </li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style is:global>
+  /* Global, because the rows and the chart are drawn by the script below; everything is kept to this lab. */
+  .lab-book .book { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  @media (max-width: 760px) { .lab-book .book { grid-template-columns: minmax(0, 1fr); } }
+  .lab-book .book table { width: 100%; border-collapse: collapse; font: 400 0.8125rem/1.35 var(--data); font-variant-numeric: tabular-nums; }
+  .lab-book .book caption { text-align: left; font: 600 0.875rem/1.4 var(--body); padding: 10px 12px 6px; }
+  .lab-book .book th { font: 500 0.6875rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: right; padding: 4px 12px; border-bottom: 1px solid var(--rule); }
+  .lab-book .book td { text-align: right; padding: 3px 12px; white-space: nowrap; }
+  .lab-book .book :is(th, td):first-child { text-align: left; }
+  /* On phones the four columns fit without scrolling. */
+  @media (max-width: 480px) {
+    .lab-book .book table { font-size: 0.75rem; }
+    .lab-book .book :is(th, td) { padding-left: 6px; padding-right: 6px; }
+    .lab-book .book th { letter-spacing: 0.04em; }
+  }
+  .lab-book .book tbody tr:last-child td { padding-bottom: 8px; }
+  .lab-book .book td.wait { text-align: left; color: var(--muted); font-family: var(--body); padding: 10px 12px; white-space: normal; }
+  .lab-book #bids td:first-child { color: color-mix(in srgb, var(--bid) 72%, var(--ink)); }
+  .lab-book #asks td:first-child { color: color-mix(in srgb, var(--ask) 72%, var(--ink)); }
+  /* The running total, with a bar as long as its share of the deeper side. */
+  .lab-book td.tot { position: relative; }
+  .lab-book td.tot .bar { position: absolute; top: 2px; bottom: 2px; right: 6px; width: calc(var(--w) * 0.92); border-radius: 3px; opacity: 0.24; }
+  .lab-book #bids .bar { background: var(--bid); }
+  .lab-book #asks .bar { background: var(--ask); }
+  .lab-book td.tot .n { position: relative; }
+  /* The levels a market order would reach. */
+  .lab-book tr.reached td { background: color-mix(in srgb, var(--accent) 13%, transparent); }
+  .lab-book tr.reached td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  .lab-book .order-form { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: end; }
+  .lab-book .seg { display: flex; flex-wrap: wrap; gap: 6px; border: 0; padding: 0; margin: 0; }
+  .lab-book .seg legend { font-weight: 600; font-size: 0.875rem; margin-bottom: 6px; padding: 0; }
+  .lab-book .seg label { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; min-height: 44px; border: 1px solid var(--rule-strong); border-radius: 10px; cursor: pointer; font-size: 0.9375rem; }
+  .lab-book .seg label:has(input:checked) { border-color: var(--ink); background: var(--sunk); }
+  .lab-book .seg input { accent-color: var(--accent); margin: 0; }
+  .lab-book #cost { font-size: 1rem; line-height: 1.6; max-width: 72ch; }
+  .lab-book .facts { display: grid; gap: 10px; padding-left: 1.2em; margin: 0; max-width: 76ch; color: var(--ink-2); font-size: 0.9375rem; line-height: 1.6; }
+  .lab-book h3 { font-size: 1rem; font-weight: 600; margin-top: 4px; }
+  .lab-book .depth-bid { fill: var(--bid); fill-opacity: 0.2; stroke: var(--bid); stroke-width: 1.5; }
+  .lab-book .depth-ask { fill: var(--ask); fill-opacity: 0.2; stroke: var(--ask); stroke-width: 1.5; }
+  .lab-book .mid-line { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+  @media (forced-colors: active) {
+    .lab-book tr.reached td:first-child { box-shadow: none; border-left: 3px solid Highlight; }
+    .lab-book .seg label:has(input:checked) { border: 2px solid Highlight; }
+  }
+</style>
+
+<script>
+  import { subscribe, onConnection, type Book, type BookSub } from "../../scripts/hl-feed";
+  import { perps, spots, marketOptions, type Market } from "../../lib/markets";
+  import { GROUPINGS, groupStep, sweep, totals, type Level } from "../../lib/book";
+  import { nearestPrices } from "../../lib/precision";
+  import "../../scripts/lab-bar.ts";
+
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  const coinSel = $("coin") as HTMLSelectElement;
+  const groupSel = $("group") as HTMLSelectElement;
+  const speedSel = $("speed") as HTMLSelectElement;
+  const sizeInput = $("size") as HTMLInputElement;
+  const pause = $("pause") as HTMLButtonElement;
+
+  const markets = new Map<string, Market>();
+  let market: Market | undefined;
+  let stop: (() => void) | null = null;
+  let latest: Book | null = null;
+  // The book on screen: the latest one, or the one that was showing when the reader paused.
+  let view: Book | null = null;
+  let count = 0;
+  let firstAt = 0;
+  let lastAt = 0;
+  let updatedAt = "";
+  // The book keeps updating until the reader pauses it (WCAG 2.2.2).
+  let paused = false;
+  let up = true;
+
+  /** "73692.0" as "73,692.0": the API's own digits, grouped. */
+  const grouped = (s: string) => {
+    const [whole, frac] = s.split(".");
+    return whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (frac !== undefined ? `.${frac}` : "");
+  };
+  const qty = (x: number) => x.toLocaleString("en-US", { minimumFractionDigits: market?.szDecimals ?? 0, maximumFractionDigits: market?.szDecimals ?? 0 });
+  const price = (x: number) => x.toLocaleString("en-US", { maximumSignificantDigits: 7 });
+  /** Axis labels: three significant figures are enough to read a chart by. */
+  const axis = (x: number) => x.toLocaleString("en-US", { maximumSignificantDigits: 3 });
+  const usd = (x: number) => `$${x.toLocaleString("en-US", { maximumFractionDigits: x >= 1000 ? 0 : 2 })}`;
+  /** A step of 1, 2 or 5 times a power of ten, written out. */
+  const stepText = (x: number) => {
+    const k = Math.floor(Math.log10(x) + 1e-9);
+    const m = Math.round(x / 10 ** k);
+    return k >= 0 ? (m * 10 ** k).toLocaleString("en-US") : `0.${"0".repeat(-k - 1)}${m}`;
+  };
+
+  function sayStatus() {
+    $("status").textContent = !up
+      ? "Connection lost; reconnecting…"
+      : !latest
+        ? "Waiting for the first book…"
+        : paused
+          ? `Paused · showing the book from ${updatedAt}`
+          : `Live from mainnet · updated ${updatedAt}`;
+  }
+
+  /** The grouping choices, each with the price step it gives at this market's price. */
+  function groupingOptions() {
+    const ref = latest ? Number(latest.levels[0][0]?.px ?? latest.levels[1][0]?.px) : market?.mid ?? market?.mark;
+    const keep = groupSel.value;
+    groupSel.innerHTML = GROUPINGS.map((g, i) => {
+      let label = "Full precision";
+      if (ref && market) {
+        const step = g.nSigFigs ? stepText(groupStep(ref, g.nSigFigs, g.mantissa)) : nearestPrices(String(ref), market.kind, market.szDecimals).step;
+        label = g.nSigFigs ? `nSigFigs ${g.nSigFigs}${g.mantissa ? `, mantissa ${g.mantissa}` : ""}: steps of ${step}` : `Full precision: steps of ${step}`;
+      }
+      return `<option value="${i}"${String(i) === keep ? " selected" : ""}>${label}</option>`;
+    }).join("");
+  }
+
+  function current(): BookSub {
+    const g = GROUPINGS[Number(groupSel.value)] ?? {};
+    return { type: "l2Book", coin: coinSel.value, ...g, ...(speedSel.value === "fast" ? { fast: true } : {}) };
+  }
+
+  function resubscribe() {
+    stop?.();
+    latest = view = null;
+    count = 0;
+    firstAt = 0;
+    const sub = current();
+    $("sent").textContent = JSON.stringify({ method: "subscribe", subscription: sub });
+    const { fast: _fast, ...http } = sub;
+    $("http").textContent = `POST https://api.hyperliquid.xyz/info\n${JSON.stringify(http)}`;
+    $("bids").innerHTML = $("asks").innerHTML = `<tr><td colspan="4" class="wait">Waiting for the first book…</td></tr>`;
+    $("cadence").textContent = "–";
+    sayStatus();
+    stop = subscribe(sub, (book: Book) => {
+      const now = Date.now();
+      count++;
+      if (!firstAt) firstAt = now;
+      lastAt = now;
+      const first = !latest;
+      latest = book;
+      if (first) groupingOptions();
+      if (!paused || !view) {
+        view = book;
+        render();
+      }
+    });
+  }
+
+  function side(): "buy" | "sell" {
+    return (document.querySelector<HTMLInputElement>('input[name="side"]:checked')?.value as "buy" | "sell") ?? "buy";
+  }
+
+  function rows(levels: Level[], max: number, hits: number) {
+    if (!levels.length) return `<tr><td colspan="4" class="wait">Nothing resting on this side.</td></tr>`;
+    const t = totals(levels);
+    return levels
+      .map((l, i) => `<tr${i < hits ? ' class="reached"' : ""}><td>${grouped(l.px)}</td><td>${qty(Number(l.sz))}</td><td class="tot"><span class="bar" style="--w:${((t[i] / max) * 100).toFixed(1)}%"></span><span class="n">${qty(t[i])}</span></td><td>${l.n}</td></tr>`)
+      .join("");
+  }
+
+  function render() {
+    if (!view || !market) return;
+    updatedAt = new Date(view.time).toLocaleTimeString();
+    sayStatus();
+    const [bids, asks] = view.levels;
+    const bid = Number(bids[0]?.px);
+    const ask = Number(asks[0]?.px);
+    const mid = (bid + ask) / 2;
+    $("s-bid").textContent = bids[0] ? grouped(bids[0].px) : "none";
+    $("s-ask").textContent = asks[0] ? grouped(asks[0].px) : "none";
+    $("s-mid").textContent = bids[0] && asks[0] ? price(mid) : "–";
+    $("s-spread").textContent = bids[0] && asks[0] ? `${price(ask - bid)} · ${(((ask - bid) / mid) * 1e4).toFixed(2)} bps` : "–";
+
+    // The market order: which side it eats, and how far.
+    const size = Number(sizeInput.value) || 0;
+    const buying = side() === "buy";
+    const eaten = buying ? asks : bids;
+    const s = sweep(eaten, size);
+    const unit = market.kind === "perp" ? market.coin : market.name.split("/")[0];
+    if (!size) $("cost").textContent = "Enter a size to see what it would cost.";
+    else if (!eaten.length) $("cost").textContent = `There are no ${buying ? "asks" : "bids"} to fill against.`;
+    else {
+      const slip = ((s.avg - mid) / mid) * 1e4 * (buying ? 1 : -1);
+      // The average to one decimal more than the book's prices have.
+      const d = (eaten[0].px.split(".")[1] ?? "").length + 1;
+      const avg = s.avg.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+      const where = s.used === 1
+        ? `fills at ${grouped(s.last ?? "")}, the best ${buying ? "ask" : "bid"}`
+        : `reaches ${s.used} levels, averaging ${avg} and ending at ${grouped(s.last ?? "")}`;
+      let text = `A market ${buying ? "buy" : "sell"} of ${qty(size)} ${unit} ${where}: ${slip.toFixed(2)} bps ${buying ? "above" : "below"} the mid, about ${usd(s.cost)} in all.`;
+      if (s.unfilled > 0) text += ` The ${eaten.length} levels shown only hold ${qty(s.filled)} ${unit}; the other ${qty(s.unfilled)} would fill deeper than this feed shows.`;
+      $("cost").textContent = text;
+    }
+
+    const max = Math.max(totals(bids).at(-1) ?? 0, totals(asks).at(-1) ?? 0) || 1;
+    $("bids").innerHTML = rows(bids, max, size && !buying ? s.used : 0);
+    $("asks").innerHTML = rows(asks, max, size && buying ? s.used : 0);
+    drawDepth(bids, asks, mid);
+
+    // The message as it came, cut to two levels a side.
+    const cut = (ls: Level[]) => `[${ls.slice(0, 2).map((l) => JSON.stringify(l)).join(",")}${ls.length > 2 ? `, …${ls.length - 2} more` : ""}]`;
+    $("got").textContent = `{"channel":"l2Book","data":{"coin":"${view.coin}","time":${view.time},"levels":[\n  ${cut(bids)},\n  ${cut(asks)}\n]}}`;
+    $("cadence").textContent = count < 2
+      ? "One book so far. The next one shows how often they come."
+      : `${count} books in ${((lastAt - firstAt) / 1000).toFixed(0)} s: one every ${((lastAt - firstAt) / 1000 / (count - 1)).toFixed(1)} s on average.`;
+  }
+
+  function drawDepth(bids: Level[], asks: Level[], mid: number) {
+    const host = $("depth");
+    if (!bids.length || !asks.length) {
+      host.innerHTML = "";
+      host.setAttribute("aria-label", "Depth chart: one side of this book is empty");
+      return;
+    }
+    const W = Math.max(300, host.clientWidth), H = 240;
+    const m = { l: 64, r: 18, t: 14, b: 44 };
+    const bt = totals(bids), at = totals(asks);
+    const lo = Number(bids.at(-1)!.px), hi = Number(asks.at(-1)!.px);
+    const top = Math.max(bt.at(-1)!, at.at(-1)!) * 1.08;
+    const x = (p: number) => m.l + ((p - lo) / (hi - lo || 1)) * (W - m.l - m.r);
+    const y = (t: number) => H - m.b - (t / top) * (H - m.t - m.b);
+    const path = (ls: Level[], t: number[], edge: number) => {
+      let d = `M${x(Number(ls[0].px)).toFixed(1)},${y(0).toFixed(1)}`;
+      ls.forEach((l, i) => {
+        d += ` V${y(t[i]).toFixed(1)}`;
+        d += ` H${x(i + 1 < ls.length ? Number(ls[i + 1].px) : edge).toFixed(1)}`;
+      });
+      return `${d} V${y(0).toFixed(1)} Z`;
+    };
+    let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+    for (const f of [0, 0.5, 1]) {
+      const t = (top / 1.08) * f;
+      svg += `<line class="gridline" x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/><text class="ax" x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${axis(t)}</text>`;
+    }
+    for (const p of [lo, mid, hi]) svg += `<text class="ax" x="${x(p)}" y="${H - m.b + 18}" text-anchor="${p === lo ? "start" : p === hi ? "end" : "middle"}">${price(p)}</text>`;
+    svg += `<path class="depth-bid" d="${path(bids, bt, lo)}"/><path class="depth-ask" d="${path(asks, at, hi)}"/>`;
+    svg += `<line class="mid-line" x1="${x(mid)}" x2="${x(mid)}" y1="${m.t}" y2="${H - m.b}"/>`;
+    svg += `<text class="ax ax-title" x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle">Price</text>`;
+    svg += `<text class="ax ax-title" transform="translate(14 ${(m.t + H - m.b) / 2}) rotate(-90)" text-anchor="middle">Size, running total</text>`;
+    host.innerHTML = svg + "</svg>";
+    host.setAttribute(
+      "aria-label",
+      `Depth chart: ${qty(bt.at(-1)!)} bid between ${price(lo)} and the mid, ${qty(at.at(-1)!)} offered between the mid and ${price(hi)}`,
+    );
+  }
+
+  function pick() {
+    market = markets.get(coinSel.value);
+    if (!market) return;
+    $("size-unit").textContent = market.kind === "perp" ? market.coin : market.name.split("/")[0];
+    // A size worth about $10,000 at today's price, rounded to the market's lot size.
+    const ref = market.mid ?? market.mark;
+    sizeInput.value = ref ? String(Number((10_000 / ref).toFixed(market.szDecimals)) || 1) : "1";
+    groupSel.value = "0";
+    groupingOptions();
+    resubscribe();
+  }
+
+  async function start() {
+    try {
+      const [{ markets: perpList }, spotList] = await Promise.all([perps(), spots()]);
+      for (const m of [...perpList, ...spotList]) markets.set(m.coin, m);
+      coinSel.innerHTML = marketOptions(perpList, spotList, "BTC");
+      pick();
+    } catch {
+      $("status").textContent = "Couldn't reach api.hyperliquid.xyz. Reload the page to try again.";
+    }
+  }
+
+  coinSel.addEventListener("change", pick);
+  groupSel.addEventListener("change", resubscribe);
+  speedSel.addEventListener("change", resubscribe);
+  sizeInput.addEventListener("input", render);
+  document.querySelectorAll('input[name="side"]').forEach((r) => r.addEventListener("change", render));
+  new ResizeObserver(() => render()).observe($("depth"));
+  onConnection((isUp) => {
+    up = isUp;
+    sayStatus();
+  });
+  pause.addEventListener("click", () => {
+    paused = !paused;
+    pause.textContent = paused ? "Resume updates" : "Pause updates";
+    if (paused) sayStatus();
+    else {
+      view = latest;
+      render();
+    }
+  });
+  start();
+</script>
