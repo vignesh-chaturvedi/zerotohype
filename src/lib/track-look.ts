@@ -1,6 +1,6 @@
 // Each track's cover: a colour and a drawing of the thing the track is about.
 
-export type Motif = "layers" | "book" | "sign" | "funding" | "flow" | "ladder" | "oracle" | "window" | "blocks" | "nodes";
+export type Motif = "layers" | "book" | "sign" | "funding" | "flow" | "ladder" | "oracle" | "window" | "blocks" | "nodes" | "ticks" | "liq";
 
 export const trackLook: Record<string, { color: string; motif: Motif }> = {
   T1: { color: "#ecd98f", motif: "layers" },

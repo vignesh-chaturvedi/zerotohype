@@ -44,10 +44,14 @@ const inline = (s: string) => escape(s).replace(/`([^`]+)`/g, "<code>$1</code>")
 const c = meta.counts;
 
 const coins = ["BTC", "ETH", "HYPE", "SOL", "XRP", "DOGE", "SUI", "ENA", "LINK", "AVAX", "BNB", "AAVE"];
-const labs = [
+// Each tile shows what its lab works with: the signing recipe, the settlement chart, or a few lines of it.
+const labs: { n: string; code: string; href: string; title: string; note: string; what: string; lines?: string[] }[] = [
   { n: "01", code: "T3", href: "/labs/sign-without-money/", title: "Sign without money", note: "Testnet · throwaway key", what: "Sign a cancel with a key made in your browser. The exchange's error names the address it recovered, so you know whether your encoding is right." },
-  { n: "02", code: "T4", href: "/labs/funding/", title: "Funding and mark price", note: "Mainnet · read-only", what: "Live oracle, mark and impact prices for any perp, with the premium and the hour's funding worked out next to the API's own number." },
+  { n: "02", code: "T4", href: "/labs/funding/", title: "Funding and mark price", note: "Mainnet · read-only", what: "Live oracle, mark and impact prices for any perp, with the premium and the hour's funding worked out next to the API's own number.", lines: ["premium = (impact − oracle) / oracle", "funding / h = clamp(premium + interest) / 8"] },
   { n: "03", code: "T8", href: "/labs/settlement/", title: "Settlement explorer", note: `${markets.length} real settlements`, what: "Replay real HIP-4 settlements from prices recorded by hyperkeeper, an open-source tool for market deployers, and see which average each venue really uses." },
+  { n: "04", code: "T2", href: "/labs/order-book/", title: "Live order book", note: "Mainnet · live feed", what: "Any perp or spot pair's book from the WebSocket, with the settings that group it, the messages themselves and what a market order would cost.", lines: ['{ "type": "l2Book", "coin": "BTC" }', "nSigFigs 2–5 · mantissa 2 or 5", "fast: 5 levels, twice a second"] },
+  { n: "05", code: "T2", href: "/labs/tick-and-lot/", title: "Tick and lot sizes", note: "Mainnet · read-only", what: "Type a price and a size and see whether the exchange would take them, the nearest values it would, and tested code that rounds them.", lines: ['73836.408 → "73836"', "at most 5 significant figures", "at most 6 − szDecimals decimals"] },
+  { n: "06", code: "T4", href: "/labs/liquidation-price/", title: "Margin and liquidation price", note: "Mainnet · read-only", what: "Work out a position's liquidation price, margin tiers included, and check the formula against the API's own number for real positions.", lines: ["liq = price − side × margin", "      / size / (1 − rate × side)", "rate = 1 / (2 × max leverage)"] },
 ];
 
 // Shorter routes through the roadmap, by what the reader is building.
@@ -215,7 +219,7 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
                 <li class="reply">“User or API Wallet <b>0x…</b> does not exist.”</li>
               </ol>
             ) : (
-              <span class="formula" aria-hidden="true"><span>premium = (impact − oracle) / oracle</span><span>funding / h = clamp(premium + interest) / 8</span></span>
+              <span class="formula" aria-hidden="true">{(lab.lines ?? []).map((line) => <span>{line}</span>)}</span>
             )}
             <span class="tile-title">{lab.title}</span>
             <span class="tile-what">{lab.what}</span>
@@ -561,6 +565,7 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
   /* The drawing takes up any spare height, so the titles and text below line up across the three tiles. */
   .recipe, .formula { margin: 0; padding: 12px 14px 12px 30px; border-radius: 8px; background: var(--sunk); font: 400 0.75rem/1.65 var(--data); color: var(--ink-2); align-self: stretch; }
   .formula { padding-left: 14px; display: flex; flex-direction: column; justify-content: center; }
+  .formula span { white-space: pre-wrap; }
   .recipe code { background: none; padding: 0; font-size: inherit; color: var(--ink); }
   .recipe .reply { list-style: none; margin: 6px 0 0 -16px; color: var(--muted); }
   .recipe .reply b { color: var(--accent); font-weight: 500; }

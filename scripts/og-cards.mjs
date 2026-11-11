@@ -150,7 +150,10 @@ const looks = drawings(homeHtml);
 if (Object.keys(looks).length < 10) throw new Error(`og-cards: found ${Object.keys(looks).length} track drawings on the homepage, expected 10`);
 
 // Pages that aren't tracks borrow the drawing of the track they belong to.
-const borrowed = { "labs-sign-without-money": "T3", "labs-funding": "T4", "labs-settlement": "T8", changelog: "T9" };
+const borrowed = {
+  "labs-sign-without-money": "T3", "labs-funding": "T4", "labs-settlement": "T8",
+  "labs-order-book": "T2", "labs-tick-and-lot": "T2", "labs-liquidation-price": "T4", changelog: "T9",
+};
 
 await mkdir(join(dist, "og"), { recursive: true });
 let n = 0;
