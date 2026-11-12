@@ -342,7 +342,7 @@
     },
     "for-developers/api/rate-limits-and-user-limits": {
       "title": "Rate limits and user limits",
-      "hash": "d7b487ed9cbb"
+      "hash": "394de0b0bc42"
     },
     "for-developers/api/activation-gas-fee": {
       "title": "Activation gas fee",
@@ -350,7 +350,7 @@
     },
     "for-developers/api/optimizing-latency": {
       "title": "Optimizing latency",
-      "hash": "42067a944564"
+      "hash": "48bbeccbe918"
     },
     "for-developers/api/priority-fees": {
       "title": "Priority fees",

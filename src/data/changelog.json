@@ -1,5 +1,17 @@
 [
   {
+    "time": "2026-11-12T15:05:59.227Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Rate limits and user limits](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/rate-limits-and-user-limits)"
+  },
+  {
+    "time": "2026-11-12T15:05:59.227Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Optimizing latency](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/optimizing-latency)"
+  },
+  {
     "time": "2026-11-11T06:06:29.281Z",
     "network": "testnet",
     "area": "HIP-3",
