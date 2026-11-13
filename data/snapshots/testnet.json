@@ -3868,6 +3868,11 @@
       "fullName": "Valantis multisig SDK test",
       "oracleUpdater": null,
       "grants": {}
+    },
+    "kz": {
+      "fullName": "Kazakhstan",
+      "oracleUpdater": null,
+      "grants": {}
     }
   },
   "venues": {

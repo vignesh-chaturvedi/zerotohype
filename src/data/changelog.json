@@ -1,5 +1,11 @@
 [
   {
+    "time": "2026-11-13T06:35:23.618Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `kz` (Kazakhstan)"
+  },
+  {
     "time": "2026-11-12T23:33:54.639Z",
     "network": "testnet",
     "area": "HIP-4",
