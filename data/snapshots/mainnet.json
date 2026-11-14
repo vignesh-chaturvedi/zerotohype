@@ -1245,11 +1245,11 @@
     }
   },
   "venues": {
-    "out": 198,
-    "fox": 6,
-    "protocol": 8,
+    "out": 163,
+    "skew": 67,
     "txyz": 16,
-    "skew": 66
+    "fox": 7,
+    "protocol": 8
   },
   "templates": {
     "aiModelHeadToHead": "16e36658a5f0",
