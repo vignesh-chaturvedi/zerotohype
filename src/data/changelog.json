@@ -1,5 +1,17 @@
 [
   {
+    "time": "2026-11-14T13:27:52.393Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Brand kit](https://hyperliquid.gitbook.io/hyperliquid-docs/brand-kit)"
+  },
+  {
+    "time": "2026-11-14T13:27:52.393Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "New docs page: [Foundation trademark guidelines](https://hyperliquid.gitbook.io/hyperliquid-docs/brand-kit/foundation-trademark-guidelines)"
+  },
+  {
     "time": "2026-11-13T19:37:17.999Z",
     "network": "testnet",
     "area": "HIP-4",

@@ -278,7 +278,11 @@
     },
     "brand-kit": {
       "title": "Brand kit",
-      "hash": "84e2c0266239"
+      "hash": "11c0e6e81595"
+    },
+    "brand-kit/foundation-trademark-guidelines": {
+      "title": "Foundation trademark guidelines",
+      "hash": "a8ce84497896"
     },
     "for-developers/api": {
       "title": "API",
