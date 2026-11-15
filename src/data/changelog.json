@@ -1,5 +1,11 @@
 [
   {
+    "time": "2026-11-15T18:48:01.282Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `qosm` (x dex)"
+  },
+  {
     "time": "2026-11-15T06:21:09.018Z",
     "network": "testnet",
     "area": "HIP-4",

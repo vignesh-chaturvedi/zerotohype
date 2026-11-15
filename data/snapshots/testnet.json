@@ -3873,6 +3873,52 @@
       "fullName": "Kazakhstan",
       "oracleUpdater": null,
       "grants": {}
+    },
+    "qosm": {
+      "fullName": "x dex",
+      "oracleUpdater": "0xc1524535e2e69b5f2c08355508bed214cda50e5d",
+      "grants": {
+        "registerAsset": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setOracle": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284",
+          "0xc1524535e2e69b5f2c08355508bed214cda50e5d"
+        ],
+        "insertMarginTable": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setFeeRecipient": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "haltTrading": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setMarginTableIds": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setOpenInterestCaps": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setMarginModes": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setDeployerFees": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setFundingInterestRates": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "disableDex": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setPerpAnnotation": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setFundingClamps": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ]
+      }
     }
   },
   "venues": {
@@ -3890,7 +3936,7 @@
     "ac": 1,
     "out": 9,
     "ad": 6,
-    "flip": 18,
+    "flip": 20,
     "aa": 4,
     "kelp": 9,
     "hehe": 6,
