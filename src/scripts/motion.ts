@@ -1,7 +1,8 @@
-// Whether the reader has paused the moving parts of the site: the homepage's live order book and
-// price tape, and the dots that travel along the drawings. WCAG 2.2.2 asks for a way to pause anything
-// that moves by itself for more than five seconds. The choice is kept in this browser only, under
-// "zth:motion", and Base.astro applies it as <html data-motion="paused"> before the page paints.
+// Whether the reader has paused the moving parts of the site: the homepage's departure board, with its
+// flipping prices and funding countdown, and the dots that travel along the drawings. WCAG 2.2.2 asks
+// for a way to pause anything that moves by itself for more than five seconds. The choice is kept in
+// this browser only, under "zth:motion", and Base.astro applies it as <html data-motion="paused">
+// before the page paints.
 
 const KEY = "zth:motion";
 const EVENT = "zth:motion";

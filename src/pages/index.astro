@@ -2,7 +2,8 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import TrackCover from "../components/TrackCover.astro";
-import { lookOf, stageNotes } from "../lib/track-look";
+import Station from "../components/Station.astro";
+import { lineStyle, lookOf, stageNotes } from "../lib/track-look";
 import { timeWeighted, volumeWeighted, type Sample } from "../lib/twap";
 import settlements from "../../public/data/hip4-settlements.json";
 import entries from "../data/changelog.json";
@@ -43,7 +44,8 @@ const escape = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").rep
 const inline = (s: string) => escape(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g, "$1");
 const c = meta.counts;
 
-const coins = ["BTC", "ETH", "HYPE", "SOL", "XRP", "DOGE", "SUI", "ENA", "LINK", "AVAX", "BNB", "AAVE"];
+// The departure board's rows: the busiest perps, plus HYPE.
+const boardCoins = ["BTC", "ETH", "HYPE", "SOL", "XRP", "DOGE", "SUI", "ENA"];
 // Each tile shows what its lab works with: the signing recipe, the settlement chart, or a few lines of it.
 const labs: { n: string; code: string; href: string; title: string; note: string; what: string; lines?: string[] }[] = [
   { n: "01", code: "T3", href: "/labs/sign-without-money/", title: "Sign without money", note: "Testnet · throwaway key", what: "Sign a cancel with a key made in your browser. The exchange's error names the address it recovered, so you know whether your encoding is right." },
@@ -67,49 +69,63 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
 
 <Base title="Zero to HYPE: learn to build on Hyperliquid" heading="From your first API call to your own perp DEX." description="A free, open-source roadmap for building on Hyperliquid: every topic mapped to the official docs and the best tutorials, with labs that run in your browser.">
   <Fragment slot="stage">
-    <section class="stage" data-tide aria-labelledby="hero-title">
-      <canvas aria-hidden="true"></canvas>
-      <div class="wrap stage-copy">
-        <p class="eyebrow kicker">Free · open source · no sign-up</p>
-        <h1 id="hero-title">From your first API call to your own <em>perp&nbsp;DEX</em>.</h1>
-        <p class="lede">
-          A roadmap for building on Hyperliquid. Ten tracks, each mapped to the official docs and the
-          best outside guides, with labs that run against the real API in your browser.
-        </p>
-        <div class="ctas">
-          <a class="btn" href="/tracks/t01-orientation/">Start with T1 <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn ghost" href="/labs/">Try a lab</a>
+    <section class="stage" aria-labelledby="hero-title">
+      <div class="wrap stage-grid">
+        <div class="stage-copy">
+          <p class="eyebrow plate">Free · open source · no sign-up</p>
+          <h1 id="hero-title">From your first API call to your own <em>perp&nbsp;DEX</em>.</h1>
+          <p class="lede">
+            A roadmap for building on Hyperliquid. Ten tracks, each mapped to the official docs and the
+            best outside guides, with labs that run against the real API in your browser.
+          </p>
+          <div class="ctas">
+            <a class="btn" href="/tracks/t01-orientation/">Start with T1 <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn ghost" href="/labs/">Try a lab</a>
+          </div>
         </div>
-      </div>
-      <div class="wrap stage-foot">
-        <span class="cap" data-tide-caption data-state="waiting">Connecting to the BTC order book…</span>
-        <span class="foot-end">
-          <span class="hint">Point at a ridge to read the depth</span>
-          {/* Pauses the ridges, the tape and its prices (motion.ts); shown once the script runs. */}
-          <button type="button" class="motion-btn" data-motion-toggle hidden>
-            <svg viewBox="0 0 12 12" aria-hidden="true"><path class="i-pause" d="M3.8 2.6v6.8M8.2 2.6v6.8" /><path class="i-play" d="M3.4 2.2 10 6l-6.6 3.8Z" /></svg>
-            <span data-motion-label>Pause motion</span>
-          </button>
-        </span>
+
+        {/* A departure board for the market: live mids on split flaps (board.ts). */}
+        <section class="board" data-board aria-labelledby="board-title">
+          <header class="board-head">
+            <h2 id="board-title">Perps <span>Hyperliquid mainnet</span></h2>
+            <p class="board-next">Next funding <b data-funding>--:--</b></p>
+          </header>
+          <table class="board-table">
+            <thead>
+              <tr><th scope="col">Market</th><th scope="col">Mid</th><th scope="col">24h</th></tr>
+            </thead>
+            <tbody>
+              {boardCoins.map((coin) => (
+                <tr data-mid={coin}>
+                  <th scope="row">
+                    <span class="flaps" aria-hidden="true">{[...coin.padEnd(4, " ")].map((ch) => <span class="flap" data-ch={ch}><span class="u">{ch}</span><span class="d">{ch}</span></span>)}</span>
+                    <span class="visually-hidden">{coin}</span>
+                  </th>
+                  <td>
+                    <span class="flaps" data-px aria-hidden="true">{Array.from({ length: 8 }, () => <span class="flap" data-ch=" "><span class="u"> </span><span class="d"> </span></span>)}</span>
+                    <span class="visually-hidden" data-px-text>Loading</span>
+                  </td>
+                  <td class="chg" data-chg>…</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <footer class="board-foot">
+            <span class="cap" data-board-caption data-state="waiting">Connecting to api.hyperliquid.xyz…</span>
+            {/* Pauses the board's prices and clock and the drawings' moving dots (motion.ts); shown once the script runs. */}
+            <button type="button" class="motion-btn" data-motion-toggle hidden>
+              <svg viewBox="0 0 12 12" aria-hidden="true"><path class="i-pause" d="M3.8 2.6v6.8M8.2 2.6v6.8" /><path class="i-play" d="M3.4 2.2 10 6l-6.6 3.8Z" /></svg>
+              <span data-motion-label>Pause motion</span>
+            </button>
+          </footer>
+        </section>
       </div>
     </section>
-    <div class="tape" data-tape>
-      <p class="tape-label"><span class="live-dot"></span>Perp mids</p>
-      <div class="tape-view" data-scroll-area="Perp mid prices">
-        <div class="tape-track">
-          {[0, 1].map((copy) => (
-            <ul aria-hidden={copy === 1 ? "true" : undefined}>
-              {coins.map((coin) => <li class="tk" data-mid={coin}><span>{coin}</span><b>—</b></li>)}
-            </ul>
-          ))}
-        </div>
-      </div>
-    </div>
   </Fragment>
 
   <section class="roadmap" aria-labelledby="roadmap-title">
     <div class="section-head">
-      <p class="eyebrow">01 · The roadmap</p>
+      <p class="eyebrow plate"><b>01</b>The roadmap</p>
       <h2 id="roadmap-title">Ten tracks, in the order you'll need them.</h2>
       <p class="muted">
         {count(docCount, "official page")} and {count(outsideCount, "outside guide")}, sorted into tracks. Each one says what
@@ -130,11 +146,11 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
           <li class="path">
             <p class="path-name">{p.name}</p>
             <p class="path-what">{p.what}</p>
-            <p class="path-codes">
-              {p.steps.map((s, i) => (
-                <span class="step">{i > 0 && <span aria-hidden="true">→</span>}<a href={`/tracks/${s.id}/`} aria-label={`${s.code} ${s.title}`}>{s.code}</a></span>
+            <ol class="path-codes">
+              {p.steps.map((s) => (
+                <li><a href={`/tracks/${s.id}/`} aria-label={`${s.code} ${s.title}`} title={`${s.code} ${s.title}`}><Station code={s.code} size="s" /></a></li>
               ))}
-            </p>
+            </ol>
           </li>
         ))}
       </ul>
@@ -144,12 +160,12 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
       <div class="groups">
         {stages.map((stage, si) => (
           <div class="group">
-            <p class="group-head"><span class="eyebrow">Stage {si + 1}</span><span class="group-name">{stage}</span><span class="group-note">{stageNotes[stage]}</span></p>
+            <p class="group-head"><span class="group-n">Stage {si + 1}</span><span class="group-name">{stage}</span><span class="group-note">{stageNotes[stage]}</span></p>
             <ol class="rows">
               {tracks.filter((t) => t.data.stage === stage).map((t) => (
                 <li>
-                  <a class="row" href={`/tracks/${t.id}/`} data-code={t.data.code} data-done-id={t.id} style={`--c: ${lookOf(t.data.code).color}`}>
-                    <span class="row-code">{t.data.code}</span>
+                  <a class="row" href={`/tracks/${t.id}/`} data-code={t.data.code} data-done-id={t.id} style={lineStyle(t.data.code)}>
+                    <span class="row-stn"><Station code={t.data.code} /></span>
                     <span class="row-main">
                       <span class="row-title">{t.data.title}</span>
                       <span class="row-sum">{t.data.summary}</span>
@@ -173,7 +189,7 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
           <div class={`pv${i === 0 ? " on" : ""}`} data-code={t.data.code} style={`--c: ${lookOf(t.data.code).color}`}>
             <TrackCover code={t.data.code} label={t.data.stage} />
             <div class="pv-body">
-              <p class="pv-title"><span>{t.data.code}</span>{t.data.title}</p>
+              <p class="pv-title"><Station code={t.data.code} size="s" />{t.data.title}</p>
               <p class="pv-sum">{t.data.summary}</p>
               {t.data.build.length > 0 && (
                 <ul class="pv-build">
@@ -193,37 +209,39 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
 
   <section class="labs" aria-labelledby="labs-title">
     <div class="section-head">
-      <p class="eyebrow">02 · Labs</p>
+      <p class="eyebrow plate"><b>02</b>Labs</p>
       <h2 id="labs-title">Things you can run, not just read.</h2>
       <p class="muted">Each lab talks to Hyperliquid's API straight from your browser. None needs funds or a real key, and none can change anything on the exchange.</p>
     </div>
     <ol class="tiles">
       {labs.map((lab) => (
         <li>
-          <a class="tile" href={lab.href} style={`--c: ${lookOf(lab.code).color}`}>
+          <a class="tile" href={lab.href} style={lineStyle(lab.code)}>
             <span class="tile-top">
-              <span class="tile-n">{lab.n}</span>
-              <span class="eyebrow">{lab.note}</span>
+              <span class="tile-n">Lab {lab.n}</span>
+              <span class="tile-note">{lab.note}</span>
             </span>
-            {lab.n === "03" ? (
-              <svg viewBox={`0 0 ${W} ${H}`} class="spark" aria-hidden="true" data-kind="price" data-pad={pad} data-h={H} data-lo={lo} data-hi={hi} data-t0={t0} data-len={L}>
-                <rect x={x(0)} y="0" width={x(L) - x(0)} height={H} class="win" />
-                <path d={`M${pad} ${y(th)} H${W - pad}`} class="thr" />
-                <path d={trace} class="trace" data-snap="trace" data-flow="1" />
-              </svg>
-            ) : lab.n === "01" ? (
-              <ol class="recipe" aria-hidden="true">
-                <li><code>msgpack(action)</code></li>
-                <li>+ nonce, vault → <code>keccak256</code></li>
-                <li>sign a small EIP-712 message</li>
-                <li class="reply">“User or API Wallet <b>0x…</b> does not exist.”</li>
-              </ol>
-            ) : (
-              <span class="formula" aria-hidden="true">{(lab.lines ?? []).map((line) => <span>{line}</span>)}</span>
-            )}
-            <span class="tile-title">{lab.title}</span>
-            <span class="tile-what">{lab.what}</span>
-            <span class="tile-go" aria-hidden="true">Open lab →</span>
+            <span class="tile-body">
+              {lab.n === "03" ? (
+                <svg viewBox={`0 0 ${W} ${H}`} class="spark" aria-hidden="true" data-kind="price" data-pad={pad} data-h={H} data-lo={lo} data-hi={hi} data-t0={t0} data-len={L}>
+                  <rect x={x(0)} y="0" width={x(L) - x(0)} height={H} class="win" />
+                  <path d={`M${pad} ${y(th)} H${W - pad}`} class="thr" />
+                  <path d={trace} class="trace" data-snap="trace" data-flow="1" />
+                </svg>
+              ) : lab.n === "01" ? (
+                <ol class="recipe" aria-hidden="true">
+                  <li><code>msgpack(action)</code></li>
+                  <li>+ nonce, vault → <code>keccak256</code></li>
+                  <li>sign a small EIP-712 message</li>
+                  <li class="reply">“User or API Wallet <b>0x…</b> does not exist.”</li>
+                </ol>
+              ) : (
+                <span class="formula" aria-hidden="true">{(lab.lines ?? []).map((line) => <span>{line}</span>)}</span>
+              )}
+              <span class="tile-title">{lab.title}</span>
+              <span class="tile-what">{lab.what}</span>
+              <span class="tile-go"><span class="tile-track"><Station code={lab.code} size="s" /></span>Open lab <span aria-hidden="true">→</span></span>
+            </span>
           </a>
         </li>
       ))}
@@ -238,7 +256,7 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
 
   <section class="stay" aria-labelledby="stay-title">
     <div class="stay-copy">
-      <p class="eyebrow">03 · API changelog</p>
+      <p class="eyebrow plate"><b>03</b>API changelog</p>
       <h2 id="stay-title">The API changes before the docs do.</h2>
       <p class="muted">
         Hyperliquid publishes no changelog. A job checks mainnet, testnet and every docs page every
@@ -247,7 +265,9 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
       </p>
       <a class="btn ghost" href="/changelog/">Read the changelog <span class="arrow" aria-hidden="true">→</span></a>
     </div>
+    {/* Service changes, on a station's information screen. */}
     <div class="feed">
+      <p class="feed-head">Service changes</p>
       <div class="feed-counts">
         <span><b>{c.mainnet.perps}</b> perps</span>
         <span><b>{c.mainnet.dexs}</b> HIP-3 DEXs</span>
@@ -268,17 +288,16 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
   <section class="why" aria-labelledby="why-title">
     <h2 id="why-title" class="why-title">A map, not a course. <span class="muted">It sends you to the best page on each topic, then fills in what that page leaves out.</span></h2>
     <ol class="why-list">
-      <li><span class="why-n">01</span><p><b>Free, with no sign-up.</b> No account, no email, no paywall.</p></li>
-      <li><span class="why-n">02</span><p><b>Checked against the live API.</b> Every lesson shows the day its facts were last checked.</p></li>
-      <li><span class="why-n">03</span><p><b>Labs that can't cost you money.</b> They use testnet, read-only calls or recorded data, and keys made in your browser.</p></li>
-      <li><span class="why-n">04</span><p><b>Open source.</b> Code under MIT, writing under CC BY 4.0. Spot a mistake? <a href="https://github.com/vignesh-chaturvedi/zerotohype/issues">Open an issue</a>.</p></li>
+      <li><span class="why-n">1</span><p><b>Free, with no sign-up.</b> No account, no email, no paywall.</p></li>
+      <li><span class="why-n">2</span><p><b>Checked against the live API.</b> Every lesson shows the day its facts were last checked.</p></li>
+      <li><span class="why-n">3</span><p><b>Labs that can't cost you money.</b> They use testnet, read-only calls or recorded data, and keys made in your browser.</p></li>
+      <li><span class="why-n">4</span><p><b>Open source.</b> Code under MIT, writing under CC BY 4.0. Spot a mistake? <a href="https://github.com/vignesh-chaturvedi/zerotohype/issues">Open an issue</a>.</p></li>
     </ol>
   </section>
 </Base>
 
 <script>
-  import "../scripts/tide.ts";
-  import "../scripts/ticker.ts";
+  import "../scripts/board.ts";
   import { wireMotionButtons } from "../scripts/motion.ts";
 
   wireMotionButtons();
@@ -308,7 +327,7 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
         }
         p.style.visibility = "visible";
         p.style.opacity = String(Math.max(0, 1 - a * 1.3));
-        p.style.transform = `translateY(${(d * 36).toFixed(2)}px) scale(${(1 - a * 0.04).toFixed(4)})`;
+        p.style.transform = `translateY(${(d * 36).toFixed(2)}px)`;
         p.style.zIndex = String(10 - Math.round(a * 5));
       });
       const near = Math.round(current);
@@ -381,250 +400,242 @@ const plannedCount = (t: (typeof tracks)[number]) => t.data.build.filter((b) => 
 </script>
 
 <style>
-  /* Stage: the live order book behind the headline */
-  /* A minimum height, not a fixed one: with larger text or wider spacing the stage grows rather than cut
-     off its buttons. The copy's bottom padding keeps room for the ridges below the buttons when it does. */
-  .stage { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-rows: 1fr auto; min-height: clamp(600px, calc(100svh - 96px), 900px); border-bottom: 1px solid var(--rule); }
-  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -3; opacity: 0; transition: opacity 1.4s var(--ease); }
-  .stage:global(.has-tide) canvas { opacity: 1; }
-  .stage::before {
-    content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
-    background: radial-gradient(ellipse 58% 52% at 50% 30%, color-mix(in srgb, var(--bg) 88%, transparent), transparent 72%);
+  /* Stage: the headline on the left, a departure board of live prices on the right. */
+  .stage { border-bottom: 4px solid var(--ink); }
+  .stage-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr); gap: 40px 56px; align-items: center; padding-block: clamp(36px, 7vh, 88px) clamp(40px, 7vh, 88px); }
+  .stage-copy { display: grid; justify-items: start; gap: 24px; }
+  .stage h1 { font-size: clamp(2.9rem, 6.6vw, 5.9rem); line-height: 1; letter-spacing: -0.045em; font-weight: 900; max-width: 11.5em; }
+  .stage h1 em {
+    font-style: normal; color: var(--on-signal); padding: 0 0.1em; margin-inline: -0.02em;
+    background: linear-gradient(var(--signal), var(--signal)) 0 0.11em / 100% 1.02em no-repeat;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
   }
-  .stage { background: var(--bg); }
-  .stage::after {
-    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.07;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  @media (forced-colors: active) { .stage h1 em { forced-color-adjust: none; } }
+  .stage .lede { max-width: 50ch; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  /* The board is always lit, whatever the page's theme: a black case, flaps in two greys, white figures. */
+  .board {
+    --flap-top: #2a2a2a; --flap-bottom: #222222; --board-ink: #f6f6f6; --board-muted: #9ea0a1;
+    display: grid; gap: 0; min-width: 0; padding: 0 0 4px; border-radius: var(--r); background: #0f0f0f; color: var(--board-ink);
+    box-shadow: 0 0 0 1px #000;
   }
-  :global(:root[data-theme="light"]) .stage::after {
-    opacity: 0.05;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  .board-head { display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; padding: 14px 18px 11px; border-bottom: 1px solid #262626; }
+  .board-head h2 { display: flex; align-items: baseline; gap: 12px; font: 900 1.125rem/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; color: #f0ca00; }
+  .board-head h2 span { font: 700 0.75rem/1 var(--body); letter-spacing: 0.08em; color: var(--board-muted); }
+  .board-next { display: flex; align-items: baseline; gap: 10px; font: 700 0.75rem/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--board-muted); }
+  .board-next b { font: 600 1.0625rem/1 var(--data); letter-spacing: 0.04em; color: #f0ca00; font-variant-numeric: tabular-nums; }
+  .board-table { width: 100%; border-collapse: collapse; }
+  .board-table thead th { padding: 10px 18px 4px; font: 700 0.6875rem/1 var(--body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--board-muted); text-align: left; }
+  .board-table thead th:nth-child(2), .board-table thead th:nth-child(3) { text-align: right; }
+  .board-table tbody th, .board-table td { padding: 5px 18px; text-align: left; vertical-align: middle; }
+  .board-table td { text-align: right; }
+  .board-table tbody tr + tr > * { border-top: 1px solid #1a1a1a; }
+  .chg { width: 6.6em; font: 600 0.9375rem/1 var(--data); color: var(--board-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .chg[data-dir="up"] { color: #48a43f; }
+  .chg[data-dir="down"] { color: #f3752c; }
+  .flaps { display: inline-flex; gap: 2px; }
+  /* One flap: two halves split by a hinge line. The halves that turn are added and removed by board.ts. */
+  .flap {
+    position: relative; display: inline-block; width: 0.74em; height: 1.4em; perspective: 120px;
+    font: 600 clamp(1.05rem, 1.7vw, 1.4rem)/1 var(--data); color: var(--board-ink); border-radius: 2px;
   }
-  .stage-copy { align-self: start; display: grid; justify-items: center; text-align: center; gap: 22px; padding-top: clamp(32px, 6.5vh, 84px); padding-bottom: 120px; }
-  .kicker { color: var(--ink-2); }
-  .stage h1 { font-size: clamp(2.9rem, 7.4vw, 6.5rem); line-height: 0.94; letter-spacing: -0.058em; font-weight: 600; max-width: 12.5em; }
-  /* word-spacing pulls the monospace no-break space in "perp DEX" down to a normal word gap. */
-  .stage h1 em { font-style: normal; font-family: var(--data); font-weight: 400; letter-spacing: -0.1em; word-spacing: -0.4em; color: var(--accent); }
-  .stage .lede { position: relative; text-align: center; max-width: 54ch; color: var(--ink-2); }
-  /* A soft backing of the page colour, under the grain, so any ridge that rises behind the intro (with
-     larger text, or on a short screen) fades out under it. Elsewhere it matches the page and can't be seen. */
-  .stage .lede::before { content: ""; position: absolute; inset: -16px -28px; z-index: -2; border-radius: 28px; background: var(--bg); filter: blur(12px); pointer-events: none; }
-  .ctas { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-  /* A soft pool of the page colour behind the buttons, so the ridges fade out under them. */
-  .ctas::before {
-    content: ""; position: absolute; inset: -32px -72px; z-index: -1; pointer-events: none;
-    background: radial-gradient(closest-side, var(--bg) 50%, transparent);
-  }
-  .ctas .btn.ghost { background: color-mix(in srgb, var(--bg) 72%, transparent); }
-  .stage-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px 24px; flex-wrap: wrap; padding-block: 0 16px; font: 400 0.75rem/1.5 var(--data); color: var(--muted); }
-  /* The captions sit over the ridges too, so they get a backing of the page colour, opaque enough that
-     a ridge sliding under one still leaves its text at 4.5:1. */
-  .cap, .hint { padding: 2px 6px; margin: -2px -6px; border-radius: 4px; background: color-mix(in srgb, var(--bg) 92%, transparent); }
-  .foot-end { display: inline-flex; flex: none; align-items: center; gap: 18px; margin-left: auto; }
+  .flap > span { position: absolute; inset: 0; display: grid; place-items: center; padding-top: 0.14em; border-radius: 2px; backface-visibility: hidden; }
+  .flap :global(.u), .flap :global(.fall) { clip-path: inset(0 0 50% 0); background: var(--flap-top); }
+  .flap :global(.d), .flap :global(.rise) { clip-path: inset(50% 0 0 0); background: var(--flap-bottom); }
+  .flap::after { content: ""; position: absolute; left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; background: #000; z-index: 3; }
+  .flap :global(.fall) { z-index: 2; transform-origin: 50% 50%; animation: flap-fall 130ms cubic-bezier(0.55, 0, 1, 0.45) forwards; }
+  .flap :global(.rise) { z-index: 2; transform-origin: 50% 50%; animation: flap-rise 150ms cubic-bezier(0, 0.55, 0.45, 1) 130ms both; }
+  @keyframes flap-fall { to { transform: rotateX(90deg); } }
+  @keyframes flap-rise { from { transform: rotateX(-90deg); } }
+  /* The coin's name: the same flaps, standing still. */
+  th .flap { color: #f0ca00; }
+  .board-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px 16px; padding: 12px 18px 10px; margin-top: 4px; border-top: 1px solid #262626; font: 600 0.8125rem/1.4 var(--body); color: var(--board-muted); }
+  .cap::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 9px; border-radius: 50%; background: var(--board-muted); vertical-align: 1px; }
+  .cap[data-state="live"]::before { background: #48a43f; box-shadow: 0 0 0 3px rgb(72 164 63 / 0.3); }
+  .cap[data-state="paused"]::before { background: #faab21; }
   .motion-btn {
-    display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 11px; border-radius: 8px; cursor: pointer;
-    font: inherit; color: var(--ink-2); background: color-mix(in srgb, var(--bg) 92%, transparent); border: 1px solid var(--rule-strong);
-    transition: border-color 150ms var(--ease), color 150ms var(--ease);
+    display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 3px 11px 0; border-radius: var(--r); cursor: pointer; flex: none;
+    font: 700 0.8125rem/1 var(--body); color: var(--board-ink); background: transparent; border: 1px solid #3a3a3a;
   }
-  .motion-btn:hover { color: var(--ink); border-color: var(--ink-2); }
+  .motion-btn:hover { border-color: var(--board-ink); }
+  .motion-btn:focus-visible { outline-color: #f0ca00; }
   .motion-btn[hidden] { display: none; }
-  .motion-btn svg { width: 10px; height: 10px; flex: none; }
-  .motion-btn .i-pause { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .motion-btn svg { width: 10px; height: 10px; margin-top: -3px; flex: none; }
+  .motion-btn .i-pause { fill: none; stroke: currentColor; stroke-width: 2; }
   .motion-btn .i-play { fill: currentColor; display: none; }
   .motion-btn[data-state="paused"] .i-pause { display: none; }
   .motion-btn[data-state="paused"] .i-play { display: inline; }
-  :global(:root[data-motion="paused"]) .cap[data-state="live"]::before { background: var(--muted); box-shadow: none; }
-  /* Below 1100px the button shows just its icon, beside the caption, so the foot stays one row high and
-     the ridges keep their room; its words stay in its name for screen readers and in its tooltip. */
-  @media (max-width: 1099px) {
-    .stage-foot { flex-wrap: nowrap; align-items: flex-end; }
-    .cap { flex: 1 1 auto; min-width: 0; }
-    .motion-btn { width: 32px; padding: 0; justify-content: center; }
-    .motion-btn [data-motion-label] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  }
-  .cap::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 9px; border-radius: 50%; background: var(--muted); vertical-align: 1px; }
-  .cap[data-state="live"]::before { background: var(--bid); box-shadow: 0 0 0 3px color-mix(in srgb, var(--bid) 25%, transparent); }
-  .cap[data-state="simulated"]::before { background: var(--mvp); }
-  @media (hover: none) { .hint { display: none; } }
-
-  /* Price tape */
-  .tape { display: flex; align-items: stretch; border-bottom: 1px solid var(--rule); font: 400 0.75rem/1 var(--data); }
-  .tape-label { flex: none; display: flex; align-items: center; gap: 9px; padding: 0 18px 0 max(20px, env(safe-area-inset-left, 0px)); border-right: 1px solid var(--rule); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-  .tape-label .live-dot { background: var(--bid); box-shadow: 0 0 0 3px color-mix(in srgb, var(--bid) 22%, transparent); }
-  .tape-view { flex: 1; min-width: 0; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
-  .tape-track { display: flex; width: max-content; }
-  /* It rolls once prices arrive (ticker.ts adds .is-live), so without JavaScript it stands still, and
-     it stops while the reader has paused the motion. */
-  :global(:root:not([data-motion="paused"])) .tape:global(.is-live) .tape-track { animation: tape 80s linear infinite; }
-  .tape:hover .tape-track { animation-play-state: paused; }
-  .tape ul { display: flex; list-style: none; margin: 0; padding: 0; }
-  .tk { display: flex; gap: 10px; padding: 13px 22px; border-right: 1px solid var(--rule); white-space: nowrap; color: var(--muted); }
-  .tk b { font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
-  .tk:global(.up) b { animation: tick-up 1.4s var(--ease); }
-  .tk:global(.down) b { animation: tick-down 1.4s var(--ease); }
-  @keyframes tick-up { from { color: var(--bid); } }
-  @keyframes tick-down { from { color: var(--ask); } }
-  @keyframes tape { to { transform: translateX(-50%); } }
-  /* With motion reduced, or paused with the stage's button, the tape stands still and scrolls by hand,
-     with one copy of the list instead of the two that make the loop seamless. */
-  @media (prefers-reduced-motion: reduce) { .tape-view { overflow-x: auto; mask-image: none; } .tape ul + ul { display: none; } }
-  :global(:root[data-motion="paused"]) .tape-view { overflow-x: auto; mask-image: none; }
-  :global(:root[data-motion="paused"]) .tape ul + ul { display: none; }
-  :global(:root[data-motion="paused"]) .tape-label .live-dot { background: var(--muted); box-shadow: none; }
+  @media (forced-colors: active) { .board { forced-color-adjust: none; } }
 
   /* Section heads */
-  .section-head { display: grid; gap: 14px; max-width: 70ch; }
-  .section-head h2 { font-size: clamp(2.2rem, 5.2vw, 3.8rem); font-weight: 600; letter-spacing: -0.052em; line-height: 0.98; }
-  .progress { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; font-size: 0.84375rem; color: var(--muted); padding-top: 4px; }
-  .progress-bar { position: relative; width: 140px; height: 4px; border-radius: 2px; overflow: hidden; background: var(--rule-strong); flex: none; }
+  .section-head { display: grid; gap: 16px; max-width: 72ch; justify-items: start; }
+  .section-head h2 { font-size: clamp(2.3rem, 5.4vw, 4rem); font-weight: 900; letter-spacing: -0.04em; line-height: 0.95; }
+  .progress { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; font-size: 0.875rem; color: var(--muted); padding-top: 4px; }
+  .progress-bar { position: relative; width: 160px; height: 8px; overflow: hidden; background: var(--sunk); box-shadow: inset 0 0 0 1px var(--rule-strong); flex: none; }
   .progress-bar span { position: absolute; inset: 0; background: var(--ok); transform-origin: left; transform: scaleX(var(--done, 0)); transition: transform 500ms var(--ease); }
-  .progress b { color: var(--ink); font-weight: 600; }
+  .progress b { color: var(--ink); font-weight: 800; }
 
-  /* Roadmap index */
-  .roadmap { display: grid; gap: 40px; }
-  /* Shorter routes through the roadmap */
+  /* Roadmap */
+  .roadmap { display: grid; gap: 44px; }
+  /* Shorter routes: each one drawn as a line through the stations it stops at. */
   .paths { display: grid; gap: 14px; }
   .paths ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-  .path { display: grid; grid-template-rows: auto 1fr auto; gap: 8px; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 14px; background: var(--surface); }
-  .path-name { font: 600 1.02rem/1.25 var(--display); letter-spacing: -0.015em; }
-  .path-what { font-size: 0.875rem; line-height: 1.5; color: var(--ink-2); }
-  .path-codes { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 4px; font: 500 0.8125rem/1 var(--data); color: var(--muted); }
-  /* Each arrow stays with the code after it, so a wrapped row never ends on an arrow. */
-  .path-codes .step { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
-  .path-codes a { padding: 6px 8px; border-radius: 6px; background: var(--sunk); color: var(--ink); text-decoration: none; }
-  .path-codes a:hover { background: var(--ink); color: var(--bg); }
+  .path { display: grid; grid-template-rows: auto 1fr auto; gap: 8px; padding: 16px 18px 18px; border: 1px solid var(--rule); border-top: 6px solid var(--ink); border-radius: var(--r); background: var(--surface); }
+  .path-name { font: 800 1.125rem/1.2 var(--display); }
+  .path-what { font-size: 0.9375rem; line-height: 1.5; color: var(--ink-2); }
+  .path-codes { position: relative; list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 14px; }
+  .path-codes li { position: relative; }
+  /* The line between two stops. */
+  .path-codes li + li::before { content: ""; position: absolute; right: 100%; top: calc(50% - 3px); width: 14px; height: 6px; background: var(--ink); }
+  .path-codes a { display: block; border-radius: 50%; text-decoration: none; transition: transform 150ms var(--ease); }
+  .path-codes a:hover { transform: scale(1.12); }
   @media (max-width: 980px) { .paths ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 560px) { .paths ul { grid-template-columns: minmax(0, 1fr); } }
+
   .index { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 64px; align-items: start; }
-  .groups { display: grid; gap: 44px; }
-  .group-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; padding-bottom: 12px; border-bottom: 1px solid var(--rule-strong); }
-  .group-name { font: 600 1.05rem/1.2 var(--display); letter-spacing: -0.01em; }
-  .group-note { flex-basis: 100%; font-size: 0.84375rem; color: var(--muted); }
-  .rows { list-style: none; margin: 0; padding: 0; }
+  .groups { display: grid; gap: 40px; }
+  .group-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding-bottom: 14px; }
+  .group-n { padding: 6px 8px 4px; border-radius: 2px; background: var(--plate); color: var(--on-band); font: 800 0.75rem/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; }
+  .group-name { font: 900 1.25rem/1.1 var(--display); letter-spacing: -0.01em; padding-top: 3px; }
+  .group-note { flex-basis: 100%; font-size: 0.9375rem; color: var(--muted); }
+  /* The rows hang off one black line, a station ring per track. */
+  .rows { position: relative; list-style: none; margin: 0; padding: 0; }
+  .rows::before { content: ""; position: absolute; left: 17px; top: 26px; bottom: 26px; width: 6px; background: var(--ink); }
   .row {
-    --c-ink: color-mix(in srgb, var(--c) var(--cover-ink-tint), var(--cover-ink));
-    position: relative; display: grid; grid-template-columns: 3.4rem minmax(0, 1fr) auto; gap: 16px; align-items: center;
-    padding: 22px 2px 22px 0; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none;
+    position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 18px; align-items: center;
+    padding: 14px 2px 14px 0; color: var(--ink); text-decoration: none;
   }
-  .row::before { content: ""; position: absolute; left: -20px; top: 22px; bottom: 22px; width: 3px; border-radius: 2px; background: var(--c); transform: scaleY(0); transition: transform 260ms var(--ease); }
-  .row:global(.is-active)::before, .row:hover::before { transform: scaleY(1); }
-  .row-code { font: 400 0.8125rem/1 var(--data); color: var(--muted); }
-  .row-title { display: block; font: 600 clamp(1.45rem, 2.5vw, 2.1rem)/1.04 var(--display); letter-spacing: -0.04em; transition: color 220ms var(--ease), transform 260ms var(--ease); }
-  .row:global(.is-active) .row-title, .row:hover .row-title { color: var(--c-ink); transform: translateX(6px); }
-  .row-sum { display: none; margin-top: 6px; font-size: 0.90625rem; line-height: 1.5; color: var(--muted); }
+  .row-stn { position: relative; z-index: 1; display: grid; transition: transform 220ms var(--ease); }
+  .row-stn :global(.stn) { box-shadow: inset 0 0 0 calc(var(--s) * 0.13) var(--c), 0 0 0 4px var(--bg); }
+  .row:global(.is-active) .row-stn, .row:hover .row-stn { transform: scale(1.14); }
+  .row-main { min-width: 0; padding-block: 2px; }
+  /* A rule between rows that starts after the line, so it never crosses it. */
+  .rows li + li .row::after { content: ""; position: absolute; left: 58px; right: 0; top: 0; height: 1px; background: var(--rule); }
+  .row-title { display: inline; font: 800 clamp(1.4rem, 2.4vw, 2rem)/1.08 var(--display); letter-spacing: -0.025em; background-image: linear-gradient(var(--c), var(--c)); background-size: 0% 5px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size 260ms var(--ease); }
+  .row:global(.is-active) .row-title, .row:hover .row-title { background-size: 100% 5px; }
+  .row-sum { display: none; margin-top: 6px; font-size: 0.9375rem; line-height: 1.5; color: var(--muted); }
   .row-side { display: flex; align-items: center; gap: 14px; }
-  .row-depth { font: 500 0.75rem/1 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .row-depth { font: 800 0.75rem/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .row-depth.lesson { color: var(--ok); }
-  .row-done { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--rule-strong); display: grid; place-items: center; flex: none; transition: background 200ms var(--ease), border-color 200ms var(--ease); }
-  .row-done svg { width: 12px; height: 12px; fill: none; stroke: var(--bg); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+  .row-done { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+  .row-done svg { width: 12px; height: 12px; fill: none; stroke: #ffffff; stroke-width: 2.6; stroke-linecap: square; }
   /* Tracks are ticked off on their own pages, so the list shows a tick only once one is done, and no
      empty box that looks like it could be ticked here. */
   .row-done { visibility: hidden; }
-  .row:global(.is-done) .row-done { visibility: visible; background: var(--ok); border-color: var(--ok); }
-  .row:global(.is-done) .row-done svg { opacity: 1; }
+  .row:global(.is-done) .row-done { visibility: visible; background: var(--ok); }
   /* Only ticked rows say "(done)" to screen readers. */
   .row-done-text { display: none; }
   .row:global(.is-done) .row-done-text { display: block; }
   /* High contrast mode drops the green fill, so a done tick gets the system's highlight colour. */
   @media (forced-colors: active) {
-    .row:global(.is-done) .row-done { background: Highlight; border-color: Highlight; }
+    .row:global(.is-done) .row-done { background: Highlight; }
     .row-done svg { stroke: HighlightText; }
+    .row:global(.is-active) .row-title, .row:hover .row-title { text-decoration: underline; }
   }
   .row-thumb { display: none; }
 
   .preview { position: sticky; top: 92px; display: grid; }
   /* Opacity and position are driven from the script below, frame by frame, so no CSS transitions. */
-  .pv { position: relative; grid-area: 1 / 1; display: grid; gap: 18px; align-content: start; opacity: 0; visibility: hidden; transform-origin: 50% 35%; will-change: opacity, transform; }
+  .pv { position: relative; grid-area: 1 / 1; display: grid; gap: 18px; align-content: start; opacity: 0; visibility: hidden; will-change: opacity, transform; }
   .pv.on { opacity: 1; visibility: visible; }
   .pv :global(.cover) { aspect-ratio: 16 / 11; }
   .pv-body { display: grid; gap: 12px; }
-  .pv-title { display: flex; gap: 12px; align-items: baseline; font: 600 1.3rem/1.15 var(--display); letter-spacing: -0.02em; }
-  .pv-title span { font: 400 0.75rem/1 var(--data); color: var(--muted); }
-  .pv-sum { font-size: 0.9375rem; line-height: 1.6; color: var(--ink-2); }
-  .pv-build { list-style: none; margin: 0; padding: 14px 0 0; display: grid; gap: 6px; font-size: 0.875rem; color: var(--ink-2); border-top: 1px solid var(--rule); }
+  .pv-title { display: flex; gap: 12px; align-items: center; font: 800 1.375rem/1.15 var(--display); letter-spacing: -0.01em; }
+  .pv-sum { font-size: 1rem; line-height: 1.6; color: var(--ink-2); }
+  .pv-build { list-style: none; margin: 0; padding: 14px 0 0; display: grid; gap: 6px; font-size: 0.9375rem; color: var(--ink-2); border-top: 1px solid var(--rule); }
   .pv-build li::before { content: "+ "; color: var(--muted); }
-  .pv-build li.live { color: var(--ink); font-weight: 600; }
-  .pv-build b { font: 500 0.75rem/1 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ok); }
-  .pv-build span { color: var(--muted); font-weight: 400; }
+  .pv-build li.live { color: var(--ink); font-weight: 700; }
+  .pv-build b { font: 800 0.75rem/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ok); }
   .pv-build li.planned { color: var(--muted); }
-  .pv-meta { font: 400 0.75rem/1.4 var(--data); color: var(--muted); }
+  .pv-meta { font: 700 0.8125rem/1.4 var(--body); color: var(--muted); }
 
-  /* Labs */
+  /* Labs: each tile topped with its track's line colour. */
   .labs { display: grid; gap: 32px; }
   .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .tile {
-    --c-ink: color-mix(in srgb, var(--c) var(--cover-ink-tint), var(--cover-ink));
-    position: relative; height: 100%; display: grid; grid-template-rows: auto 1fr auto auto auto; gap: 16px; padding: 22px; border-radius: 12px; overflow: hidden;
+    height: 100%; display: grid; grid-template-rows: auto 1fr; border-radius: var(--r); overflow: hidden;
     color: var(--ink); text-decoration: none; background: var(--surface); border: 1px solid var(--rule);
-    transition: transform 240ms var(--ease), border-color 240ms var(--ease);
+    transition: border-color 160ms var(--ease);
   }
-  .tile::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: var(--c); }
-  .tile:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c) 55%, var(--rule)); }
-  .tile-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .tile-n { font: 400 2.6rem/0.85 var(--data); letter-spacing: -0.09em; color: var(--c-ink); }
-  /* The drawing takes up any spare height, so the titles and text below line up across the three tiles. */
-  .recipe, .formula { margin: 0; padding: 12px 14px 12px 30px; border-radius: 8px; background: var(--sunk); font: 400 0.75rem/1.65 var(--data); color: var(--ink-2); align-self: stretch; }
-  .formula { padding-left: 14px; display: flex; flex-direction: column; justify-content: center; }
+  .tile:hover { border-color: var(--ink); }
+  .tile-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 11px 16px 8px; background: var(--c); color: var(--on); }
+  .tile-n { font: 900 1.125rem/1 var(--display); letter-spacing: 0.02em; text-transform: uppercase; }
+  .tile-note { font: 800 0.75rem/1.3 var(--body); letter-spacing: 0.07em; text-transform: uppercase; text-align: right; }
+  /* The drawing takes up any spare height, so the titles and text below line up across the tiles. */
+  .tile-body { display: grid; grid-template-rows: 1fr auto auto auto; gap: 14px; padding: 18px 18px 20px; }
+  .recipe, .formula { margin: 0; padding: 12px 14px 12px 30px; border-radius: 2px; background: var(--sunk); font: 400 0.8125rem/1.65 var(--data); color: var(--ink-2); align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+  .formula { padding-left: 14px; }
   .formula span { white-space: pre-wrap; }
   .recipe code { background: none; padding: 0; font-size: inherit; color: var(--ink); }
   .recipe .reply { list-style: none; margin: 6px 0 0 -16px; color: var(--muted); }
-  .recipe .reply b { color: var(--accent); font-weight: 500; }
-  .spark { width: 100%; height: auto; display: block; color: var(--c-ink); overflow: visible; padding: 6px; border-radius: 8px; background: var(--sunk); }
-  .spark .win { fill: color-mix(in srgb, var(--c) 22%, transparent); }
-  .spark .thr { stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 4 4; fill: none; }
-  .spark .trace { stroke: var(--ink); stroke-width: 1.4; fill: none; stroke-linejoin: round; }
-  .tile-title { font: 600 1.55rem/1.05 var(--display); letter-spacing: -0.035em; }
-  .tile-what { font-size: 0.90625rem; line-height: 1.55; color: var(--ink-2); }
-  .tile-go { font: 500 0.75rem/1 var(--data); letter-spacing: 0.04em; color: var(--c-ink); }
-  .finding { max-width: 80ch; padding: 14px 18px; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; background: var(--surface); font-size: 0.9375rem; line-height: 1.6; color: var(--ink-2); }
+  .recipe .reply b { color: var(--accent); font-weight: 600; }
+  .spark { width: 100%; height: auto; display: block; color: var(--ink); overflow: visible; padding: 6px; border-radius: 2px; background: var(--sunk); }
+  .spark .win { fill: color-mix(in srgb, var(--c) 26%, transparent); }
+  .spark .thr { stroke: var(--c); stroke-width: 1.6; stroke-dasharray: 4 4; fill: none; }
+  .spark .trace { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-linejoin: round; }
+  .tile-title { font: 900 1.6rem/1.04 var(--display); letter-spacing: -0.03em; }
+  .tile-what { font-size: 0.96875rem; line-height: 1.55; color: var(--ink-2); }
+  .tile-go { display: flex; align-items: center; gap: 10px; font: 800 0.9375rem/1 var(--body); }
+  .tile-track { display: grid; }
+  .tile:hover .tile-go { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  @media (forced-colors: active) { .tile-top { forced-color-adjust: none; } }
+  .finding { max-width: 80ch; padding: 14px 18px 12px; border-left: 8px solid var(--signal); border-radius: 0 var(--r) var(--r) 0; background: var(--surface); font-size: 1rem; line-height: 1.6; color: var(--ink-2); }
   .finding b { color: var(--ink); }
 
-  /* Changelog preview */
+  /* Changelog preview: the latest changes on a station's information screen, lit in both themes. */
   .stay { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; align-items: start; }
   .stay-copy { display: grid; gap: 16px; justify-items: start; }
-  .stay-copy h2 { font-size: clamp(2rem, 4.4vw, 3.1rem); font-weight: 600; letter-spacing: -0.05em; line-height: 1; }
-  .feed { border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); overflow: hidden; }
-  .feed-counts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--rule); }
-  .feed-counts span { display: grid; gap: 2px; padding: 14px 16px; font-size: 0.78125rem; color: var(--muted); }
-  .feed-counts span + span { border-left: 1px solid var(--rule); }
-  .feed-counts b { font: 500 1.4rem/1.1 var(--data); color: var(--ink); letter-spacing: -0.05em; }
+  .stay-copy h2 { font-size: clamp(2.1rem, 4.6vw, 3.3rem); font-weight: 900; letter-spacing: -0.04em; line-height: 0.98; }
+  .feed { --feed-ink: #f6f6f6; --feed-2: #cfd0cf; --feed-muted: #9ea0a1; border-radius: var(--r); background: #0f0f0f; color: var(--feed-ink); overflow: hidden; box-shadow: 0 0 0 1px #000; }
+  .feed-head { padding: 12px 16px 9px; font: 900 1rem/1 var(--display); letter-spacing: 0.06em; text-transform: uppercase; color: #f0ca00; border-bottom: 1px solid #262626; }
+  .feed-counts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid #262626; }
+  .feed-counts span { display: grid; gap: 4px; padding: 14px 16px 12px; font: 700 0.75rem/1.2 var(--body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--feed-muted); }
+  .feed-counts span + span { border-left: 1px solid #262626; }
+  .feed-counts b { font: 600 1.6rem/1 var(--data); color: var(--feed-ink); letter-spacing: -0.02em; }
   .feed-list { list-style: none; margin: 0; padding: 0; }
-  .feed-list li { display: grid; gap: 4px; padding: 13px 16px; border-bottom: 1px solid var(--rule); }
+  .feed-list li { display: grid; gap: 5px; padding: 13px 16px 11px; border-bottom: 1px solid #1f1f1f; }
   .feed-list li:last-child { border-bottom: 0; }
-  .feed-meta { display: flex; gap: 12px; font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-  .feed-meta .mainnet { color: var(--accent); }
-  .feed-text { font-size: 0.90625rem; overflow-wrap: anywhere; color: var(--ink-2); }
+  .feed-meta { display: flex; gap: 12px; font: 800 0.75rem/1.4 var(--body); letter-spacing: 0.07em; text-transform: uppercase; color: var(--feed-muted); }
+  .feed-meta .mainnet { color: #f0ca00; }
+  .feed-text { font-size: 0.9375rem; overflow-wrap: anywhere; color: var(--feed-2); }
+  .feed-text :global(code) { background: #262626; color: var(--feed-ink); }
+  @media (forced-colors: active) { .feed { forced-color-adjust: none; } }
 
   /* Principles */
-  .why { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-top: 32px; border-top: 1px solid var(--rule); }
-  .why-title { font-size: clamp(1.7rem, 3.6vw, 2.5rem); font-weight: 600; letter-spacing: -0.045em; line-height: 1.1; }
-  .why-title .muted { font-weight: 400; }
+  .why { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-top: 36px; border-top: 4px solid var(--ink); }
+  .why-title { font-size: clamp(1.8rem, 3.8vw, 2.7rem); font-weight: 900; letter-spacing: -0.035em; line-height: 1.04; }
+  .why-title .muted { font-weight: 600; }
   .why-list { list-style: none; margin: 0; padding: 0; display: grid; }
-  .why-list li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); padding: 16px 0; border-bottom: 1px solid var(--rule); color: var(--ink-2); }
+  .why-list li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); align-items: start; padding: 16px 0; border-bottom: 1px solid var(--rule); color: var(--ink-2); }
   .why-list li:first-child { padding-top: 4px; }
-  .why-list b { color: var(--ink); font-weight: 600; margin-right: 4px; }
-  .why-n { font: 400 0.75rem/1.9 var(--data); color: var(--muted); }
+  .why-list b { color: var(--ink); font-weight: 800; margin-right: 4px; }
+  .why-n { display: grid; place-items: center; width: 30px; height: 30px; padding-top: 3px; border-radius: 50%; background: var(--plate); color: var(--on-band); font: 900 0.9375rem/1 var(--display); }
 
+  @media (max-width: 1100px) { .stage-grid { grid-template-columns: minmax(0, 1fr); } .board { max-width: 640px; } }
   @media (max-width: 1000px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 980px) {
     .index { grid-template-columns: minmax(0, 1fr); }
     .preview { display: none; }
-    .row { grid-template-columns: minmax(0, 1fr) 104px; gap: 8px 16px; padding-block: 18px; }
-    .row::before { left: -12px; top: 18px; bottom: 18px; }
-    .row-code, .row-main, .row-side { grid-column: 1; }
-    .row-thumb { display: block; grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+    .row { grid-template-columns: 40px minmax(0, 1fr) 96px; gap: 8px 16px; align-items: start; }
+    .row-stn { grid-row: 1 / span 2; }
+    .row-main, .row-side { grid-column: 2; }
+    .row-thumb { display: block; grid-column: 3; grid-row: 1 / span 2; align-self: center; }
     .row-sum { display: block; }
   }
   @media (max-width: 860px) { .stay, .why { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 620px) {
-    .stage { min-height: clamp(560px, calc(100svh - 120px), 700px); }
-    /* The ridges start below the buttons here (tide.ts), so they need a little more room under them. */
-    .stage-copy { padding-bottom: 170px; }
     .tiles { grid-template-columns: minmax(0, 1fr); }
     .feed-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .feed-counts span:nth-child(3) { border-left: 0; }
-    .feed-counts span:nth-child(n + 3) { border-top: 1px solid var(--rule); }
-    .row { grid-template-columns: minmax(0, 1fr) 84px; }
-    .stage-foot .hint { display: none; }
+    .feed-counts span:nth-child(n + 3) { border-top: 1px solid #262626; }
+    .row { grid-template-columns: 40px minmax(0, 1fr) 76px; }
+    .board-table tbody th, .board-table td { padding-inline: 12px; }
+    .board-head, .board-foot { padding-inline: 12px; }
+    .board-table tbody tr:nth-child(n + 7) { display: none; }
+  }
+  @media (max-width: 400px) {
+    .flap { width: 0.7em; font-size: 0.98rem; }
+    .chg { width: 5.6em; font-size: 0.8125rem; }
   }
 </style>

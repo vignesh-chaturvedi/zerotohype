@@ -1,7 +1,7 @@
-// A table wider than the page scrolls sideways in its box (.table-scroll), and so does the homepage's
-// price tape while it's paused ([data-scroll-area="<name>"]). While a box can scroll, it joins the Tab
-// order with a name, so a keyboard can scroll it too (Chrome and Firefox allow that by themselves,
-// Safari doesn't) and a screen reader says what it is. A box that fits stays out of the Tab order.
+// A table wider than the page scrolls sideways in its box (.table-scroll), and so can any other box
+// marked [data-scroll-area="<name>"]. While a box can scroll, it joins the Tab order with a name, so a
+// keyboard can scroll it too (Chrome and Firefox allow that by themselves, Safari doesn't) and a screen
+// reader says what it is. A box that fits stays out of the Tab order.
 
 const boxes = [...document.querySelectorAll<HTMLElement>(".table-scroll, [data-scroll-area]")];
 
@@ -41,6 +41,4 @@ if (boxes.length) {
     watch.observe(box);
     if (box.firstElementChild) watch.observe(box.firstElementChild);
   }
-  // Pausing the homepage's motion turns the tape into a box that scrolls.
-  document.addEventListener("zth:motion", () => boxes.forEach(check));
 }
