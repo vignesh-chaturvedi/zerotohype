@@ -1,5 +1,17 @@
 [
   {
+    "time": "2026-11-16T06:19:48.761Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `poep` (x dex)"
+  },
+  {
+    "time": "2026-11-16T06:19:48.761Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "HIP-4 venue has no live outcomes any more: `beat`"
+  },
+  {
     "time": "2026-11-15T18:48:01.282Z",
     "network": "testnet",
     "area": "HIP-3",

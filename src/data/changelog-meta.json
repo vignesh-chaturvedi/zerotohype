@@ -1,6 +1,6 @@
 {
   "trackingSince": "2026-10-21T18:49:41.544Z",
-  "lastRun": "2026-11-15T18:48:01.282Z",
+  "lastRun": "2026-11-16T06:19:48.761Z",
   "counts": {
     "mainnet": {
       "perps": 179,
@@ -10,8 +10,8 @@
     },
     "testnet": {
       "perps": 159,
-      "dexs": 280,
-      "venues": 69,
+      "dexs": 281,
+      "venues": 68,
       "templates": 68
     },
     "docs": {

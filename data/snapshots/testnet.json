@@ -3919,6 +3919,50 @@
           "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
         ]
       }
+    },
+    "poep": {
+      "fullName": "x dex",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "insertMarginTable": [
+          "0x6f999b259172ee1c180eef8c099a25e0b34acaa9"
+        ],
+        "haltTrading": [
+          "0xc1524535e2e69b5f2c08355508bed214cda50e5d"
+        ],
+        "setMarginTableIds": [
+          "0x6f999b259172ee1c180eef8c099a25e0b34acaa9"
+        ],
+        "setOpenInterestCaps": [
+          "0x25e94e7580c7cae92783b82b206e3801abf5d8b0",
+          "0x6f999b259172ee1c180eef8c099a25e0b34acaa9",
+          "0xc1524535e2e69b5f2c08355508bed214cda50e5d"
+        ],
+        "setFundingMultipliers": [
+          "0x6f999b259172ee1c180eef8c099a25e0b34acaa9"
+        ],
+        "setMarginModes": [
+          "0x6f999b259172ee1c180eef8c099a25e0b34acaa9"
+        ],
+        "setDeployerFees": [
+          "0x6f999b259172ee1c180eef8c099a25e0b34acaa9"
+        ],
+        "setFundingInterestRates": [
+          "0x6f999b259172ee1c180eef8c099a25e0b34acaa9"
+        ],
+        "disableDex": [
+          "0x6f999b259172ee1c180eef8c099a25e0b34acaa9"
+        ],
+        "setPerpAnnotation": [
+          "0x4bb3c01b0e67d1d72287b1b9f6edf2eb58aef284"
+        ],
+        "setFundingClamps": [
+          "0x6f999b259172ee1c180eef8c099a25e0b34acaa9"
+        ]
+      }
     }
   },
   "venues": {
@@ -3936,7 +3980,7 @@
     "ac": 1,
     "out": 9,
     "ad": 6,
-    "flip": 20,
+    "flip": 17,
     "aa": 4,
     "kelp": 9,
     "hehe": 6,
@@ -3955,13 +3999,12 @@
     "pewt": 11,
     "txyz": 20,
     "tzxy": 20,
-    "beat": 12,
+    "game": 16,
     "www": 6,
     "st": 1,
     "lo": 6,
     "abac": 7,
     "xcds": 6,
-    "game": 20,
     "adf": 2,
     "of": 9,
     "abad": 7,
