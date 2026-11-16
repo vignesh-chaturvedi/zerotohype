@@ -54,7 +54,9 @@ const nav = [
 ];
 const repo = "https://github.com/vignesh-chaturvedi/zerotohype";
 const marketCount = settlements.markets.length;
-const stripColors = Object.values(trackLook).map((l) => l.color);
+const lines = Object.entries(trackLook).map(([code, l]) => ({ code, color: l.color }));
+// The wordmark beside the logo's zero, one letter at a time so the letters can roll in and out.
+const word = [..."to HYPE"];
 ---
 
 <!doctype html>
@@ -82,7 +84,7 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={imageAlt} />
-    <meta name="theme-color" content="#0c0c0b" />
+    <meta name="theme-color" content="#000000" />
     <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -117,15 +119,28 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
         <span aria-hidden="true">→</span>
       </a>
     </aside>
-    <header class="site">
+    <header class="site" data-site-head>
       <div class="wrap bar">
+        {/* The logo: a traffic-yellow route disc with a slashed zero, and the rest of the name beside it.
+            Scrolled down, the letters roll back into the disc and it spins shut, leaving the disc alone;
+            back at the top it rolls them out again (Base.astro's script, the [data-short] rules below). */}
         <a class="brand" href="/" aria-label="Zero to HYPE, home">
-          <svg class="glyph" viewBox="0 0 28 28" aria-hidden="true">
-            <rect width="28" height="28" rx="8" />
-            <ellipse cx="11.6" cy="15.4" rx="4.6" ry="6.2" class="g-zero" />
-            <path d="M17 11 L22.2 5.8 M18 5.8 H22.2 V10" class="g-arrow" />
+          <svg class="disc" viewBox="0 0 32 32" aria-hidden="true">
+            <circle cx="16" cy="16" r="16" class="disc-face" />
+            <g class="disc-zero">
+              <ellipse cx="16" cy="16" rx="6.1" ry="9.1" />
+              <path d="M12.6 23.2 19.4 8.8" />
+            </g>
           </svg>
-          <span class="word">Zero to <span class="hype">HYPE</span></span>
+          <span class="word" aria-hidden="true">
+            <span class="word-clip">
+              <span class="word-in">
+                {word.map((ch, i) => (
+                  <span class={`ch${ch === " " ? " gap" : ""}${i >= 3 ? " big" : ""}`} style={`--i: ${i}; --r: ${word.length - 1 - i}`}>{ch === " " ? " " : ch}</span>
+                ))}
+              </span>
+            </span>
+          </span>
         </a>
         <nav aria-label="Site">
           {nav.map((item) => (
@@ -167,9 +182,19 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
       <p class="search-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move <kbd>↵</kbd> open</span><span>Runs in your browser</span></p>
     </dialog>
     <footer class="site-foot">
+      {/* The ten lines, end to end: the whole roadmap as one strip. */}
+      <ol class="route" aria-hidden="true">
+        {lines.map((l) => <li style={`--c: ${l.color}`}><span>{l.code}</span></li>)}
+      </ol>
       <div class="wrap foot">
         <div class="foot-brand">
-          <p class="foot-mark">Zero to <span>HYPE</span></p>
+          <p class="foot-mark">
+            <svg class="disc" viewBox="0 0 32 32" aria-hidden="true">
+              <circle cx="16" cy="16" r="16" class="disc-face" />
+              <g class="disc-zero"><ellipse cx="16" cy="16" rx="6.1" ry="9.1" /><path d="M12.6 23.2 19.4 8.8" /></g>
+            </svg>
+            <span>Zero to HYPE</span>
+          </p>
           <p class="foot-note">A free, open-source field guide for building on Hyperliquid. No sign-up, no paywall.</p>
         </div>
         <div class="foot-cols">
@@ -193,8 +218,6 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
           Facts are checked against the live API, and each lesson shows when.
         </p>
       </div>
-      <div class="strip" aria-hidden="true">{stripColors.map((c) => <span style={`--c: ${c}`} />)}</div>
-      <p class="bleed" aria-hidden="true">Zero to <span>HYPE</span></p>
     </footer>
     <script>
       import "../scripts/diagram-motion.ts";
@@ -211,8 +234,9 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
         const next = current() === "dark" ? "light" : "dark";
         toggle?.setAttribute("aria-label", `Switch to ${next} mode`);
         toggle?.setAttribute("title", `Switch to ${next} mode`);
-        const bg = getComputedStyle(root).getPropertyValue("--bg").trim();
-        document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", bg));
+        // The browser's own bar matches the header band.
+        const band = getComputedStyle(root).getPropertyValue("--band").trim();
+        document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", band));
       };
       toggle?.addEventListener("click", () => {
         const next = current() === "dark" ? "light" : "dark";
@@ -230,103 +254,130 @@ const stripColors = Object.values(trackLook).map((l) => l.color);
         label();
       });
       label();
+
+      // The logo is the whole name at the top of the page and just the disc once the page has scrolled
+      // (the idea of tradl.ai's header, whose wordmark folds to its first letter). The first state is set
+      // without animating, so a page opened halfway down doesn't roll its logo up on arrival.
+      const head = document.querySelector<HTMLElement>("[data-site-head]");
+      if (head) {
+        let short: boolean | null = null;
+        const fold = () => {
+          const next = scrollY > 24;
+          if (next === short) return;
+          short = next;
+          head.toggleAttribute("data-short", next);
+        };
+        head.classList.add("still");
+        fold();
+        requestAnimationFrame(() => requestAnimationFrame(() => head.classList.remove("still")));
+        addEventListener("scroll", fold, { passive: true });
+      }
     </script>
   </body>
 </html>
 
 <style>
-  .skip { position: absolute; left: 12px; top: -60px; z-index: 30; padding: 10px 14px; border-radius: 8px; background: var(--primary); color: var(--on-primary); }
+  .skip { position: absolute; left: 12px; top: -60px; z-index: 30; padding: 12px 14px 10px; border-radius: var(--r); background: var(--signal); color: var(--on-signal); font-weight: 800; }
   .skip:focus { top: 12px; }
 
+  /* What's new: a service notice, black on traffic yellow. */
   .livebar {
     display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;
-    padding: 7px max(20px, env(safe-area-inset-right, 0px)) 7px max(20px, env(safe-area-inset-left, 0px));
-    background: var(--bg); color: var(--ink-2); text-decoration: none; font: 400 0.75rem/1.5 var(--data); letter-spacing: 0.02em; text-align: center;
-    border-bottom: 1px solid var(--rule);
+    padding: 8px max(20px, env(safe-area-inset-right, 0px)) 6px max(20px, env(safe-area-inset-left, 0px));
+    background: var(--signal); color: var(--on-signal); text-decoration: none; font: 700 0.84375rem/1.4 var(--body); text-align: center;
   }
-  .livebar:hover .livebar-text { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .livebar:hover .livebar-text { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  .livebar:focus-visible { outline-color: var(--on-signal); outline-offset: -4px; }
   /* On phones the text wraps to a second line instead of being cut off. */
   @media (max-width: 560px) {
-    .livebar { flex-wrap: nowrap; justify-content: flex-start; text-align: left; font-size: 0.75rem; }
+    .livebar { flex-wrap: nowrap; justify-content: flex-start; text-align: left; }
     .livebar-text { min-width: 0; }
   }
-  .flag { display: inline-flex; align-items: center; font: 500 0.75rem/1 var(--data); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+  .flag { display: inline-flex; align-items: center; padding: 4px 6px 2px; border-radius: 2px; background: var(--on-signal); color: var(--signal); font: 900 0.6875rem/1 var(--body); letter-spacing: 0.1em; text-transform: uppercase; flex: none; }
 
-  header.site {
-    position: sticky; top: 0; z-index: 20;
-    background: color-mix(in srgb, var(--bg) 78%, transparent);
-    /* The prefixed line must come first: the minifier keeps only the last of the pair, and Chrome and Firefox ignore the prefix. */
-    -webkit-backdrop-filter: saturate(1.3) blur(14px);
-    backdrop-filter: saturate(1.3) blur(14px);
-    border-bottom: 1px solid var(--rule);
-  }
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    header.site { background: var(--bg); }
-  }
-  .bar { display: flex; align-items: center; gap: 12px 26px; padding-block: 12px; flex-wrap: wrap; }
-  .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
-  .glyph { width: 28px; height: 28px; flex: none; }
-  .glyph rect { fill: var(--primary); }
-  .g-zero { fill: none; stroke: var(--on-primary); stroke-width: 2.4; }
-  .g-arrow { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-  .word { font: 600 1.08rem/1 var(--display); letter-spacing: -0.02em; }
-  /* "HYPE" in orange mono, as in the footer, the big wordmark and the share cards. */
-  .hype { font: 500 0.85em/1 var(--data); letter-spacing: 0.02em; margin-left: 2px; color: var(--accent); }
-  nav { display: flex; gap: 4px; flex-wrap: wrap; }
-  nav a { position: relative; font-size: 0.90625rem; color: var(--muted); text-decoration: none; padding: 7px 10px; transition: color 150ms var(--ease); }
-  nav a:hover { color: var(--ink); }
-  nav a[aria-current="page"] { color: var(--ink); }
-  nav a[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -13px; height: 2px; background: var(--accent); }
+  /* The header is a sign band: white on black in both themes. */
+  header.site { position: sticky; top: 0; z-index: 20; background: var(--band); color: var(--on-band); border-bottom: 1px solid var(--band-rule); }
+  .bar { display: flex; align-items: center; gap: 8px 22px; min-height: 59px; padding-block: 8px; flex-wrap: wrap; }
+  .brand { display: inline-flex; align-items: center; height: 44px; color: var(--on-band); text-decoration: none; border-radius: 2px; }
+  .brand:focus-visible { outline-color: var(--signal); outline-offset: 4px; }
+  .disc { width: 34px; height: 34px; flex: none; overflow: visible; }
+  .disc-face { fill: var(--signal); }
+  .disc-zero { fill: none; stroke: var(--on-signal); stroke-width: 3.6; stroke-linecap: butt; transform-box: view-box; transform-origin: 16px 16px; }
+  .disc-zero path { stroke-width: 3.2; }
+  /* The letters live in a column that closes to nothing, so the nav slides along as the name folds. */
+  .word { display: grid; grid-template-columns: 1fr; transition: grid-template-columns 440ms cubic-bezier(0.45, 0, 0.55, 1) 60ms; }
+  .word-clip { min-width: 0; overflow: hidden; }
+  .word-in { display: inline-flex; align-items: baseline; padding: 4px 2px 0 11px; white-space: nowrap; font: 600 1.25rem/1 var(--display); letter-spacing: 0.005em; }
+  .ch { display: inline-block; transition: opacity 150ms cubic-bezier(0.33, 0, 0.67, 1), transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(140ms + var(--i) * 42ms); }
+  .ch.big { font-weight: 900; letter-spacing: 0.02em; }
+  .ch.gap { width: 0.3em; }
+  .disc-zero { transition: transform 620ms cubic-bezier(0.45, 0, 0.55, 1); }
+  /* Folded: the letters leave from the end back towards the disc, which spins a full turn backwards. */
+  header.site[data-short] .word { grid-template-columns: 0fr; transition-delay: 90ms; }
+  header.site[data-short] .ch { opacity: 0; transform: translateX(-0.5em); transition-delay: calc(var(--r) * 30ms); }
+  header.site[data-short] .disc-zero { transform: rotate(-360deg); }
+  header.site.still :is(.word, .ch, .disc-zero) { transition: none; }
+
+  nav { display: flex; gap: 2px; flex-wrap: wrap; }
+  nav a { position: relative; font: 700 0.96875rem/1 var(--body); color: var(--band-muted); text-decoration: none; padding: 12px 10px 9px; transition: color 150ms var(--ease); }
+  nav a:hover { color: var(--on-band); }
+  nav a[aria-current="page"] { color: var(--on-band); }
+  /* The current page: a traffic-yellow bar along the band's bottom edge, like a platform's edge line. */
+  nav a[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -9px; height: 4px; background: var(--signal); }
+  nav a:focus-visible, .actions :focus-visible { outline-color: var(--signal); }
   @media (forced-colors: active) { nav a[aria-current="page"]::after { background: Highlight; } }
   .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
   .search-btn, .theme-toggle, .gh {
-    display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 8px; cursor: pointer;
-    font: 500 0.875rem/1 var(--body); color: var(--ink-2); background: transparent; border: 1px solid var(--rule-strong); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 2px 12px 0; border-radius: var(--r); cursor: pointer;
+    font: 600 0.9375rem/1 var(--body); color: var(--band-muted); background: transparent; border: 1px solid var(--band-rule); text-decoration: none;
     transition: border-color 150ms var(--ease), color 150ms var(--ease);
   }
-  .search-btn:hover, .theme-toggle:hover, .gh:hover { border-color: var(--ink); color: var(--ink); }
-  .search-btn { min-width: 168px; color: var(--muted); }
-  .search-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
-  .search-btn kbd { margin-left: auto; font: 500 0.75rem/1 var(--data); padding: 4px 6px; border-radius: 4px; border: 1px solid var(--rule-strong); color: var(--muted); }
-  .theme-toggle { width: 38px; padding: 0; justify-content: center; color: var(--ink); }
-  .theme-toggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .search-btn:hover, .theme-toggle:hover, .gh:hover { border-color: var(--on-band); color: var(--on-band); }
+  .search-btn { min-width: 172px; }
+  .search-btn svg { width: 15px; height: 15px; margin-top: -2px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; }
+  .search-btn kbd { margin-left: auto; font: 600 0.75rem/1 var(--data); padding: 4px 6px 3px; border-radius: 2px; border: 1px solid var(--band-rule); color: var(--band-muted); }
+  .theme-toggle { width: 40px; padding: 0; justify-content: center; color: var(--on-band); }
+  .theme-toggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .theme-toggle .i-moon { fill: currentColor; stroke: none; }
-  .gh { color: var(--ink); font-weight: 600; }
-  .gh svg { width: 15px; height: 15px; fill: currentColor; }
-  .start { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px; font: 600 0.875rem/1 var(--body); text-decoration: none; border-radius: 8px; color: var(--on-primary); background: var(--primary); }
-  .start:hover { box-shadow: var(--shadow); }
+  .gh { color: var(--on-band); font-weight: 700; }
+  .gh svg { width: 15px; height: 15px; margin-top: -2px; fill: currentColor; }
+  .start {
+    display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 3px 14px 0; border-radius: var(--r);
+    font: 800 0.9375rem/1 var(--body); text-decoration: none; color: var(--on-signal); background: var(--signal); border: 2px solid var(--signal);
+  }
+  .start:hover { background: var(--band); color: var(--signal); }
   @media (max-width: 1060px) { .search-btn { min-width: 0; } .search-btn kbd { display: none; } }
   @media (max-width: 760px) {
-    .bar { gap: 10px; }
+    .bar { gap: 0 8px; padding-block: 6px 0; }
     nav { order: 3; width: 100%; margin-inline: -10px; }
-    nav a { padding: 6px 10px; }
-    nav a[aria-current="page"]::after { bottom: -9px; }
+    nav a { padding: 12px 10px 13px; }
+    nav a[aria-current="page"]::after { bottom: 0; }
     .gh { display: none; }
     /* Hidden from sight but not from screen readers: it is the search button's name. */
     .search-word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-    .search-btn { width: 38px; padding: 0; justify-content: center; }
+    .search-btn { width: 40px; padding: 0; justify-content: center; }
   }
 
-  .page { padding-block: 56px 96px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 72px; }
+  .page { padding-block: 56px 104px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 80px; }
 
-  .site-foot { position: relative; overflow: hidden; border-top: 1px solid var(--rule); background: var(--bg); }
-  .foot { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px 48px; padding-block: 56px 28px; }
-  .foot-brand { display: grid; gap: 10px; align-content: start; }
-  .foot-mark { font: 600 1.25rem/1 var(--display); letter-spacing: -0.02em; }
-  .foot-mark span { font: 400 0.85em/1 var(--data); color: var(--accent); }
-  .foot-note { color: var(--muted); max-width: 44ch; }
+  /* The footer is the same band as the header, under a strip of the ten lines end to end. */
+  .site-foot { background: var(--band); color: var(--on-band); }
+  .route { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); }
+  .route li { position: relative; height: 10px; background: var(--c); }
+  .route span { position: absolute; left: 50%; top: 50%; translate: -50% -50%; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #ffffff; box-shadow: inset 0 0 0 4px var(--c); color: #1e1e1e; font: 900 0.625rem/1 var(--display); padding-top: 2px; }
+  @media (max-width: 560px) { .route span { width: 20px; height: 20px; font-size: 0; box-shadow: inset 0 0 0 3px var(--c); } }
+  .foot { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px 48px; padding-block: 64px 28px; }
+  .foot-brand { display: grid; gap: 14px; align-content: start; }
+  .foot-mark { display: inline-flex; align-items: center; gap: 12px; font: 900 1.6rem/1 var(--display); letter-spacing: -0.01em; }
+  .foot-mark span { padding-top: 4px; }
+  .foot-mark .disc { width: 40px; height: 40px; }
+  .foot-note { color: var(--band-muted); max-width: 44ch; }
   .foot-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-  .foot-cols div { display: grid; gap: 8px; align-content: start; }
-  .foot-cols a { color: var(--ink-2); text-decoration: none; font-size: 0.9375rem; }
-  .foot-cols a:hover { color: var(--accent); }
-  .legal { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 0.8125rem; color: var(--muted); max-width: 90ch; }
-  .strip { display: flex; height: 4px; }
-  .strip span { flex: 1; background: color-mix(in srgb, var(--c) 85%, var(--bg)); }
-  .bleed {
-    margin: 0; padding-inline: max(12px, env(safe-area-inset-left, 0px)); white-space: nowrap; text-align: center;
-    font: 600 clamp(3.4rem, 16vw, 15rem)/0.9 var(--display); letter-spacing: -0.065em; color: var(--ink);
-    padding-block: 0.08em 0.1em; user-select: none;
-  }
-  .bleed span { font: 400 0.86em/0.9 var(--data); letter-spacing: -0.11em; color: var(--accent); }
+  .foot-cols div { display: grid; gap: 10px; align-content: start; }
+  .foot-cols .eyebrow { color: var(--band-muted); }
+  .foot-cols a { color: var(--on-band); text-decoration: none; font-size: 1rem; font-weight: 600; }
+  .foot-cols a:hover { color: var(--signal); text-decoration: underline; }
+  .foot-cols a:focus-visible { outline-color: var(--signal); }
+  .legal { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid var(--band-rule); font-size: 0.875rem; color: var(--band-muted); max-width: 90ch; }
   @media (max-width: 760px) { .foot { grid-template-columns: minmax(0, 1fr); } }
 </style>

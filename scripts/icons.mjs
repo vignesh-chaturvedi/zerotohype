@@ -11,13 +11,14 @@ const logo = await readFile(new URL("favicon.svg", pub), "utf8");
 
 const png = (svg, size) => new Resvg(svg, { fitTo: { mode: "width", value: size } }).render().asPng();
 
-// The logo's glyph on a square of its own background colour, shrunk by `scale`: iOS and Android round
-// the corners themselves, and a maskable icon has to keep everything inside the middle 80%.
-const background = logo.match(/<rect[^>]*fill="([^"]+)"/)[1];
-const glyph = logo.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "").replace(/<rect[^>]*\/>/, "");
+// The logo is a disc (a traffic-yellow route disc with a slashed zero) on nothing. For the home-screen
+// icons it sits on a square of the header's black band, shrunk by `scale`: iOS and Android round the
+// corners themselves, and a maskable icon has to keep everything inside the middle 80%.
+const background = "#1e1e1e";
+const glyph = logo.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
 const square = (scale) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><rect width="28" height="28" fill="${background}"/>` +
-  `<g transform="translate(14 14) scale(${scale}) translate(-14 -14)">${glyph}</g></svg>`;
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="${background}"/>` +
+  `<g transform="translate(16 16) scale(${scale}) translate(-16 -16)">${glyph}</g></svg>`;
 
 /** An .ico holding PNG images, which every browser since 2010 reads. */
 function ico(images) {
