@@ -165,8 +165,8 @@ import "../../styles/lab.css";
   .lab-book .order-form { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: end; }
   .lab-book .seg { display: flex; flex-wrap: wrap; gap: 6px; border: 0; padding: 0; margin: 0; }
   .lab-book .seg legend { font-weight: 600; font-size: 0.875rem; margin-bottom: 6px; padding: 0; }
-  .lab-book .seg label { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; min-height: 44px; border: 1px solid var(--rule-strong); border-radius: 10px; cursor: pointer; font-size: 0.9375rem; }
-  .lab-book .seg label:has(input:checked) { border-color: var(--ink); background: var(--sunk); }
+  .lab-book .seg label { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; min-height: 44px; border: 2px solid var(--rule-strong); border-radius: var(--r); cursor: pointer; font-size: 0.9375rem; }
+  .lab-book .seg label:has(input:checked) { border-color: var(--ink); background: var(--sunk); box-shadow: inset 0 -4px 0 var(--signal); }
   .lab-book .seg input { accent-color: var(--accent); margin: 0; }
   .lab-book #cost { font-size: 1rem; line-height: 1.6; max-width: 72ch; }
   .lab-book .facts { display: grid; gap: 10px; padding-left: 1.2em; margin: 0; max-width: 76ch; color: var(--ink-2); font-size: 0.9375rem; line-height: 1.6; }

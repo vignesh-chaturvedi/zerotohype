@@ -1,54 +1,72 @@
-/* Zero to HYPE: a night-time trading floor. Dark by default, with the warm paper look kept as the
-   light theme. Grotesk for headings, mono for codes and numbers, a colour and a line drawing per
-   track. Bids are mint and asks are orange, and the orange doubles as the accent for links. */
+/* Zero to HYPE: a wayfinding system for a roadmap. Taken from transit signage rather than from a web
+   template: white type on black bands and flat colour plates (the 1970 NYCTA Graphics Standards
+   Manual), each track a coloured line with numbered stations (station numbering as on Tokyo's metro),
+   live prices on a split-flap board, and Overpass, an open-source face drawn from the FHWA's Highway
+   Gothic sign alphabet. Every colour is a RAL Classic shade, the paint standard for signs, vehicles
+   and street furniture; the hex values are W3Schools' screen approximations. Square corners, no soft
+   shadows, no gradients. */
 
 /* Until the web fonts arrive, text is set in Arial or Courier New scaled to the same metrics, so it
    wraps the same way and nothing jumps when they swap in. The numbers come from the font files
    (Capsize); Liberation Sans and Mono are the metric-compatible stand-ins on Linux. */
 @font-face {
-  font-family: "Public Sans Fallback";
+  font-family: "Overpass Fallback";
   src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
-  ascent-override: 90.5905%; descent-override: 21.4557%; line-gap-override: 0%; size-adjust: 104.8675%;
+  ascent-override: 87.6708%; descent-override: 38.0271%; line-gap-override: 0%; size-adjust: 100.7176%;
 }
 @font-face {
-  font-family: "Schibsted Grotesk Fallback";
-  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
-  ascent-override: 90.6099%; descent-override: 23.921%; line-gap-override: 0%; size-adjust: 107.7766%;
-}
-@font-face {
-  font-family: "Martian Mono Fallback";
+  font-family: "Overpass Mono Fallback";
   src: local("Courier New"), local("CourierNewPSMT"), local("Liberation Mono"), local("LiberationMono");
-  ascent-override: 85.7282%; descent-override: 17.1456%; size-adjust: 116.6477%;
+  ascent-override: 86.0205%; descent-override: 37.3113%; size-adjust: 102.65%;
 }
 
+/* Overpass marks its middle dot as a combining mark, so browsers give "·" no width and "Testnet · read-only"
+   reads "Testnet ·read-only". The dot alone comes from a system sans instead, or from Overpass Mono, where
+   it's an ordinary character. */
+@font-face {
+  font-family: "Overpass Dot";
+  src: local("Arial"), local("ArialMT"), local("Helvetica Neue"), local("Helvetica"), local("Roboto"), local("Liberation Sans"), local("DejaVu Sans"),
+    url("../../node_modules/@fontsource/overpass-mono/files/overpass-mono-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+00B7;
+}
+
+/* Night: the platform after dark. RAL 9005 jet black, 9011 graphite, 9004 signal black; text in 9016
+   traffic white, 7047 telegrey and 7004 signal grey; links and highlights in 1023 traffic yellow. */
 :root {
-  --bg: #0c0c0b;
-  --surface: #141412;
-  --sunk: #1c1b19;
-  --ink: #f2efe8;
-  --ink-2: #c8c4ba;
-  --muted: #8e897f;
-  --rule: #262521;
-  --rule-strong: #3a3833;
-  --accent: #ff8a4c;
-  --on-accent: #0c0c0b;
-  --primary: #f2efe8;
-  --on-primary: #0c0c0b;
-  --live: #ff6b4f;
-  --mvp: #e3a24e;
-  --ok: #6fd6a8;
-  --bid: #6fd6a8;
-  --ask: #ff8a4c;
-  --series-b: #74b9e6;
-  --cover-amt: 7%;
-  --cover-ink: #f2efe8;
-  --cover-ink-tint: 100%;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -14px rgb(0 0 0 / 0.7);
-  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.45), 0 24px 44px -18px rgb(0 0 0 / 0.8);
+  --bg: #0a0a0a;
+  --surface: #1c1c1c;
+  --sunk: #282828;
+  --ink: #f6f6f6;
+  --ink-2: #cfd0cf;
+  --muted: #9ea0a1;
+  --rule: #2e3234;
+  --rule-strong: #6b716f;
+  /* The sign band: the header, the footer and the black strip over every panel. At night it's true black,
+     so it still stands apart from the graphite panels it heads. */
+  --band: #000000;
+  --on-band: #f6f6f6;
+  --band-muted: #9ea0a1;
+  --band-rule: #3a3a3a;
+  /* A label's plate on the page itself: lifted a step off the night background so its edge shows. */
+  --plate: #2b2b2b;
+  --signal: #f0ca00;
+  --on-signal: #1e1e1e;
+  --accent: #f0ca00;
+  --on-accent: #1e1e1e;
+  --primary: #f0ca00;
+  --on-primary: #1e1e1e;
+  --primary-edge: #f0ca00;
+  --live: #f3752c;
+  --mvp: #faab21;
+  --ok: #48a43f;
+  --bid: #48a43f;
+  --ask: #f3752c;
+  --series-b: #81c0bb;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --display: "Schibsted Grotesk", "Schibsted Grotesk Fallback", "Helvetica Neue", Arial, sans-serif;
-  --body: "Public Sans", "Public Sans Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --data: "Martian Mono", "Martian Mono Fallback", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --display: "Overpass Dot", "Overpass", "Overpass Fallback", "Helvetica Neue", Arial, sans-serif;
+  --body: "Overpass Dot", "Overpass", "Overpass Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --data: "Overpass Mono", "Overpass Mono Fallback", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r: 4px;
   /* Code colours (Shiki's css-variables theme), from the palette so they follow the theme; each one
      reads at 4.5:1 or more on --sunk in both themes. */
   --astro-code-background: var(--sunk);
@@ -64,136 +82,164 @@
   --astro-code-token-link: var(--accent);
   color-scheme: dark;
 }
+/* Day: a printed line map. RAL 9016 traffic white paper, 9010 pure white panels, 9017 traffic black
+   ink and bands, 7043 traffic grey B for quiet text, 5017 traffic blue for links. Every text colour
+   reads at 4.5:1 or more on the page, the panels and the sunk boxes. */
 :root[data-theme="light"] {
-  /* --muted and --accent are dark enough to read at 4.5:1 on the track-tinted panels too, not only on --bg. */
-  --bg: #f5f3ee; --surface: #fffefb; --sunk: #ece8df; --ink: #1a1b1d; --ink-2: #3b3c3f; --muted: #5c5851;
-  --rule: #e2ddd2; --rule-strong: #cfc8ba; --accent: #b23c0e; --on-accent: #ffffff; --primary: #1a1b1d; --on-primary: #fbfaf6;
-  --live: #d6371b; --mvp: #9a5a00; --ok: #1c7449; --bid: #1c7449; --ask: #b23c0e; --series-b: #1f6a96;
-  --astro-code-token-constant: #8f5400; /* --mvp is just under 4.5:1 on --sunk */
-  --cover-amt: 100%; --cover-ink: #1d1b17; --cover-ink-tint: 0%;
-  --shadow: 0 1px 2px rgb(40 30 10 / 0.05), 0 10px 30px -12px rgb(40 30 10 / 0.12);
-  --shadow-lift: 0 2px 4px rgb(40 30 10 / 0.06), 0 22px 40px -18px rgb(40 30 10 / 0.22);
+  --bg: #f6f6f6; --surface: #ffffff; --sunk: #ececec; --ink: #1e1e1e; --ink-2: #3b3d3c; --muted: #4e5451;
+  --rule: #d7d7d7; --rule-strong: #7e8b92; --band: #1e1e1e; --on-band: #f6f6f6; --band-muted: #9ea0a1; --band-rule: #3a3a3a; --plate: #1e1e1e;
+  --accent: #0e518d; --on-accent: #ffffff; --primary-edge: #1e1e1e;
+  --live: #c1121c; --mvp: #954527; --ok: #007243; --bid: #007243; --ask: #c1121c; --series-b: #0e518d;
+  --astro-code-token-function: #6a3a7f;
   color-scheme: light;
 }
 
 * { box-sizing: border-box; }
 /* The sticky header's height. The nav wraps to a second row below 760px. */
-:root { --head-h: 61px; }
-@media (max-width: 760px) { :root { --head-h: 106px; } }
+:root { --head-h: 60px; }
+@media (max-width: 760px) { :root { --head-h: 104px; } }
 /* Whatever the page scrolls to, a link's target or a control reached with Tab, lands below the header
    (and below a lab's sticky control bar, --sticky-h, set by lab-bar.ts) instead of under it. */
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--head-h) + var(--sticky-h, 0px) + 8px); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
-  font: 400 1.03125rem/1.65 var(--body); -webkit-font-smoothing: antialiased;
+  font: 400 1.0625rem/1.6 var(--body); -webkit-font-smoothing: antialiased; font-kerning: normal;
 }
-a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a { color: var(--accent); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
 a:hover { text-decoration-thickness: 2px; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-::selection { background: color-mix(in srgb, var(--accent) 22%, transparent); }
-h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; line-height: 1.08; text-wrap: balance; margin: 0; color: var(--ink); }
-h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: -0.035em; font-weight: 500; }
-h2 { font-size: clamp(1.55rem, 3.2vw, 2.2rem); letter-spacing: -0.03em; font-weight: 500; }
-h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+::selection { background: var(--signal); color: var(--on-signal); }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 800; line-height: 1.04; text-wrap: balance; margin: 0; color: var(--ink); }
+h1 { font-size: clamp(2.3rem, 5.4vw, 3.6rem); letter-spacing: -0.025em; font-weight: 900; }
+h2 { font-size: clamp(1.6rem, 3.2vw, 2.3rem); letter-spacing: -0.02em; }
+h3 { font-size: 1.15rem; letter-spacing: -0.005em; }
 p { margin: 0; }
 code, kbd, pre, .mono { font-family: var(--data); }
-code { font-size: 0.8em; background: var(--sunk); padding: 0.1em 0.38em; border-radius: 5px; overflow-wrap: anywhere; }
-pre { font-size: 0.8rem; line-height: 1.65; background: var(--sunk); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 18px; overflow-x: auto; margin: 0; }
+code { font-size: 0.84em; background: var(--sunk); padding: 0.12em 0.36em; border-radius: 2px; overflow-wrap: anywhere; }
+pre { font-size: 0.8125rem; line-height: 1.65; background: var(--sunk); border: 1px solid var(--rule); border-radius: var(--r); padding: 16px 18px; overflow-x: auto; margin: 0; }
 pre code { background: none; padding: 0; font-size: inherit; }
-/* Lesson code blocks get a bar with the language and a Copy button (code-blocks.ts). */
-.code-block { border: 1px solid var(--rule); border-radius: 12px; background: var(--sunk); overflow: hidden; }
+/* Lesson code blocks get a black band with the language and a Copy button (code-blocks.ts). */
+.code-block { border: 1px solid var(--rule); border-radius: var(--r); background: var(--sunk); overflow: hidden; }
 .code-block pre { border: 0; border-radius: 0; }
-.code-bar { display: flex; align-items: center; gap: 12px; padding: 6px 8px 6px 18px; border-bottom: 1px solid var(--rule); font: 500 0.75rem/1 var(--data); letter-spacing: 0.04em; color: var(--muted); }
-.code-copy { margin-left: auto; padding: 6px 9px; border: 1px solid var(--rule-strong); border-radius: 6px; background: none; color: var(--ink-2); font: inherit; cursor: pointer; }
-.code-copy:hover { color: var(--ink); border-color: var(--ink-2); }
+.code-bar { display: flex; align-items: center; gap: 12px; padding: 5px 6px 5px 16px; background: var(--band); color: var(--band-muted); font: 700 0.75rem/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; }
+.code-copy { margin-left: auto; padding: 7px 10px 5px; border: 1px solid var(--band-rule); border-radius: 2px; background: none; color: var(--on-band); font: inherit; cursor: pointer; }
+.code-copy:hover { background: var(--signal); border-color: var(--signal); color: var(--on-signal); }
 /* The same code in several languages, as tabs (code-blocks.ts). */
 .code-bar [role="tablist"] { display: flex; flex-wrap: wrap; gap: 2px; margin-left: -10px; }
-.code-bar [role="tab"] { padding: 6px 10px; border: 0; border-radius: 6px; background: none; color: var(--muted); font: inherit; letter-spacing: inherit; cursor: pointer; }
-.code-bar [role="tab"]:hover { color: var(--ink); }
-.code-bar [role="tab"][aria-selected="true"] { color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--rule-strong); }
+.code-bar [role="tab"] { padding: 7px 10px 5px; border: 0; border-radius: 2px; background: none; color: var(--band-muted); font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.code-bar [role="tab"]:hover { color: var(--on-band); }
+.code-bar [role="tab"][aria-selected="true"] { color: var(--on-signal); background: var(--signal); }
 /* Bigger on touch screens, where a fingertip needs more than the 24px the bar's buttons have. */
 @media (pointer: coarse) { .code-bar [role="tab"], .code-copy { min-height: 36px; padding-inline: 12px; } }
 img { max-width: 100%; }
 
 .wrap {
-  width: 100%; max-width: 1200px; margin: 0 auto;
+  width: 100%; max-width: 1240px; margin: 0 auto;
   padding-left: max(20px, env(safe-area-inset-left, 0px));
   padding-right: max(20px, env(safe-area-inset-right, 0px));
 }
-.eyebrow { font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+/* Small labels are set the way signs set them: bold capitals, spaced a little. */
+.eyebrow { font: 700 0.8125rem/1.3 var(--body); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+/* A label on a plate of its own: white on black, as on a sign's band. */
+.plate { display: inline-flex; align-items: center; gap: 0.6em; width: fit-content; padding: 0.5em 0.7em 0.36em; border-radius: 2px; background: var(--plate); color: var(--on-band); }
+.plate b { display: inline-grid; place-items: center; min-width: 1.6em; margin: -0.5em 0 -0.36em -0.7em; padding: 0.5em 0.45em 0.36em; background: var(--signal); color: var(--on-signal); font-weight: 900; border-radius: 2px 0 0 2px; }
 .muted { color: var(--muted); }
-.lede { font-size: clamp(1.05rem, 1.6vw, 1.2rem); line-height: 1.6; color: var(--ink-2); max-width: 62ch; }
+.lede { font-size: clamp(1.08rem, 1.6vw, 1.22rem); line-height: 1.55; color: var(--ink-2); max-width: 60ch; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* A station number, as on a metro's station signs: the track's colour as a ring, its code inside.
+   Decorative wherever it's used: the track's code and name are in the text beside it or in the link's name. */
+.stn {
+  --s: 40px;
+  display: inline-grid; place-items: center; align-content: center; flex: none; width: var(--s); height: var(--s); border-radius: 50%;
+  background: #ffffff; color: #1e1e1e; box-shadow: inset 0 0 0 calc(var(--s) * 0.13) var(--c, #4e5451);
+  font-family: var(--display); line-height: 1; text-align: center;
+}
+.stn b { display: block; font-size: calc(var(--s) * 0.24); font-weight: 800; letter-spacing: 0.02em; margin-bottom: calc(var(--s) * 0.02); }
+.stn i { display: block; font-style: normal; font-size: calc(var(--s) * 0.36); font-weight: 900; letter-spacing: -0.03em; }
+.stn.s { --s: 30px; }
+.stn.s b { display: none; }
+.stn.s i { font-size: calc(var(--s) * 0.42); }
+.stn.l { --s: 64px; }
+@media (forced-colors: active) { .stn { forced-color-adjust: none; } }
 
 /* The header's light/dark switch shows the mode it switches to. */
 .theme-toggle .i-moon { display: none; }
 :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
 :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
 
-/* Buttons and small labels */
+/* Buttons are sign plates: traffic yellow with a black edge, flipping to black when pointed at. */
 .btn {
-  display: inline-flex; align-items: center; gap: 10px; padding: 13px 20px; border-radius: 8px;
-  font: 600 0.9375rem/1 var(--body); text-decoration: none; color: var(--on-primary); background: var(--primary);
-  border: 1px solid var(--primary); box-shadow: var(--shadow); transition: transform 180ms var(--ease), box-shadow 180ms var(--ease);
+  display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 14px 20px 11px; border-radius: var(--r);
+  font: 800 1rem/1 var(--body); letter-spacing: 0.01em; text-decoration: none; color: var(--on-primary); background: var(--primary);
+  border: 2px solid var(--primary-edge); transition: background 140ms var(--ease), color 140ms var(--ease), border-color 140ms var(--ease);
 }
-.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-lift); }
-.btn.ghost { color: var(--ink); background: transparent; border-color: var(--rule-strong); box-shadow: none; }
-.btn.ghost:hover { border-color: var(--ink); }
+.btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn.ghost { color: var(--ink); background: transparent; border-color: var(--ink); }
+.btn.ghost:hover { background: var(--ink); color: var(--bg); }
 .btn .arrow { transition: transform 180ms var(--ease); }
 .btn:hover .arrow { transform: translateX(3px); }
-.pill { display: inline-block; font: 500 0.75rem/1 var(--data); letter-spacing: 0.04em; padding: 7px 11px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); color: var(--muted); max-width: 100%; line-height: 1.4; }
-.pill b { color: var(--ink); font-weight: 500; }
+.pill { display: inline-block; font: 600 0.8125rem/1.4 var(--body); padding: 6px 11px 4px; border-radius: 2px; border: 1px solid var(--rule-strong); background: var(--surface); color: var(--muted); max-width: 100%; }
+.pill b { color: var(--ink); font-weight: 700; }
 .pill .live-dot { display: inline-block; margin-right: 8px; vertical-align: 1px; }
-.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 3px color-mix(in srgb, var(--live) 22%, transparent); flex: none; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--live); flex: none; }
 /* A "checked" date's dot shows its age (see freshness.ts): green while fresh, amber as it ages, red once stale. */
-.pill[data-state] .live-dot { --dot: var(--muted); background: var(--dot); box-shadow: 0 0 0 3px color-mix(in srgb, var(--dot) 22%, transparent); }
+.pill[data-state] .live-dot { --dot: var(--muted); background: var(--dot); box-shadow: 0 0 0 2px color-mix(in srgb, var(--dot) 28%, transparent); }
 .pill[data-state="fresh"] .live-dot { --dot: var(--ok); }
 .pill[data-state="aging"] .live-dot { --dot: var(--mvp); }
 .pill[data-state="stale"] .live-dot { --dot: var(--live); }
 .pill .ago { color: var(--muted); }
-.tag { font: 500 0.75rem/1 var(--data); letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 8px; border-radius: 6px; background: var(--sunk); color: var(--muted); white-space: nowrap; }
+.tag { font: 800 0.75rem/1 var(--body); letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 8px 4px; border-radius: 2px; background: var(--sunk); color: var(--muted); white-space: nowrap; }
 .tag.mvp { color: var(--mvp); background: color-mix(in srgb, var(--mvp) 12%, var(--surface)); }
 .tag.ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, var(--surface)); }
 
 /* Page heading block used by inner pages */
-.page-head { display: grid; gap: 14px; padding-block: 8px 4px; }
-.page-head h1 { font-size: clamp(2.4rem, 5.6vw, 4rem); letter-spacing: -0.05em; line-height: 1; }
-/* word-spacing pulls the wide monospace space down to a normal word gap, as in the home page's heading. */
-.page-head h1 em { font-style: normal; font-family: var(--data); font-weight: 400; letter-spacing: -0.09em; word-spacing: -0.4em; color: var(--accent); }
+.page-head { display: grid; gap: 16px; padding-block: 4px; }
+.page-head h1 { font-size: clamp(2.5rem, 6.4vw, 4.6rem); letter-spacing: -0.035em; line-height: 1; }
+/* The heading's last words sit on a traffic-yellow plate, like the one word on a sign that matters. */
+/* The plate is painted from just above the capitals to just below the descenders, not over the whole
+   line box, so it never covers the line above. */
+.page-head h1 em, .hl {
+  font-style: normal; color: var(--on-signal); padding: 0 0.12em; margin-inline: -0.03em;
+  background: linear-gradient(var(--signal), var(--signal)) 0 0.11em / 100% 1.02em no-repeat;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
 /* Shown when the changelog bot saw a docs page that a page relies on change after its facts were checked. */
 .source-note {
-  max-width: 72ch; margin: 0; padding: 10px 14px; border-radius: 12px; font-size: 0.875rem; line-height: 1.55; color: var(--ink-2);
-  border: 1px solid color-mix(in srgb, var(--mvp) 45%, var(--rule)); background: color-mix(in srgb, var(--mvp) 9%, var(--surface));
+  max-width: 72ch; margin: 0; padding: 12px 16px 10px; border-radius: var(--r); font-size: 0.9375rem; line-height: 1.55; color: var(--ink-2);
+  border: 2px solid var(--mvp); background: color-mix(in srgb, var(--mvp) 8%, var(--surface));
 }
-/* Contents of a long page, above it */
-.toc { display: grid; gap: 10px; max-width: 70ch; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
-.toc ol { margin: 0; padding-left: 1.4em; columns: 2 16rem; column-gap: 28px; font-size: 0.9375rem; line-height: 1.5; }
-.toc li { break-inside: avoid; padding: 3px 0; }
+/* Contents of a long page, above it: the sections as stops on the track's line. */
+.toc { display: grid; gap: 12px; max-width: 70ch; padding: 0 0 4px; }
+.toc ol { --dot: var(--c, var(--ink)); list-style: none; margin: 0; padding: 0; columns: 2 16rem; column-gap: 32px; font-size: 0.96875rem; line-height: 1.4; }
+.toc li { position: relative; break-inside: avoid; padding: 5px 0 5px 26px; }
+.toc li::before { content: ""; position: absolute; left: 6px; top: 0; bottom: 0; width: 4px; background: var(--dot); }
+.toc li::after { content: ""; position: absolute; left: 1px; top: calc(5px + 0.25em); width: 14px; height: 14px; border-radius: 50%; background: var(--surface); box-shadow: inset 0 0 0 3px var(--dot); }
 /* On touch screens each contents link is a 44px-tall target. */
-@media (pointer: coarse) { .toc li { padding: 0; } .toc a { display: block; padding-block: 10.75px; } }
-.toc li::marker { color: var(--muted); font: 500 0.75rem var(--data); }
+@media (pointer: coarse) { .toc li { padding-block: 0; } .toc li::after { top: 15px; } .toc a { display: block; padding-block: 12px; } }
 
 /* Lesson prose: Markdown rendered from the content collections. */
-.prose { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; max-width: 70ch; font-size: 1.0625rem; line-height: 1.75; }
+.prose { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; max-width: 70ch; font-size: 1.09375rem; line-height: 1.7; }
 .prose > * { margin: 0; }
-.prose h2 { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--rule); font-size: clamp(1.45rem, 2.6vw, 1.85rem); }
+.prose h2 { margin-top: 30px; padding-top: 18px; border-top: 4px solid var(--ink); font-size: clamp(1.5rem, 2.6vw, 1.95rem); }
 .prose :is(h2, h3) { scroll-margin-top: 4px; }
-.prose h3 { margin-top: 10px; font-size: 1.2rem; }
-.prose ul, .prose ol { padding-left: 1.3em; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
-.prose li::marker { color: var(--muted); }
-.prose strong { font-weight: 600; color: var(--ink); }
+.prose h3 { margin-top: 10px; font-size: 1.22rem; }
+.prose ul, .prose ol { padding-left: 1.4em; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.prose ul { list-style: square; }
+.prose li::marker { color: var(--muted); font-weight: 700; }
+.prose strong { font-weight: 800; color: var(--ink); }
 /* Each table sits in a box that scrolls sideways when the table is wider than the page; while it does,
    scroll-areas.ts puts the box in the Tab order so a keyboard can scroll it. */
-.table-scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
-.prose table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 0.90625rem; line-height: 1.5; }
-.prose th, .prose td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.table-scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--r); background: var(--surface); }
+.prose table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 0.9375rem; line-height: 1.5; }
+.prose th, .prose td { text-align: left; padding: 10px 14px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
 .prose tr:last-child td { border-bottom: 0; }
-.prose th { font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--sunk); }
+.prose th { font: 700 0.75rem/1.4 var(--body); letter-spacing: 0.07em; text-transform: uppercase; color: var(--on-band); background: var(--band); border-bottom: 0; }
 /* The first column names each row (an error, a field, an action), and a name doesn't break mid-word on a
    phone; longer values in the other columns, such as URLs, still break wherever they must. */
 .prose td:first-child code { overflow-wrap: break-word; }
-.prose blockquote { margin: 0; padding: 14px 18px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 12px 12px 0; color: var(--ink); }
+.prose blockquote { margin: 0; padding: 14px 18px 12px; border-left: 8px solid var(--signal); background: var(--surface); border-radius: 0 var(--r) var(--r) 0; color: var(--ink); }
 
 /* Diagram motion (src/scripts/diagram-motion.ts): dots that travel the lines while a drawing is
    hovered, and a crosshair that follows the pointer on the chart-like drawings. */
@@ -206,10 +252,10 @@ svg[data-kind].is-live .pts { opacity: 1; }
 svg[data-kind] .pt { fill: currentColor; stroke: var(--cv-bg, var(--surface)); stroke-width: 1.2; }
 svg[data-kind] .xh { opacity: 0; transition: opacity 140ms var(--ease); pointer-events: none; }
 svg[data-kind].has-pointer .xh { opacity: 1; }
-svg[data-kind] .xh-line { stroke: currentColor; stroke-opacity: 0.6; stroke-width: 1; stroke-dasharray: 2 3; }
+svg[data-kind] .xh-line { stroke: currentColor; stroke-opacity: 0.7; stroke-width: 1; stroke-dasharray: 2 3; }
 svg[data-kind] .xh-dot { fill: currentColor; stroke: var(--cv-bg, var(--surface)); stroke-width: 2; }
-svg[data-kind] .xh-bg { fill: var(--cv-bg, var(--surface)); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 0.8; }
-svg[data-kind] .xh-text { font: 500 8.5px var(--data); letter-spacing: 0.06em; fill: currentColor; stroke: none; }
+svg[data-kind] .xh-bg { fill: var(--cv-bg, var(--surface)); stroke: currentColor; stroke-opacity: 0.5; stroke-width: 0.8; }
+svg[data-kind] .xh-text { font: 600 8.5px var(--data); letter-spacing: 0.04em; fill: currentColor; stroke: none; }
 .cover svg[data-kind="book"], .cover svg[data-kind="funding"], .cover svg[data-kind="oracle"],
 .cover svg[data-kind="window"], .cover svg[data-kind="ladder"], .spark[data-kind] { cursor: crosshair; }
 .cover svg[data-kind] [data-col], .cover svg[data-kind] [data-bar], .cover svg[data-kind] [data-rung] { transition: fill-opacity 160ms var(--ease); }
@@ -226,51 +272,51 @@ svg[data-kind] .xh-text { font: 500 8.5px var(--data); letter-spacing: 0.06em; f
 .cover svg[data-kind] .seal.lit circle { fill-opacity: 0.45; }
 .cover svg[data-kind] .ladder-dot { transition: cx 200ms var(--ease), cy 200ms var(--ease); }
 .cover svg[data-kind] .win { transition: fill-opacity 300ms var(--ease); }
-.cover svg[data-kind].is-live .win { fill-opacity: 0.2; }
+.cover svg[data-kind].is-live .win { fill-opacity: 0.25; }
 .cover svg[data-kind].is-live .mid { animation: mid-pulse 1.4s ease-in-out infinite; }
 @keyframes mid-pulse { 50% { stroke-opacity: 0.15; } }
 
 /* Search dialog (src/scripts/search.ts). Results are injected, so these rules live here, unscoped. */
 .search {
   width: min(680px, calc(100vw - 32px)); max-height: min(620px, calc(100dvh - 120px)); margin: 12vh auto auto; padding: 0;
-  border: 1px solid var(--rule-strong); border-radius: 12px; background: var(--surface); color: var(--ink);
-  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.7); overflow: hidden;
+  border: 2px solid var(--ink); border-radius: var(--r); background: var(--surface); color: var(--ink);
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.6); overflow: hidden;
 }
-.search[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; animation: search-in 180ms var(--ease); }
-.search::backdrop { background: rgb(6 6 5 / 0.62); backdrop-filter: blur(3px); }
-@keyframes search-in { from { opacity: 0; transform: translateY(-8px) scale(0.985); } }
+.search[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; animation: search-in 160ms var(--ease); }
+.search::backdrop { background: rgb(10 10 10 / 0.7); }
+@keyframes search-in { from { opacity: 0; transform: translateY(-8px); } }
 .search-bar { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--rule); margin: 0; }
-.search-bar svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-linecap: round; }
-.search-bar input { flex: 1; min-width: 0; font: 400 1.0625rem/1.4 var(--body); color: var(--ink); background: none; border: 0; outline: none; }
+.search-bar svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: square; }
+.search-bar input { flex: 1; min-width: 0; font: 400 1.125rem/1.4 var(--body); color: var(--ink); background: none; border: 0; outline: none; }
 .search-bar input::-webkit-search-cancel-button { display: none; }
-.search-bar .esc, .search-foot kbd { font: 500 0.75rem/1 var(--data); padding: 5px 7px; border-radius: 4px; border: 1px solid var(--rule-strong); background: none; color: var(--muted); cursor: pointer; }
+.search-bar .esc, .search-foot kbd { font: 600 0.75rem/1 var(--data); padding: 5px 7px 4px; border-radius: 2px; border: 1px solid var(--rule-strong); background: none; color: var(--muted); cursor: pointer; }
 .search-results { overflow-y: auto; padding: 8px; display: grid; gap: 2px; align-content: start; }
-.search-note { padding: 14px 10px; color: var(--muted); font-size: 0.90625rem; line-height: 2; }
-.search-note .chip { font: 500 0.75rem/1 var(--data); padding: 6px 9px; margin: 0 2px; border-radius: 6px; border: 1px solid var(--rule-strong); background: none; color: var(--ink-2); cursor: pointer; }
-.search-note .chip:hover { border-color: var(--accent); color: var(--ink); }
+.search-note { padding: 14px 10px; color: var(--muted); font-size: 0.9375rem; line-height: 2; }
+.search-note .chip { font: 700 0.75rem/1 var(--body); letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 9px 5px; margin: 0 2px; border-radius: 2px; border: 1px solid var(--rule-strong); background: none; color: var(--ink-2); cursor: pointer; }
+.search-note .chip:hover { border-color: var(--ink); background: var(--ink); color: var(--bg); }
 .hit-group { display: grid; gap: 1px; }
-.hit { display: grid; gap: 3px; padding: 10px 12px; border-radius: 8px; text-decoration: none; color: var(--ink); scroll-margin: 8px; }
-.hit[aria-selected="true"] { background: var(--sunk); box-shadow: inset 2px 0 0 var(--accent); }
+.hit { display: grid; gap: 3px; padding: 10px 12px; border-radius: 2px; text-decoration: none; color: var(--ink); scroll-margin: 8px; }
+.hit[aria-selected="true"] { background: var(--sunk); box-shadow: inset 4px 0 0 var(--signal); }
 .hit.sub { padding-left: 26px; }
-.hit-kind { font: 500 0.75rem/1.3 var(--data); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-.hit-title { font: 600 0.96875rem/1.3 var(--display); letter-spacing: -0.01em; }
-.hit.sub .hit-title { font: 500 0.84375rem/1.3 var(--body); color: var(--ink-2); }
-.hit-excerpt { font-size: 0.84375rem; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
-.hit-excerpt mark { background: none; color: var(--accent); font-weight: 600; }
-.search-foot { display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-top: 1px solid var(--rule); font: 400 0.75rem/1 var(--data); color: var(--muted); }
-.search-foot kbd { padding: 3px 5px; margin-right: 3px; cursor: default; }
+.hit-kind { font: 700 0.75rem/1.3 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.hit-title { font: 800 1rem/1.3 var(--display); }
+.hit.sub .hit-title { font: 600 0.875rem/1.3 var(--body); color: var(--ink-2); }
+.hit-excerpt { font-size: 0.875rem; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
+.hit-excerpt mark { background: none; color: var(--accent); font-weight: 700; }
+.search-foot { display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; background: var(--band); color: var(--band-muted); font: 600 0.75rem/1 var(--body); letter-spacing: 0.04em; }
+.search-foot kbd { padding: 3px 5px 2px; margin-right: 3px; cursor: default; border-color: var(--band-rule); color: var(--on-band); }
 @media (max-width: 560px) { .search { margin-top: 10px; max-height: calc(100dvh - 20px); } .search-foot span:first-child { display: none; } }
 
 /* "Done" ticks (src/scripts/progress.ts) */
 .done-btn {
-  display: inline-flex; align-items: center; gap: 9px; height: 36px; padding: 0 14px 0 10px; border-radius: 8px; cursor: pointer;
-  font: 600 0.875rem/1 var(--body); color: var(--ink); background: transparent; border: 1px solid var(--rule-strong);
-  transition: border-color 150ms var(--ease), background 150ms var(--ease);
+  display: inline-flex; align-items: center; gap: 9px; height: 40px; padding: 2px 14px 0 10px; border-radius: var(--r); cursor: pointer;
+  font: 700 0.9375rem/1 var(--body); color: var(--ink); background: transparent; border: 2px solid var(--ink);
+  transition: background 150ms var(--ease), color 150ms var(--ease);
 }
-.done-btn:hover { border-color: var(--ok); }
-.done-btn .tick { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--muted); display: grid; place-items: center; transition: background 150ms var(--ease), border-color 150ms var(--ease); }
-.done-btn .tick svg { width: 11px; height: 11px; fill: none; stroke: var(--bg); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
-.done-btn[aria-pressed="true"] { border-color: color-mix(in srgb, var(--ok) 60%, var(--rule)); background: color-mix(in srgb, var(--ok) 12%, transparent); }
+.done-btn:hover { background: var(--sunk); }
+.done-btn .tick { width: 18px; height: 18px; margin-top: -2px; border-radius: 50%; border: 2px solid var(--muted); display: grid; place-items: center; transition: background 150ms var(--ease), border-color 150ms var(--ease); }
+.done-btn .tick svg { width: 11px; height: 11px; fill: none; stroke: #ffffff; stroke-width: 2.6; stroke-linecap: square; stroke-linejoin: miter; opacity: 0; }
+.done-btn[aria-pressed="true"] { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, transparent); }
 .done-btn[aria-pressed="true"] .tick { background: var(--ok); border-color: var(--ok); }
 .done-btn[aria-pressed="true"] .tick svg { opacity: 1; }
 
@@ -284,4 +330,5 @@ svg[data-kind] .xh-text { font: 500 8.5px var(--data); letter-spacing: 0.06em; f
   .done-btn[aria-pressed="true"] { border-color: Highlight; }
   .done-btn[aria-pressed="true"] .tick { background: Highlight; border-color: Highlight; }
   .done-btn[aria-pressed="true"] .tick svg { stroke: HighlightText; }
+  .page-head h1 em, .hl { forced-color-adjust: none; }
 }

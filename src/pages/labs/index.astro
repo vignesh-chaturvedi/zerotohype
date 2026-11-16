@@ -1,7 +1,8 @@
 ---
 import Base from "../../layouts/Base.astro";
 import TrackCover from "../../components/TrackCover.astro";
-import { lookOf, type Motif } from "../../lib/track-look";
+import Station from "../../components/Station.astro";
+import { lineStyle, type Motif } from "../../lib/track-look";
 import settlements from "../../../public/data/hip4-settlements.json";
 
 const labs: { n: string; code: string; href: string; title: string; track: string; note: string; what: string; motif?: Motif; kind?: string }[] = [
@@ -78,13 +79,13 @@ const labs: { n: string; code: string; href: string; title: string; track: strin
   <ol class="labs">
     {labs.map((lab) => (
       <li>
-        <a class="lab-card" href={lab.href} style={`--c: ${lookOf(lab.code).color}`}>
+        <a class="lab-card" href={lab.href} style={lineStyle(lab.code)}>
           <TrackCover code={lab.code} label={lab.note} num={lab.n} motif={lab.motif} />
           <span class="lab-body">
             <span class="lab-top"><span class="eyebrow">{lab.kind ?? "Lab"} {lab.n} · {lab.track}</span><span class="tag ok">Live</span></span>
             <span class="lab-title">{lab.title}</span>
             <span class="lab-what">{lab.what}</span>
-            <span class="lab-go">Open the lab <span aria-hidden="true">→</span></span>
+            <span class="lab-go"><Station code={lab.code} size="s" />Open the lab <span aria-hidden="true">→</span></span>
           </span>
         </a>
       </li>
@@ -97,24 +98,25 @@ const labs: { n: string; code: string; href: string; title: string; track: strin
 </Base>
 
 <style>
-  .labs { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  .labs { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; }
+  /* Each lab is a sign: its track's painted panel on the left, the words on white beside it. */
   .lab-card {
-    display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 28px; align-items: center; padding: 12px;
-    border-radius: 24px; text-decoration: none; color: var(--ink);
-    background: color-mix(in srgb, var(--c) calc(var(--cover-amt) * 0.4), var(--surface));
-    border: 1px solid color-mix(in srgb, var(--c) 55%, var(--rule));
-    transition: transform 220ms var(--ease), box-shadow 220ms var(--ease);
+    display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: stretch;
+    border: 2px solid var(--ink); border-radius: var(--r); overflow: hidden; text-decoration: none; color: var(--ink); background: var(--surface);
+    transition: box-shadow 160ms var(--ease);
   }
-  .lab-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
-  .lab-body { display: grid; gap: 12px; padding: 12px 18px 12px 0; }
+  .lab-card:hover { box-shadow: 8px 8px 0 var(--c); }
+  .lab-card :global(.cover) { border-radius: 0; height: 100%; min-height: 240px; }
+  .lab-body { display: grid; gap: 12px; align-content: center; padding: 24px 28px 26px; }
   .lab-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; }
-  .lab-title { font: 500 clamp(1.7rem, 3.6vw, 2.4rem)/1.02 var(--display); letter-spacing: -0.045em; }
+  .lab-title { font: 900 clamp(1.9rem, 3.8vw, 2.7rem)/1 var(--display); letter-spacing: -0.035em; }
   .lab-what { color: var(--ink-2); max-width: 54ch; }
-  .lab-go { font-weight: 600; }
-  .lab-card:hover .lab-go span { display: inline-block; transform: translateX(3px); transition: transform 180ms var(--ease); }
-  .more { max-width: 66ch; font-size: 0.9375rem; }
+  .lab-go { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+  .lab-card:hover .lab-go { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .more { max-width: 66ch; font-size: 1rem; }
   @media (max-width: 760px) {
-    .lab-card { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-    .lab-body { padding: 10px 8px 8px; }
+    .lab-card { grid-template-columns: minmax(0, 1fr); }
+    .lab-card :global(.cover) { min-height: 0; height: auto; }
+    .lab-body { padding: 18px 18px 20px; }
   }
 </style>

@@ -474,10 +474,10 @@ const okReply = `{
   .group { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
 
   /* The four stages a request passes through */
-  .stages { list-style: none; padding: 0; gap: 0; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); overflow: hidden; }
-  .stages li { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 6px 12px; padding: 14px 16px; border-bottom: 1px solid var(--rule); font-size: 0.9375rem; line-height: 1.55; }
+  .stages { list-style: none; padding: 0; gap: 0; border: 2px solid var(--ink); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+  .stages li { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); gap: 6px 12px; padding: 14px 16px 12px; border-bottom: 1px solid var(--rule); font-size: 1rem; line-height: 1.55; }
   .stages li:last-child { border-bottom: 0; }
-  .stage-n { grid-row: span 2; font: 500 0.75rem/1.9 var(--data); color: var(--accent); }
+  .stage-n { grid-row: span 2; display: grid; place-items: center; width: 28px; height: 28px; padding-top: 3px; border-radius: 50%; background: var(--plate); color: var(--on-band); font: 900 0.8125rem/1 var(--display); }
   .stage-shape { justify-self: start; }
 
   /* One card per error, in a single column as wide as the prose (70ch at the prose's font size) */
@@ -488,6 +488,6 @@ const okReply = `{
   .statuses code { overflow-wrap: normal; }
   @media (min-width: 700px) { .statuses :global(wbr) { display: none; } }
 
-  .sources { display: grid; gap: 10px; max-width: 70ch; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 0.875rem; line-height: 1.6; color: var(--muted); }
+  .sources { display: grid; gap: 10px; max-width: 70ch; padding-top: 18px; border-top: 4px solid var(--ink); font-size: 0.9375rem; line-height: 1.6; color: var(--muted); }
   .sources p { margin: 0; }
 </style>

@@ -1,0 +1,16 @@
+---
+// A track's station number: its line colour as a ring, "T" over the number. Always decorative; the
+// track's code and title are in the text next to it, or in the name of the link around it.
+import { lookOf } from "../lib/track-look";
+
+interface Props {
+  code: string;
+  /** "s" drops the T, for tight rows; "l" is for page heads. */
+  size?: "s" | "m" | "l";
+}
+
+const { code, size = "m" } = Astro.props;
+const num = code.replace(/^T/, "");
+---
+
+<span class={`stn ${size}`} style={`--c: ${lookOf(code).color}`} aria-hidden="true"><b>T</b><i>{num}</i></span>

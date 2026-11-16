@@ -1,5 +1,6 @@
 ---
-// A track's cover: its colour, its code, and a line drawing of what the track is about.
+// A track's cover: a panel painted in the track's line colour, its number, and a line drawing of what
+// the track is about, drawn in the colour that reads on that paint.
 import { lookOf, type Motif } from "../lib/track-look";
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const { code, variant = "card", label, num = code.replace("T", "").padStart(2, "0"), motif: drawing } = Astro.props;
-const { color, motif: trackMotif } = lookOf(code);
+const { color, on, motif: trackMotif } = lookOf(code);
 const motif = drawing ?? trackMotif;
 
 // Deterministic shapes for the drawings that need many marks.
@@ -39,7 +40,7 @@ const edges = [[0, 1], [1, 2], [0, 2], [2, 3], [2, 4], [2, 5], [5, 6], [3, 6], [
 const tickXs = Array.from({ length: 11 }, (_, i) => 118 + i * 18);
 ---
 
-<div class={`cover ${variant}`} style={`--c: ${color}`}>
+<div class={`cover ${variant}`} style={`--c: ${color}; --on: ${on}`}>
   {variant !== "thumb" && <span class="cv-code">{num}</span>}
   {label && variant !== "thumb" && <span class="cv-label">{label}</span>}
   <svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" data-kind={motif}>
@@ -181,33 +182,31 @@ const tickXs = Array.from({ length: 11 }, (_, i) => 118 + i * 18);
 </div>
 
 <style>
+  /* Flat paint, as on a sign or a train: no texture, no gradient, square corners. */
   .cover {
-    --cv-bg: color-mix(in srgb, var(--c) var(--cover-amt), var(--surface));
-    position: relative; overflow: hidden; border-radius: 10px; aspect-ratio: 16 / 10; max-width: 100%;
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 22%, transparent);
-    background-color: var(--cv-bg);
-    color: color-mix(in srgb, var(--c) var(--cover-ink-tint), var(--cover-ink));
-    background-image: radial-gradient(color-mix(in srgb, currentColor 16%, transparent) 1px, transparent 1.3px);
-    background-size: 14px 14px; background-position: 7px 7px;
+    --cv-bg: var(--c);
+    position: relative; overflow: hidden; border-radius: var(--r); aspect-ratio: 16 / 10; max-width: 100%;
+    background-color: var(--c); color: var(--on);
   }
-  .cover.banner { aspect-ratio: auto; height: clamp(180px, 26vw, 260px); border-radius: 12px; }
-  .cover.thumb { border-radius: 6px; background-size: 9px 9px; }
+  .cover.banner { aspect-ratio: auto; height: clamp(180px, 26vw, 260px); }
+  .cover.thumb { border-radius: 2px; }
   .cover.thumb svg { inset: -18% -6% -10% -34%; width: 140%; height: 128%; }
-  .cover svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .cover svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: square; stroke-linejoin: miter; }
   .cover.banner svg { left: auto; right: 0; width: min(100%, 520px); }
-  .cv-code { position: absolute; top: 14px; left: 16px; font: 500 clamp(1.6rem, 3.4vw, 2.2rem)/1 var(--data); letter-spacing: -0.04em; }
-  .cover.banner .cv-code { top: 22px; left: 24px; font-size: clamp(2.4rem, 6vw, 4rem); }
-  .cv-label { position: absolute; left: 16px; bottom: 14px; font: 500 0.75rem/1.2 var(--data); letter-spacing: 0.1em; text-transform: uppercase; max-width: 40%; }
-  .cover.banner .cv-label { left: 24px; bottom: 22px; }
+  .cv-code { position: absolute; top: 12px; left: 16px; font: 900 clamp(2rem, 4.4vw, 2.9rem)/1 var(--display); letter-spacing: -0.04em; }
+  .cover.banner .cv-code { top: 20px; left: 24px; font-size: clamp(3rem, 8vw, 5.4rem); }
+  .cv-label { position: absolute; left: 16px; bottom: 12px; font: 800 0.8125rem/1.25 var(--body); letter-spacing: 0.07em; text-transform: uppercase; max-width: 40%; }
+  .cover.banner .cv-label { left: 24px; bottom: 20px; }
   @media (max-width: 560px) { .cover.banner .cv-label { display: none; } }
-  .cover :global(.cv-t) { font: 500 9.5px var(--data); letter-spacing: 0.08em; fill: currentColor; stroke: none; }
+  .cover :global(.cv-t) { font: 600 9.5px var(--data); letter-spacing: 0.04em; fill: currentColor; stroke: none; }
   .cover :global(.f0) { fill: none; }
-  .cover :global(.f1) { fill: currentColor; fill-opacity: 0.1; }
-  .cover :global(.f2) { fill: currentColor; fill-opacity: 0.22; }
-  .cover :global(.f3) { fill: currentColor; fill-opacity: 0.85; }
+  .cover :global(.f1) { fill: currentColor; fill-opacity: 0.14; }
+  .cover :global(.f2) { fill: currentColor; fill-opacity: 0.3; }
+  .cover :global(.f3) { fill: currentColor; fill-opacity: 0.92; }
   .cover :global(.bg) { fill: var(--cv-bg); }
   .cover :global(.bg-stroke) { fill: var(--cv-bg); }
-  .cover :global(.dash) { stroke-dasharray: 3 4; stroke-opacity: 0.7; }
-  .cover :global(.thick) { stroke-width: 2.4; }
+  .cover :global(.dash) { stroke-dasharray: 3 4; stroke-opacity: 0.8; }
+  .cover :global(.thick) { stroke-width: 2.6; }
   .cover :global(.rail) { stroke: none; fill: none; }
+  @media (forced-colors: active) { .cover { forced-color-adjust: none; } }
 </style>

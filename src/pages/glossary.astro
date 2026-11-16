@@ -61,40 +61,41 @@ for (const t of sorted) {
 </Base>
 
 <style>
-  .glossary { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; max-width: 920px; }
+  .glossary { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; max-width: 940px; }
 
-  /* A–Z, each letter a link to its group */
+  /* A–Z, each letter a link to its group: square plates, as on a platform's exit signs. */
   .letters { display: flex; flex-wrap: wrap; gap: 6px; }
   .letters a {
-    display: grid; place-items: center; min-width: 36px; height: 36px; padding: 0 8px; border-radius: 8px;
-    border: 1px solid var(--rule); background: var(--surface); color: var(--ink-2);
-    font: 500 0.875rem/1 var(--data); text-decoration: none; transition: border-color 150ms var(--ease), color 150ms var(--ease);
+    display: grid; place-items: center; min-width: 40px; height: 40px; padding: 3px 8px 0; border-radius: var(--r);
+    background: var(--plate); color: var(--on-band);
+    font: 900 1rem/1 var(--display); text-decoration: none; transition: background 150ms var(--ease), color 150ms var(--ease);
   }
-  .letters a:hover { border-color: var(--accent); color: var(--accent); }
+  .letters a:hover { background: var(--signal); color: var(--on-signal); }
 
-  .group { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 0 20px; align-items: start; }
-  .letter { position: sticky; top: calc(var(--head-h) + 16px); margin: 0; font: 400 2.4rem/1 var(--data); color: var(--accent); scroll-margin-top: 8px; }
+  .group { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: 0 22px; align-items: start; }
+  .letter { position: sticky; top: calc(var(--head-h) + 16px); display: grid; place-items: center; width: 56px; height: 56px; padding-top: 6px; margin: 0; border-radius: var(--r); background: var(--signal); color: var(--on-signal); font: 900 2rem/1 var(--display); scroll-margin-top: 8px; }
   .terms { display: grid; }
 
   /* One row per term: the name on the left, what it means on the right */
   /* Each term has a rule above it, so the gap between two letters has one line, not two. */
   .term { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: 6px 24px; padding: 16px 0; border-top: 1px solid var(--rule); }
-  .term h3 { margin: 0; font: 600 1.0625rem/1.35 var(--display); letter-spacing: -0.01em; overflow-wrap: anywhere; scroll-margin-top: 12px; }
-  .term h3:target { color: var(--accent); }
-  .term:has(h3:target) { background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%); }
-  .aka { margin: 4px 0 0; font: 400 0.8125rem/1.45 var(--body); color: var(--muted); }
+  .term:first-child { border-top: 4px solid var(--ink); }
+  .term h3 { margin: 0; font: 800 1.125rem/1.35 var(--display); overflow-wrap: anywhere; scroll-margin-top: 12px; }
+  .term h3:target { text-decoration: underline 4px var(--signal); text-underline-offset: 4px; }
+  .term:has(h3:target) { box-shadow: inset 6px 0 0 var(--signal); padding-left: 16px; }
+  .aka { margin: 4px 0 0; font: 400 0.875rem/1.45 var(--body); color: var(--muted); }
   .body { display: grid; gap: 8px; min-width: 0; }
-  .body p { margin: 0; font-size: 0.96875rem; line-height: 1.6; color: var(--ink-2); max-width: 64ch; }
-  .body .see { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.8125rem; }
-  .see a { color: var(--muted); text-underline-offset: 3px; }
-  .see a:hover { color: var(--accent); }
+  .body p { margin: 0; font-size: 1rem; line-height: 1.6; color: var(--ink-2); max-width: 64ch; }
+  .body .see { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.875rem; font-weight: 700; }
+  .see a { color: var(--accent); text-underline-offset: 3px; }
   .see a::after { content: " →" / ""; } /* decorative: screen readers skip it */
 
-  .missing { margin: 0; font-size: 0.875rem; color: var(--muted); }
+  .missing { margin: 0; font-size: 0.9375rem; color: var(--muted); }
+  @media (forced-colors: active) { .letters a, .letter { border: 1px solid CanvasText; } }
 
   @media (max-width: 760px) {
     .group { grid-template-columns: minmax(0, 1fr); gap: 10px; }
-    .letter { position: static; font-size: 1.8rem; }
+    .letter { position: static; width: 44px; height: 44px; font-size: 1.5rem; }
     .term { grid-template-columns: minmax(0, 1fr); }
   }
 </style>

@@ -25,16 +25,19 @@ const { id, label, text, means, tested } = Astro.props;
 </article>
 
 <style>
-  .err { display: grid; gap: 10px; align-content: start; min-width: 0; padding: 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+  .err { display: grid; gap: 10px; align-content: start; min-width: 0; padding: 0 18px 18px; border: 1px solid var(--rule); border-radius: var(--r); background: var(--surface); overflow: hidden; }
   /* The id is on the heading, so that search results can link to it; linking to it lights up the
      whole card, and scrolls far enough to show the label above the heading too. */
-  .err:has(h3:target) { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
-  .top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+  .err:has(h3:target) { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink), inset 6px 0 0 var(--signal); }
+  /* The card's label sits on a black band, as a sign's title does. */
+  .top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin: 0 -18px; padding: 9px 18px 7px; background: var(--band); color: var(--on-band); }
   /* Links to the card itself, so one error can be shared. */
-  .label { padding-block: 5px; margin-block: -5px; font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.04em; color: var(--muted); text-decoration: none; overflow-wrap: anywhere; }
-  .label:hover { color: var(--accent); text-decoration: underline; }
-  h3 { margin: 0; font: 500 0.9375rem/1.5 var(--data); letter-spacing: -0.01em; color: var(--ink); overflow-wrap: anywhere; scroll-margin-top: 62px; }
+  .label { padding-block: 5px; margin-block: -5px; font: 800 0.75rem/1.4 var(--body); letter-spacing: 0.07em; text-transform: uppercase; color: var(--on-band); text-decoration: none; overflow-wrap: anywhere; }
+  .label:hover { color: var(--signal); text-decoration: underline; }
+  .label:focus-visible { outline-color: var(--signal); }
+  .top :global(.tag) { background: var(--on-band); color: var(--band); }
+  h3 { margin: 4px 0 0; font: 600 1rem/1.5 var(--data); letter-spacing: -0.01em; color: var(--ink); overflow-wrap: anywhere; scroll-margin-top: 62px; }
   samp { font: inherit; }
-  p { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--ink-2); }
-  @media (max-width: 560px) { .err { padding: 16px; } }
+  p { margin: 0; font-size: 1rem; line-height: 1.6; color: var(--ink-2); }
+  @media (max-width: 560px) { .err { padding: 0 16px 16px; } .top { margin: 0 -16px; padding-inline: 16px; } }
 </style>

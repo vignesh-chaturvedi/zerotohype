@@ -125,44 +125,50 @@ const filters = [["all", "All"], ["mainnet", "Mainnet"], ["testnet", "Testnet"],
 
 <style>
   .run-note { justify-self: start; }
-  .note { font-size: 0.8125rem; color: var(--muted); }
+  .note { font-size: 0.875rem; color: var(--muted); }
   .now, .log { display: grid; gap: 16px; }
-  .counts { max-width: 680px; border: 1px solid var(--rule); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
-  .counts table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
-  .counts :is(th, td) { padding: 12px 0 12px 12px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: baseline; font-weight: 400; }
+  /* The counts, as a board: mainnet and testnet side by side. */
+  .counts { max-width: 680px; border: 2px solid var(--ink); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+  .counts table { width: 100%; border-collapse: collapse; font-size: 1rem; }
+  .counts :is(th, td) { padding: 12px 0 10px 12px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: baseline; font-weight: 400; }
   .counts :is(th, td):first-child { padding-left: 18px; }
   .counts :is(th, td):last-child { padding-right: 18px; }
   .counts tbody tr:last-child > * { border-bottom: 0; }
   .counts td, .counts thead th + th { width: 6rem; text-align: right; }
-  .counts td { font: 500 1.15rem/1 var(--data); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
-  .counts thead th { background: var(--sunk); font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-  .log h2 { font-size: clamp(1.6rem, 3.4vw, 2.2rem); }
+  .counts td { font: 600 1.25rem/1 var(--data); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .counts thead th { background: var(--band); color: var(--on-band); font: 800 0.75rem/1.4 var(--body); letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 0; }
+  .log h2 { font-size: clamp(1.8rem, 3.6vw, 2.5rem); font-weight: 900; }
   .empty { color: var(--muted); max-width: 64ch; }
-  .day { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 12px 24px; align-items: start; padding-top: 18px; border-top: 1px solid var(--rule); }
-  .day h3 { display: grid; gap: 4px; font: 500 0.875rem/1.3 var(--data); letter-spacing: -0.02em; position: sticky; top: 84px; }
-  .day h3 span { font: 400 0.75rem/1.3 var(--data); color: var(--muted); letter-spacing: 0; }
+  /* Each day under a rule, its date pinned while its changes scroll past. */
+  .day { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 12px 24px; align-items: start; padding-top: 18px; border-top: 4px solid var(--ink); }
+  .day h3 { display: grid; gap: 4px; font: 900 1.0625rem/1.2 var(--display); position: sticky; top: 84px; }
+  .day h3 span { font: 700 0.75rem/1.3 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .day ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-  .day li { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 11px 14px; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; font-size: 0.90625rem; }
-  .meta { display: flex; gap: 10px; }
-  .net, .area { font: 500 0.75rem/1.4 var(--data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-  .net.mainnet { color: var(--accent); }
+  .day li { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 12px 14px 10px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); font-size: 0.96875rem; }
+  .meta { display: flex; gap: 10px; align-items: baseline; }
+  .net, .area { font: 800 0.75rem/1.4 var(--body); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+  /* Mainnet changes carry a traffic-yellow plate: they're the ones that touch real markets. */
+  .net.mainnet { padding: 2px 6px 0; border-radius: 2px; background: var(--signal); color: var(--on-signal); }
   .text { overflow-wrap: anywhere; }
   .day li { scroll-margin-top: 16px; }
-  .day li:target { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-  .follow { font-size: 0.875rem; color: var(--muted); }
+  .day li:target { border-color: var(--ink); box-shadow: inset 6px 0 0 var(--signal), 0 0 0 1px var(--ink); }
+  .follow { font-size: 0.9375rem; color: var(--muted); }
   .filter { display: flex; flex-wrap: wrap; gap: 6px; }
-  .filter button { padding: 8px 12px; border: 1px solid var(--rule-strong); border-radius: 999px; background: var(--surface); color: var(--ink-2); font: 500 0.75rem/1 var(--data); letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
-  .filter button:hover { border-color: var(--ink-2); color: var(--ink); }
+  .filter button { padding: 9px 12px 7px; border: 2px solid var(--rule-strong); border-radius: var(--r); background: var(--surface); color: var(--ink-2); font: 800 0.75rem/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+  .filter button:hover { border-color: var(--ink); color: var(--ink); }
   .filter button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--bg); }
   /* In high contrast mode the pressed filter takes the system's highlight colours; it opts out of the
      mode's own colouring, which would draw a backplate behind its text in the same colour as the text. */
-  @media (forced-colors: active) { .filter button[aria-pressed="true"] { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; } }
+  @media (forced-colors: active) {
+    .filter button[aria-pressed="true"] { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; }
+    .net.mainnet { forced-color-adjust: none; }
+  }
   .filter[hidden], .day[hidden], .day li[hidden], .empty[hidden] { display: none; }
   @media (max-width: 760px) {
     .day { grid-template-columns: minmax(0, 1fr); }
     .day h3 { position: static; display: flex; gap: 10px; align-items: baseline; }
     .day li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
-    .counts :is(th, td) { padding-block: 11px; }
+    .counts :is(th, td) { padding-block: 11px 9px; }
     .counts :is(th, td):first-child { padding-left: 14px; }
     .counts :is(th, td):last-child { padding-right: 14px; }
     .counts td, .counts thead th + th { width: 4.2rem; }

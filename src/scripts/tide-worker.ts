@@ -2,7 +2,7 @@
 // it the same messages it would otherwise give tide-scene.ts directly.
 
 import { createScene, type Msg } from "./tide-scene";
-import monoUrl from "@fontsource/martian-mono/files/martian-mono-latin-500-normal.woff2?url";
+import monoUrl from "@fontsource/overpass-mono/files/overpass-mono-latin-600-normal.woff2?url";
 
 type Init = { type: "init"; canvas: OffscreenCanvas; reduce: boolean };
 
@@ -21,7 +21,7 @@ addEventListener("message", (e: MessageEvent<Init | Msg>) => {
 function loadLabelFont() {
   const fonts = (self as unknown as { fonts?: FontFaceSet }).fonts;
   if (!fonts || typeof FontFace === "undefined") return;
-  new FontFace("Martian Mono", `url(${monoUrl})`, { weight: "500" })
+  new FontFace("Overpass Mono", `url(${monoUrl})`, { weight: "600" })
     .load()
     .then((face) => {
       fonts.add(face);

@@ -1,16 +1,17 @@
 ---
-import "@fontsource/schibsted-grotesk/500.css";
-import "@fontsource/schibsted-grotesk/600.css";
-import "@fontsource/schibsted-grotesk/700.css";
-import "@fontsource/public-sans/400.css";
-import "@fontsource/public-sans/400-italic.css";
-import "@fontsource/public-sans/600.css";
-import "@fontsource/martian-mono/400.css";
-import "@fontsource/martian-mono/500.css";
+import "@fontsource/overpass/400.css";
+import "@fontsource/overpass/400-italic.css";
+import "@fontsource/overpass/600.css";
+import "@fontsource/overpass/700.css";
+import "@fontsource/overpass/800.css";
+import "@fontsource/overpass/900.css";
+import "@fontsource/overpass-mono/400.css";
+import "@fontsource/overpass-mono/600.css";
 import "../styles/global.css";
-// The body and heading faces are on every page above the fold, so they are fetched before the CSS asks.
-import bodyFont from "@fontsource/public-sans/files/public-sans-latin-400-normal.woff2?url";
-import headingFont from "@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-600-normal.woff2?url";
+// The body face and the heavy face of the headings and the logo are on every page above the fold, so
+// they are fetched before the CSS asks.
+import bodyFont from "@fontsource/overpass/files/overpass-latin-400-normal.woff2?url";
+import headingFont from "@fontsource/overpass/files/overpass-latin-900-normal.woff2?url";
 import { getCollection } from "astro:content";
 import settlements from "../../public/data/hip4-settlements.json";
 import { trackLook } from "../lib/track-look";
