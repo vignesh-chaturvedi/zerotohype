@@ -3963,6 +3963,11 @@
           "0x6f999b259172ee1c180eef8c099a25e0b34acaa9"
         ]
       }
+    },
+    "qhte": {
+      "fullName": "x dex",
+      "oracleUpdater": null,
+      "grants": {}
     }
   },
   "venues": {
@@ -3999,7 +4004,7 @@
     "pewt": 11,
     "txyz": 20,
     "tzxy": 20,
-    "game": 16,
+    "game": 20,
     "www": 6,
     "st": 1,
     "lo": 6,
@@ -4015,7 +4020,7 @@
     "layr": 3,
     "pgn": 3,
     "momo": 5,
-    "aq": 12,
+    "aq": 20,
     "dorn": 8,
     "txyb": 20,
     "ali": 3,
@@ -4030,11 +4035,13 @@
     "qn": 1,
     "ai": 4,
     "catm": 5,
-    "ae": 12,
+    "ae": 20,
     "ddty": 1,
     "ay": 6,
     "dadu": 2,
-    "omen": 1
+    "omen": 1,
+    "beat": 20,
+    "cat": 20
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",

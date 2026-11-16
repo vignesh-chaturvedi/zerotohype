@@ -1,5 +1,29 @@
 [
   {
+    "time": "2026-11-16T21:57:36.383Z",
+    "network": "mainnet",
+    "area": "HIP-3",
+    "summary": "`para`: `registerAsset` granted to 0x7651…ca9c"
+  },
+  {
+    "time": "2026-11-16T21:57:36.383Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `qhte` (x dex)"
+  },
+  {
+    "time": "2026-11-16T21:57:36.383Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `beat` (20)"
+  },
+  {
+    "time": "2026-11-16T21:57:36.383Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `cat` (20)"
+  },
+  {
     "time": "2026-11-16T06:19:48.761Z",
     "network": "testnet",
     "area": "HIP-3",

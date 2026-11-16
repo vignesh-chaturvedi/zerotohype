@@ -1155,6 +1155,9 @@
       "fullName": "Paragon",
       "oracleUpdater": "0x8888888c43cbb7e1c4132542e46831bffd866ed3",
       "grants": {
+        "registerAsset": [
+          "0x765154b2355456ef9cdf413a380c35cccd00ca9c"
+        ],
         "setOracle": [
           "0x764ed9d59c91a2c653fd50c43585917366244335",
           "0x8888888c43cbb7e1c4132542e46831bffd866ed3"
@@ -1245,10 +1248,10 @@
     }
   },
   "venues": {
-    "fox": 7,
+    "out": 199,
     "skew": 67,
-    "out": 137,
     "txyz": 16,
+    "fox": 7,
     "protocol": 8
   },
   "templates": {
