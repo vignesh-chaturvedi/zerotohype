@@ -3968,6 +3968,15 @@
       "fullName": "x dex",
       "oracleUpdater": null,
       "grants": {}
+    },
+    "vmse": {
+      "fullName": "Valantis multisig e2e",
+      "oracleUpdater": null,
+      "grants": {
+        "setOracle": [
+          "0x6d2fd4b0397f519ebd0f43ba299452856c81295e"
+        ]
+      }
     }
   },
   "venues": {
@@ -4004,7 +4013,7 @@
     "pewt": 11,
     "txyz": 20,
     "tzxy": 20,
-    "game": 20,
+    "cat": 20,
     "www": 6,
     "st": 1,
     "lo": 6,
@@ -4040,8 +4049,9 @@
     "ay": 6,
     "dadu": 2,
     "omen": 1,
+    "game": 20,
     "beat": 20,
-    "cat": 20
+    "pdct": 8
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",

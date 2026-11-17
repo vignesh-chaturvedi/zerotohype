@@ -1,5 +1,17 @@
 [
   {
+    "time": "2026-11-17T07:49:28.956Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `vmse` (Valantis multisig e2e)"
+  },
+  {
+    "time": "2026-11-17T07:49:28.956Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `pdct` (8)"
+  },
+  {
     "time": "2026-11-16T21:57:36.383Z",
     "network": "mainnet",
     "area": "HIP-3",
