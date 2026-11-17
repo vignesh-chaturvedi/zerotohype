@@ -1,5 +1,185 @@
 [
   {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`nxlb`: `setOracle` granted to 0x1cd7…edf0"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`vmse`: `setOracle` granted to 0x903e…8867"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`vmse`: `setOracle` granted to 0xb34d…10d0"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `prb` (HIP-3 probe)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "testnet",
+    "area": "templates",
+    "summary": "New outcome template: `companyNextExecutive`"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "testnet",
+    "area": "templates",
+    "summary": "New outcome template: `companyNextExecutiveOther`"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "testnet",
+    "area": "templates",
+    "summary": "New outcome template: `companyNextExecutivePerson`"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [How to stake HYPE](https://hyperliquid.gitbook.io/hyperliquid-docs/onboarding/how-to-stake-hype)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Testnet faucet](https://hyperliquid.gitbook.io/hyperliquid-docs/onboarding/testnet-faucet)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [USDC](https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/usdc)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [HyperCore vaults (legacy)](https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/vaults/hypercore-vaults-legacy)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [HyperEVM](https://hyperliquid.gitbook.io/hyperliquid-docs/hyperevm)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Tools for HyperEVM builders](https://hyperliquid.gitbook.io/hyperliquid-docs/hyperevm/tools-for-hyperevm-builders)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [HIP-3: Builder-deployed perpetuals](https://hyperliquid.gitbook.io/hyperliquid-docs/hyperliquid-improvement-proposals-hips/hip-3-builder-deployed-perpetuals)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [HIP-4: Outcome markets](https://hyperliquid.gitbook.io/hyperliquid-docs/hyperliquid-improvement-proposals-hips/hip-4-outcome-markets)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Fees](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/fees)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Contract specifications](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/contract-specifications)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Margining](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/margining)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Account abstraction modes](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/account-abstraction-modes)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Funding](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/funding)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Order book](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/order-book)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Take profit and stop loss orders (TP/SL)](https://hyperliquid.gitbook.io/hyperliquid-docs/trading/take-profit-and-stop-loss-orders-tp-sl)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Proposal: Staking referral program](https://hyperliquid.gitbook.io/hyperliquid-docs/referrals/proposal-staking-referral-program)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Asset IDs](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/asset-ids)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Tick and lot size](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/tick-and-lot-size)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Optimizing latency](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/optimizing-latency)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [HyperEVM](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Foundation non-validating node](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/foundation-non-validating-node)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Foundation non-validating node for infra providers](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/foundation-non-validating-node-for-infra-providers)"
+  },
+  {
+    "time": "2026-11-17T20:50:30.355Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [HyperCore Tools](https://hyperliquid.gitbook.io/hyperliquid-docs/builder-tools/hypercore-tools)"
+  },
+  {
     "time": "2026-11-17T07:49:28.956Z",
     "network": "testnet",
     "area": "HIP-3",

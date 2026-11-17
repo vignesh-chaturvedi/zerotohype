@@ -3433,6 +3433,7 @@
       "oracleUpdater": null,
       "grants": {
         "setOracle": [
+          "0x1cd7cd83c9e01d0268f875d7daf241542291edf0",
           "0xcc590f774f9252a6b233e6a8f06952e7c30c1680"
         ]
       }
@@ -3974,7 +3975,21 @@
       "oracleUpdater": null,
       "grants": {
         "setOracle": [
-          "0x6d2fd4b0397f519ebd0f43ba299452856c81295e"
+          "0x6d2fd4b0397f519ebd0f43ba299452856c81295e",
+          "0x903eb871a2459d83fab7ea22b6806238b5628867",
+          "0xb34de414605beec53eb0d9c2a58be0861ef510d0"
+        ]
+      }
+    },
+    "prb": {
+      "fullName": "HIP-3 probe",
+      "oracleUpdater": "0xcd0160530441212612ee9e773f4cdb7974894410",
+      "grants": {
+        "setOracle": [
+          "0xcd0160530441212612ee9e773f4cdb7974894410"
+        ],
+        "haltTrading": [
+          "0xcd0160530441212612ee9e773f4cdb7974894410"
         ]
       }
     }
@@ -4046,12 +4061,12 @@
     "catm": 5,
     "ae": 20,
     "ddty": 1,
-    "ay": 6,
+    "ay": 5,
     "dadu": 2,
     "omen": 1,
+    "pdct": 8,
     "game": 20,
-    "beat": 20,
-    "pdct": 8
+    "beat": 20
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",
@@ -4067,6 +4082,9 @@
     "binaryPriceExternal": "f8dbea2066de",
     "companyIpoConfirmed": "a8be8cc36393",
     "companyIpoFirstDayMarketCap": "9ef2b925bbac",
+    "companyNextExecutive": "01cb7f4fae7f",
+    "companyNextExecutiveOther": "826665017dc6",
+    "companyNextExecutivePerson": "b4704c69139a",
     "policyRateBucket": "8641dccb8adc",
     "policyRateDecision": "344bf2cf0ae7",
     "policyRateDecision2": "fd8461d92f84",
