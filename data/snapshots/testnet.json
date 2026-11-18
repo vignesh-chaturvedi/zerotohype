@@ -3434,6 +3434,7 @@
       "grants": {
         "setOracle": [
           "0x1cd7cd83c9e01d0268f875d7daf241542291edf0",
+          "0x22d5599130babea7a5148758b530dd03c0490ac8",
           "0xcc590f774f9252a6b233e6a8f06952e7c30c1680"
         ]
       }
@@ -3973,13 +3974,7 @@
     "vmse": {
       "fullName": "Valantis multisig e2e",
       "oracleUpdater": null,
-      "grants": {
-        "setOracle": [
-          "0x6d2fd4b0397f519ebd0f43ba299452856c81295e",
-          "0x903eb871a2459d83fab7ea22b6806238b5628867",
-          "0xb34de414605beec53eb0d9c2a58be0861ef510d0"
-        ]
-      }
+      "grants": {}
     },
     "prb": {
       "fullName": "HIP-3 probe",
@@ -4011,12 +4006,13 @@
     "ad": 6,
     "flip": 17,
     "aa": 4,
+    "game": 20,
     "kelp": 9,
     "hehe": 6,
     "txyc": 20,
     "txya": 20,
     "at": 9,
-    "spcl": 12,
+    "beat": 20,
     "tyzz": 20,
     "ax": 8,
     "abaa": 10,
@@ -4044,7 +4040,7 @@
     "layr": 3,
     "pgn": 3,
     "momo": 5,
-    "aq": 20,
+    "pdct": 8,
     "dorn": 8,
     "txyb": 20,
     "ali": 3,
@@ -4059,14 +4055,13 @@
     "qn": 1,
     "ai": 4,
     "catm": 5,
-    "ae": 20,
+    "spcl": 7,
     "ddty": 1,
     "ay": 5,
     "dadu": 2,
     "omen": 1,
-    "pdct": 8,
-    "game": 20,
-    "beat": 20
+    "ae": 8,
+    "aq": 8
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",

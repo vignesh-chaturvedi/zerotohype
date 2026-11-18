@@ -1,5 +1,29 @@
 [
   {
+    "time": "2026-11-18T07:20:39.547Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`nxlb`: `setOracle` granted to 0x22d5…0ac8"
+  },
+  {
+    "time": "2026-11-18T07:20:39.547Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`vmse`: `setOracle` revoked from 0x6d2f…295e"
+  },
+  {
+    "time": "2026-11-18T07:20:39.547Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`vmse`: `setOracle` revoked from 0x903e…8867"
+  },
+  {
+    "time": "2026-11-18T07:20:39.547Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`vmse`: `setOracle` revoked from 0xb34d…10d0"
+  },
+  {
     "time": "2026-11-17T20:50:30.355Z",
     "network": "testnet",
     "area": "HIP-3",
