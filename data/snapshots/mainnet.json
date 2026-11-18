@@ -1248,11 +1248,11 @@
     }
   },
   "venues": {
-    "out": 170,
+    "out": 199,
     "skew": 80,
     "txyz": 16,
     "protocol": 8,
-    "fox": 6
+    "fox": 7
   },
   "templates": {
     "aiModelHeadToHead": "16e36658a5f0",

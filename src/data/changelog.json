@@ -1,5 +1,17 @@
 [
   {
+    "time": "2026-11-18T20:26:30.639Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `prs` (HIP-3 star probe)"
+  },
+  {
+    "time": "2026-11-18T20:26:30.639Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `sdn` (6)"
+  },
+  {
     "time": "2026-11-18T07:20:39.547Z",
     "network": "testnet",
     "area": "HIP-3",

@@ -3987,6 +3987,11 @@
           "0xcd0160530441212612ee9e773f4cdb7974894410"
         ]
       }
+    },
+    "prs": {
+      "fullName": "HIP-3 star probe",
+      "oracleUpdater": null,
+      "grants": {}
     }
   },
   "venues": {
@@ -4061,7 +4066,8 @@
     "dadu": 2,
     "omen": 1,
     "ae": 8,
-    "aq": 8
+    "aq": 8,
+    "sdn": 6
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",
