@@ -4009,7 +4009,7 @@
     "ac": 1,
     "out": 9,
     "ad": 6,
-    "flip": 17,
+    "flip": 18,
     "aa": 4,
     "game": 20,
     "kelp": 9,
@@ -4057,6 +4057,7 @@
     "zzz": 1,
     "ak": 20,
     "oxyz": 1,
+    "sdn": 6,
     "qn": 1,
     "ai": 4,
     "catm": 5,
@@ -4064,10 +4065,9 @@
     "ddty": 1,
     "ay": 5,
     "dadu": 2,
-    "omen": 1,
     "ae": 8,
     "aq": 8,
-    "sdn": 6
+    "omen": 1
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",

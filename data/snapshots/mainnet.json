@@ -1248,11 +1248,11 @@
     }
   },
   "venues": {
-    "out": 199,
+    "out": 187,
     "skew": 80,
     "txyz": 16,
-    "protocol": 8,
-    "fox": 7
+    "fox": 6,
+    "protocol": 8
   },
   "templates": {
     "aiModelHeadToHead": "16e36658a5f0",
@@ -1264,6 +1264,9 @@
     "binaryPriceExternal": "ba885c7ce177",
     "companyIpoConfirmed": "a8be8cc36393",
     "companyIpoFirstDayMarketCap": "9ef2b925bbac",
+    "companyNextExecutive": "01cb7f4fae7f",
+    "companyNextExecutiveOther": "826665017dc6",
+    "companyNextExecutivePerson": "b4704c69139a",
     "policyRateBucket": "8641dccb8adc",
     "policyRateDecision": "b37b7eed6c7a",
     "policyRateDecrease": "807c9ecf5bca",

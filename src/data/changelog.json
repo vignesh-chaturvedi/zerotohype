@@ -1,5 +1,29 @@
 [
   {
+    "time": "2026-11-19T07:17:36.505Z",
+    "network": "mainnet",
+    "area": "templates",
+    "summary": "New outcome template: `companyNextExecutive`"
+  },
+  {
+    "time": "2026-11-19T07:17:36.505Z",
+    "network": "mainnet",
+    "area": "templates",
+    "summary": "New outcome template: `companyNextExecutiveOther`"
+  },
+  {
+    "time": "2026-11-19T07:17:36.505Z",
+    "network": "mainnet",
+    "area": "templates",
+    "summary": "New outcome template: `companyNextExecutivePerson`"
+  },
+  {
+    "time": "2026-11-19T07:17:36.505Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [Subscriptions](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions)"
+  },
+  {
     "time": "2026-11-18T20:26:30.639Z",
     "network": "testnet",
     "area": "HIP-3",
