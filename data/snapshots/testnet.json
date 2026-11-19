@@ -3974,7 +3974,11 @@
     "vmse": {
       "fullName": "Valantis multisig e2e",
       "oracleUpdater": null,
-      "grants": {}
+      "grants": {
+        "setOracle": [
+          "0x7d4749c668079c82ec64d9e350b7f91c00a85ac2"
+        ]
+      }
     },
     "prb": {
       "fullName": "HIP-3 probe",
@@ -3990,6 +3994,11 @@
     },
     "prs": {
       "fullName": "HIP-3 star probe",
+      "oracleUpdater": null,
+      "grants": {}
+    },
+    "otrk": {
+      "fullName": "Outrank",
       "oracleUpdater": null,
       "grants": {}
     }
@@ -4009,7 +4018,7 @@
     "ac": 1,
     "out": 9,
     "ad": 6,
-    "flip": 18,
+    "flip": 19,
     "aa": 4,
     "game": 20,
     "kelp": 9,
@@ -4063,7 +4072,7 @@
     "catm": 5,
     "spcl": 7,
     "ddty": 1,
-    "ay": 5,
+    "ay": 4,
     "dadu": 2,
     "ae": 8,
     "aq": 8,

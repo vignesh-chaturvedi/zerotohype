@@ -1,5 +1,17 @@
 [
   {
+    "time": "2026-11-19T20:30:04.297Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`vmse`: `setOracle` granted to 0x7d47…5ac2"
+  },
+  {
+    "time": "2026-11-19T20:30:04.297Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "New HIP-3 DEX: `otrk` (Outrank)"
+  },
+  {
     "time": "2026-11-19T07:17:36.505Z",
     "network": "mainnet",
     "area": "templates",
