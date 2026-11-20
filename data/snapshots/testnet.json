@@ -4000,7 +4000,11 @@
     "otrk": {
       "fullName": "Outrank",
       "oracleUpdater": null,
-      "grants": {}
+      "grants": {
+        "setOracle": [
+          "0x6d441e7fc9b5a80f490cab85ab5e0086ceec3e1c"
+        ]
+      }
     }
   },
   "venues": {
@@ -4076,7 +4080,8 @@
     "dadu": 2,
     "ae": 8,
     "aq": 8,
-    "omen": 1
+    "omen": 1,
+    "miau": 2
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",

@@ -1,5 +1,17 @@
 [
   {
+    "time": "2026-11-20T20:07:10.854Z",
+    "network": "testnet",
+    "area": "HIP-3",
+    "summary": "`otrk`: `setOracle` granted to 0x6d44…3e1c"
+  },
+  {
+    "time": "2026-11-20T20:07:10.854Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `miau` (2)"
+  },
+  {
     "time": "2026-11-19T20:30:04.297Z",
     "network": "testnet",
     "area": "HIP-3",
