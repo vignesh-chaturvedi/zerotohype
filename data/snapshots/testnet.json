@@ -4005,6 +4005,11 @@
           "0x6d441e7fc9b5a80f490cab85ab5e0086ceec3e1c"
         ]
       }
+    },
+    "qaz": {
+      "fullName": "qaz mirrored deploy qa",
+      "oracleUpdater": null,
+      "grants": {}
     }
   },
   "venues": {
@@ -4024,7 +4029,6 @@
     "ad": 6,
     "flip": 20,
     "aa": 4,
-    "game": 20,
     "kelp": 9,
     "hehe": 6,
     "txyc": 20,
@@ -4058,6 +4062,8 @@
     "layr": 3,
     "pgn": 3,
     "momo": 5,
+    "miau": 2,
+    "game": 16,
     "pdct": 8,
     "dorn": 8,
     "txyb": 20,
@@ -4080,8 +4086,7 @@
     "dadu": 2,
     "ae": 8,
     "aq": 8,
-    "omen": 1,
-    "miau": 2
+    "omen": 1
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",
