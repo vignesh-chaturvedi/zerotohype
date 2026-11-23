@@ -4002,7 +4002,7 @@
       "oracleUpdater": null,
       "grants": {
         "setOracle": [
-          "0x6d441e7fc9b5a80f490cab85ab5e0086ceec3e1c"
+          "0x1416414c053a661c9844b499d175e6b4368fc255"
         ]
       }
     },
@@ -4010,6 +4010,15 @@
       "fullName": "qaz mirrored deploy qa",
       "oracleUpdater": null,
       "grants": {}
+    },
+    "div": {
+      "fullName": "Divisions revenue futures",
+      "oracleUpdater": "0xdde12a92eb2cff0614801c34a01c302185bd1895",
+      "grants": {
+        "setOracle": [
+          "0xdde12a92eb2cff0614801c34a01c302185bd1895"
+        ]
+      }
     }
   },
   "venues": {
@@ -4030,14 +4039,14 @@
     "aq": 20,
     "aa": 4,
     "sdn": 6,
-    "game": 12,
+    "game": 20,
     "kelp": 9,
     "flip": 20,
     "hehe": 6,
     "txyc": 20,
     "txya": 20,
     "at": 9,
-    "beat": 12,
+    "flp": 20,
     "tyzz": 20,
     "ax": 8,
     "abaa": 10,
@@ -4045,16 +4054,16 @@
     "abab": 9,
     "zq": 4,
     "vox": 2,
-    "flp": 20,
     "yeet": 16,
     "pewt": 11,
     "txyz": 20,
     "tzxy": 20,
+    "beat": 16,
     "www": 6,
     "st": 1,
     "lo": 6,
     "abac": 7,
-    "xcds": 6,
+    "xcds": 7,
     "adf": 2,
     "of": 9,
     "abad": 7,
@@ -4066,13 +4075,14 @@
     "pgn": 3,
     "momo": 5,
     "miau": 2,
+    "pdct": 8,
     "dorn": 8,
     "txyb": 20,
     "ali": 3,
     "mig": 20,
     "meow": 1,
     "qnh": 1,
-    "cat": 4,
+    "cat": 20,
     "ap": 2,
     "zz": 9,
     "zzz": 1,
