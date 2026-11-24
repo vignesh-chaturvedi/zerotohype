@@ -4039,7 +4039,7 @@
     "aq": 20,
     "aa": 4,
     "sdn": 6,
-    "game": 20,
+    "game": 12,
     "kelp": 9,
     "hehe": 6,
     "txyc": 20,
@@ -4090,12 +4090,12 @@
     "oxyz": 1,
     "qn": 1,
     "ai": 4,
-    "catm": 5,
+    "catm": 12,
     "spcl": 7,
     "ddty": 1,
     "ay": 4,
     "dadu": 2,
-    "omen": 1
+    "omen": 2
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",
