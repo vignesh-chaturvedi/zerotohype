@@ -4023,7 +4023,7 @@
   },
   "venues": {
     "ao": 6,
-    "ae": 20,
+    "cat": 20,
     "wren": 16,
     "au": 16,
     "protocol": 112,
@@ -4036,10 +4036,9 @@
     "ac": 1,
     "out": 9,
     "ad": 6,
-    "aq": 20,
+    "aq": 16,
     "aa": 4,
     "sdn": 6,
-    "game": 12,
     "kelp": 9,
     "hehe": 6,
     "txyc": 20,
@@ -4082,7 +4081,6 @@
     "mig": 20,
     "meow": 1,
     "qnh": 1,
-    "cat": 20,
     "ap": 2,
     "zz": 9,
     "zzz": 1,
@@ -4095,7 +4093,8 @@
     "ddty": 1,
     "ay": 4,
     "dadu": 2,
-    "omen": 2
+    "omen": 2,
+    "game": 8
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",
