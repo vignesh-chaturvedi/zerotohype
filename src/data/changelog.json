@@ -1,5 +1,23 @@
 [
   {
+    "time": "2026-11-26T21:26:38.762Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `aq` (16)"
+  },
+  {
+    "time": "2026-11-26T21:26:38.762Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `ae` (20)"
+  },
+  {
+    "time": "2026-11-26T21:26:38.762Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "HIP-4 venue has no live outcomes any more: `beat`"
+  },
+  {
     "time": "2026-11-26T08:08:50.323Z",
     "network": "testnet",
     "area": "HIP-4",
