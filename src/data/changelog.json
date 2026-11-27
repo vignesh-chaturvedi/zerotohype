@@ -1,5 +1,23 @@
 [
   {
+    "time": "2026-11-27T08:19:26.081Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "HIP-4 venue has no live outcomes any more: `pdct`"
+  },
+  {
+    "time": "2026-11-27T08:19:26.081Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "HIP-4 venue has no live outcomes any more: `cat`"
+  },
+  {
+    "time": "2026-11-27T08:19:26.081Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [HyperEVM](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm)"
+  },
+  {
     "time": "2026-11-26T21:26:38.762Z",
     "network": "testnet",
     "area": "HIP-4",
