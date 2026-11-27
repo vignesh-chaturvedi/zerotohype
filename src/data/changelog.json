@@ -1,5 +1,23 @@
 [
   {
+    "time": "2026-11-27T21:11:09.988Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `cat` (16)"
+  },
+  {
+    "time": "2026-11-27T21:11:09.988Z",
+    "network": "testnet",
+    "area": "HIP-4",
+    "summary": "New HIP-4 venue with live outcomes: `beat` (20)"
+  },
+  {
+    "time": "2026-11-27T21:11:09.988Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [HIP-3 deployer actions](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/hip-3-deployer-actions)"
+  },
+  {
     "time": "2026-11-27T08:19:26.081Z",
     "network": "testnet",
     "area": "HIP-4",

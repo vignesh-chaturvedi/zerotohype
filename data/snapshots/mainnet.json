@@ -1248,9 +1248,9 @@
     }
   },
   "venues": {
-    "fox": 19,
-    "out": 161,
-    "skew": 72,
+    "fox": 18,
+    "out": 199,
+    "skew": 79,
     "txyz": 10,
     "protocol": 8
   },

@@ -4092,7 +4092,9 @@
     "ddty": 1,
     "omen": 3,
     "dadu": 2,
-    "miau": 1
+    "miau": 2,
+    "cat": 16,
+    "beat": 20
   },
   "templates": {
     "aiModelHeadToHead": "26f05b54ca2e",
