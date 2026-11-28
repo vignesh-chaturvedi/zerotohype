@@ -1,5 +1,11 @@
 [
   {
+    "time": "2026-11-28T07:40:06.349Z",
+    "network": "docs",
+    "area": "docs",
+    "summary": "Docs page edited: [HIP-4: Outcome markets](https://hyperliquid.gitbook.io/hyperliquid-docs/hyperliquid-improvement-proposals-hips/hip-4-outcome-markets)"
+  },
+  {
     "time": "2026-11-27T21:11:09.988Z",
     "network": "testnet",
     "area": "HIP-4",

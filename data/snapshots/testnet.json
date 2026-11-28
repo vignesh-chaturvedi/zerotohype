@@ -4023,7 +4023,7 @@
   },
   "venues": {
     "ao": 6,
-    "game": 20,
+    "game": 16,
     "wren": 16,
     "au": 16,
     "protocol": 112,
@@ -4039,7 +4039,7 @@
     "flp": 20,
     "aa": 4,
     "sdn": 6,
-    "flip": 17,
+    "flip": 16,
     "kelp": 9,
     "hehe": 6,
     "txyc": 20,
@@ -4091,9 +4091,9 @@
     "ay": 4,
     "ddty": 1,
     "omen": 3,
-    "dadu": 2,
     "miau": 2,
     "cat": 16,
+    "dadu": 2,
     "beat": 20
   },
   "templates": {
